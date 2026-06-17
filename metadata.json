@@ -1,0 +1,6 @@
+{
+  "name": "Thai-English Pronunciation Coach",
+  "description": "An encouraging pronunciation practice web application designed for Grade 5 Thai English Language Learners (ELL) to listen, repeat, record, and receive kid-friendly feedback on key segmental focus targets.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

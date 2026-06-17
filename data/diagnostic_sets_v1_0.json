@@ -1,0 +1,257 @@
+[
+  {
+    "diagnosticSetId": "quick_placement_a1_a2",
+    "displayName": "Quick Placement A1-A2",
+    "purpose": "A short starter check for younger Thai learners. It samples the most important early pronunciation areas without overwhelming the student.",
+    "recommendedUse": "Use on first sign-in or before assigning the first lesson path.",
+    "estimatedItems": 12,
+    "scoreInterpretation": {
+      "pass": "Most items at or above threshold. Start with regular lesson sequence.",
+      "partial": "Route the student to the modules connected to low-scoring targets.",
+      "needsSupport": "Start with word-level and minimal-pair lessons before sentence practice."
+    },
+    "items": [
+      {
+        "entryId": 103,
+        "displayName": "TH word minimal pair thin",
+        "sentence": "thin",
+        "module": "th_sounds",
+        "targets": [
+          "minimal_pair",
+          "th_voiceless"
+        ],
+        "routeModules": [
+          "th_sounds"
+        ],
+        "reason": "TH vs T perception/production starter.",
+        "required": true
+      },
+      {
+        "entryId": 107,
+        "displayName": "Voiced TH word then",
+        "sentence": "then",
+        "module": "th_sounds",
+        "targets": [
+          "minimal_pair",
+          "th_voiced"
+        ],
+        "routeModules": [
+          "th_sounds"
+        ],
+        "reason": "Voiced TH vs D starter.",
+        "required": true
+      },
+      {
+        "entryId": 5,
+        "displayName": "V sound drill 1",
+        "sentence": "Very few visitors voted for the village festival.",
+        "module": "v_w_f",
+        "targets": [
+          "f",
+          "v"
+        ],
+        "routeModules": [
+          "v_w_f"
+        ],
+        "reason": "V sound in a full sentence.",
+        "required": true
+      },
+      {
+        "entryId": 115,
+        "displayName": "Final P word cap",
+        "sentence": "cap",
+        "module": "final_consonants",
+        "targets": [
+          "final_consonants",
+          "final_stop_voicing",
+          "minimal_pair",
+          "p"
+        ],
+        "routeModules": [
+          "final_consonants"
+        ],
+        "reason": "Final P/B contrast.",
+        "required": true
+      },
+      {
+        "entryId": 117,
+        "displayName": "Final K word back",
+        "sentence": "back",
+        "module": "final_consonants",
+        "targets": [
+          "final_consonants",
+          "final_stop_voicing",
+          "k",
+          "minimal_pair"
+        ],
+        "routeModules": [
+          "final_consonants"
+        ],
+        "reason": "Final K/G contrast.",
+        "required": true
+      },
+      {
+        "entryId": 123,
+        "displayName": "Final cluster phrase class starts",
+        "sentence": "The class starts at six.",
+        "module": "final_consonants",
+        "targets": [
+          "final_cluster_ks",
+          "final_cluster_st",
+          "final_clusters",
+          "final_consonants",
+          "s"
+        ],
+        "routeModules": [
+          "final_consonants"
+        ],
+        "reason": "Common final consonants in a useful phrase.",
+        "required": true
+      },
+      {
+        "entryId": 126,
+        "displayName": "Initial ST word stop",
+        "sentence": "stop",
+        "module": "clusters",
+        "targets": [
+          "clusters",
+          "initial_cluster_st",
+          "initial_clusters",
+          "minimal_pair",
+          "t"
+        ],
+        "routeModules": [
+          "clusters"
+        ],
+        "reason": "Initial ST cluster starter.",
+        "required": true
+      },
+      {
+        "entryId": 128,
+        "displayName": "Initial SK word school",
+        "sentence": "school",
+        "module": "clusters",
+        "targets": [
+          "clusters",
+          "initial_cluster_sk",
+          "initial_clusters",
+          "k",
+          "minimal_pair"
+        ],
+        "routeModules": [
+          "clusters"
+        ],
+        "reason": "Initial SK cluster starter.",
+        "required": true
+      },
+      {
+        "entryId": 149,
+        "displayName": "Linking phrase pick it up",
+        "sentence": "Pick it up.",
+        "module": "connected_speech",
+        "targets": [
+          "connected_speech",
+          "linking"
+        ],
+        "routeModules": [
+          "connected_speech"
+        ],
+        "reason": "Connected speech linking phrase.",
+        "required": true
+      },
+      {
+        "entryId": 161,
+        "displayName": "A word bad",
+        "sentence": "bad",
+        "module": "vowels",
+        "targets": [
+          "minimal_pair",
+          "vowel_trap"
+        ],
+        "routeModules": [
+          "vowels"
+        ],
+        "reason": "Vowel - bad.",
+        "required": true
+      },
+      {
+        "entryId": 171,
+        "displayName": "Science phrase evidence",
+        "sentence": "My evidence is the data.",
+        "module": "real_world_phrases",
+        "targets": [
+          "classroom_phrase",
+          "real_world"
+        ],
+        "routeModules": [
+          "real_world_phrases"
+        ],
+        "reason": "Real-world classroom help phrase.",
+        "required": true
+      },
+      {
+        "entryId": 172,
+        "displayName": "Classroom phrase more time",
+        "sentence": "I need more time, please.",
+        "module": "real_world_phrases",
+        "targets": [
+          "classroom_phrase",
+          "real_world"
+        ],
+        "routeModules": [
+          "real_world_phrases"
+        ],
+        "reason": "Real-world classroom understanding phrase.",
+        "required": true
+      }
+    ],
+    "routingRules": [
+      {
+        "ifLowTargetsContain": [
+          "th_voiceless",
+          "th_voiced"
+        ],
+        "recommendModule": "th_sounds"
+      },
+      {
+        "ifLowTargetsContain": [
+          "v",
+          "w",
+          "f"
+        ],
+        "recommendModule": "v_w_f"
+      },
+      {
+        "ifLowTargetsContain": [
+          "final_consonants",
+          "final_voicing",
+          "final_stop_voicing"
+        ],
+        "recommendModule": "final_consonants"
+      },
+      {
+        "ifLowTargetsContain": [
+          "initial_clusters",
+          "clusters"
+        ],
+        "recommendModule": "clusters"
+      },
+      {
+        "ifLowTargetsContain": [
+          "schwa",
+          "weak_forms"
+        ],
+        "recommendModule": "schwa_and_reduction"
+      },
+      {
+        "ifLowTargetsContain": [
+          "linking",
+          "connected_speech"
+        ],
+        "recommendModule": "connected_speech"
+      }
+    ],
+    "version": "v1.0",
+    "releaseCandidate": false
+  }
+]

@@ -1,0 +1,121 @@
+{
+  "version": "v1.0",
+  "purpose": "Convert Speechace-style scores into short, child-friendly feedback for Thai learners of English.",
+  "scorePriority": [
+    "Use phoneme_score for targetSounds when available.",
+    "Use word_score for focusWords and final consonant or cluster targets.",
+    "Use stress_score_if_available for stress modules.",
+    "Use sentence_score as the overall pass/fail score.",
+    "Use teacher review for intonation, challenge items, or unclear API output."
+  ],
+  "feedbackProfiles": {
+    "th_articulation": {
+      "studentFeedback": "Put your tongue lightly between your teeth and let the air pass.",
+      "teacherNote": "Watch for T, D, or S substitutions.",
+      "nextAction": "retry_focus_words"
+    },
+    "lip_shape_v_w_f": {
+      "studentFeedback": "Check your lips. V and F use teeth and lip. W uses round lips.",
+      "teacherNote": "Use mirror work for V/W/F.",
+      "nextAction": "show_articulation_tip"
+    },
+    "z_voicing": {
+      "studentFeedback": "Turn your voice on for Z. It should buzz.",
+      "teacherNote": "Students may devoice Z to S.",
+      "nextAction": "retry_focus_words"
+    },
+    "sibilant_affricate_contrast": {
+      "studentFeedback": "Keep SH soft, CH sharp, and J voiced.",
+      "teacherNote": "Separate SH, CH, J, and ZH with mouth shape and voicing cues.",
+      "nextAction": "practice_words_only"
+    },
+    "r_l_contrast": {
+      "studentFeedback": "Keep R and L different. L touches near the teeth. R does not.",
+      "teacherNote": "Use slow word pairs before clusters.",
+      "nextAction": "launch_minimal_pair"
+    },
+    "nasal_place_contrast": {
+      "studentFeedback": "Use the right nose sound: M uses lips, N uses tongue, NG is at the back.",
+      "teacherNote": "Students may add a final G release after NG.",
+      "nextAction": "practice_words_only"
+    },
+    "final_sound_control": {
+      "studentFeedback": "Finish the word. Do not cut off the last sound.",
+      "teacherNote": "Avoid adding an extra vowel after the final consonant.",
+      "nextAction": "practice_word_endings"
+    },
+    "cluster_control": {
+      "studentFeedback": "Keep the consonants together. Do not add a small vowel between them.",
+      "teacherNote": "Thai learners often insert epenthetic vowels in clusters.",
+      "nextAction": "practice_words_only"
+    },
+    "weak_vowel_reduction": {
+      "studentFeedback": "Relax the weak vowel. Do not make every syllable strong.",
+      "teacherNote": "Useful for schwa and weak function words.",
+      "nextAction": "slow_model_then_retry"
+    },
+    "connected_speech": {
+      "studentFeedback": "Connect the words smoothly. Do not stop after every word.",
+      "teacherNote": "Use listen-repeat-shadow before scoring.",
+      "nextAction": "shadow_sentence"
+    },
+    "stress_and_rhythm": {
+      "studentFeedback": "Make the important syllable longer, louder, and clearer.",
+      "teacherNote": "Check lexical stress and sentence rhythm if available.",
+      "nextAction": "tap_stress_then_retry"
+    },
+    "intonation_teacher_review": {
+      "studentFeedback": "Listen to the teacher model. Copy the voice going up or down.",
+      "teacherNote": "Treat intonation scores as teacher-supported unless the API setup provides reliable prosody data.",
+      "nextAction": "teacher_model_then_retry"
+    },
+    "real_world_clarity": {
+      "studentFeedback": "Say the phrase clearly, like you are using it in class.",
+      "teacherNote": "Prioritize communication clarity over perfect accent.",
+      "nextAction": "retry_sentence"
+    },
+    "general_pronunciation": {
+      "studentFeedback": "Try again slowly, then say it naturally.",
+      "teacherNote": "Use word-level scores to find the weak spot.",
+      "nextAction": "retry"
+    }
+  },
+  "scoreDecisionRules": [
+    {
+      "ruleId": "overall_pass",
+      "condition": "sentence_score >= overallPass",
+      "result": "pass"
+    },
+    {
+      "ruleId": "strong_pass",
+      "condition": "sentence_score >= strongPass and no focus word below wordWatch",
+      "result": "strong"
+    },
+    {
+      "ruleId": "word_watch",
+      "condition": "any focus word score < wordWatch",
+      "result": "targeted_retry"
+    },
+    {
+      "ruleId": "phoneme_watch",
+      "condition": "any target phoneme score < phonemeWatch",
+      "result": "show_articulation_tip"
+    },
+    {
+      "ruleId": "teacher_review",
+      "condition": "score unavailable, unclear alignment, or prosody-only target",
+      "result": "teacher_review_or_fallback"
+    },
+    {
+      "ruleId": "retry_below",
+      "condition": "overall score < retryBelow and overall score >= teacherReviewBelow",
+      "result": "retry"
+    },
+    {
+      "ruleId": "teacher_review_below",
+      "condition": "overall score < teacherReviewBelow, score unavailable, unclear alignment, or prosody-only target",
+      "result": "teacher_review_or_fallback"
+    }
+  ],
+  "releaseCandidate": false
+}
