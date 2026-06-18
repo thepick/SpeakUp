@@ -30,18 +30,8 @@ export default function App() {
   const [sessionHistory, setSessionHistory] = useState<Array<{ entry: DatasetEntry; score: number; status: string; mainFeedback: string }>>([]);
 
   // Subdivided lists for student selectable Sound Themes
-  // 8 units covering all 17 modules in the canonical dataset
+  // 7 focused units + 1 review game covering all 17 modules in the canonical dataset
   const soundThemes = [
-    {
-      id: 'quick_mix',
-      name: '🌪️ Quick Mixed Game',
-      description: 'A fun challenge containing 5 random speech practices from all units!',
-      getEntries: () => {
-        const safeEntries = FULL_DATASET.filter(isSafeForAutoPractice);
-        const shuffled = [...safeEntries].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, 5);
-      }
-    },
     {
       id: 'th_sounds',
       name: '👅 Unit 1: The TH Sounds',
@@ -89,6 +79,16 @@ export default function App() {
       getEntries: () => FULL_DATASET.filter(e => isSafeForAutoPractice(e) &&
         (e.module === 'real_world_phrases' || e.module === 'connected_speech' ||
          e.module === 'intonation' || e.module === 'stress_and_rhythm'))
+    },
+    {
+      id: 'quick_mix',
+      name: '🌪️ Quick Mixed Game',
+      description: 'A review challenge containing 5 random speech practices from all units!',
+      getEntries: () => {
+        const safeEntries = FULL_DATASET.filter(isSafeForAutoPractice);
+        const shuffled = [...safeEntries].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 5);
+      }
     }
   ];
 
@@ -126,8 +126,8 @@ export default function App() {
       
       {/* Universal Top Branding Header */}
       <header className="bg-white border-b border-blue-100/65 py-5 px-6 shrink-0 shadow-[0_2px_12px_rgba(74,144,226,0.04)] flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          {/* Logo Badge in Clean Minimalism Theme */}
+        <div className="flex items-center gap-3 cursor-pointer select-none hover:opacity-80 transition-opacity" onClick={() => screen !== 'start' && setScreen('start')} role="button" tabIndex={0} title="Return to main menu">
+          {/* Logo Badge */}
           <div className="w-10 h-10 rounded-xl bg-[#4A90E2] flex items-center justify-center text-white font-display font-bold text-lg shadow-[0_4px_10px_rgba(74,144,226,0.25)]">
             S
           </div>
