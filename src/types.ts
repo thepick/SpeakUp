@@ -20,6 +20,14 @@ export interface DatasetEntry {
   successMessage?: string;
   teacherNotes?: string;
   studentVisible?: boolean;
+  // Dataset classroom gating fields. Optional in the in-app starter pack but
+  // ALWAYS populated when loading from the canonical dataset. Used by
+  // isSafeForAutoPractice() to exclude teacher_review / teacher_only /
+  // optional_challenge / grade5_with_teacher_support entries from automatic
+  // student practice. See prototype_runtime_config_v1_0_rc1.json + the
+  // dataset RELEASE_NOTES for the gating policy.
+  classroomStatus?: 'grade5_ready' | 'grade5_with_teacher_support' | 'teacher_review' | 'teacher_only' | 'optional_challenge' | string;
+  appUse?: 'default_lesson' | 'starter_or_remediation' | 'teacher_review_before_default' | string;
   defaultAutoPath?: boolean;
   remediationLinks?: number[];
   contrastWith?: number[];

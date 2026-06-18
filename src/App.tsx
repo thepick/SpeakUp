@@ -10,6 +10,18 @@ import { DatasetEntry } from './types';
 
 type ScreenState = 'start' | 'unit_selection' | 'practice' | 'summary' | 'teacher';
 
+// Defense-in-depth: only entries with grade5_ready classroomStatus (or no
+// classroomStatus set) are safe for automatic student practice. This matches
+// the dataset RELEASE_NOTES policy: items marked teacher_review, teacher_only,
+// optional_challenge, or grade5_with_teacher_support should not be auto-assigned.
+// The starterPack.ts array currently includes only grade5_ready entries, but
+// this filter protects against future drift or when loading from JSON.
+function isSafeForAutoPractice(e: DatasetEntry): boolean {
+  if (e.studentVisible === false) return false;
+  if (e.classroomStatus === undefined) return true; // safe-by-default for legacy entries
+  return e.classroomStatus === 'grade5_ready';
+}
+
 export default function App() {
   const [screen, setScreen] = useState<ScreenState>('start');
   const [studentName, setStudentName] = useState('');
@@ -23,8 +35,9 @@ export default function App() {
       name: '🌪️ Quick Mixed Game',
       description: 'A fun challenge containing 5 random speech practices from all units!',
       getEntries: () => {
-        // Sample 5 random items
-        const shuffled = [...STARTER_PACK_ENTRIES].sort(() => 0.5 - Math.random());
+        // Sample 5 random items from the safe-for-auto-practice subset
+        const safeEntries = STARTER_PACK_ENTRIES.filter(isSafeForAutoPractice);
+        const shuffled = [...safeEntries].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 5);
       }
     },
@@ -32,37 +45,37 @@ export default function App() {
       id: 'th_sounds',
       name: '👅 Unit 1: The TH Sounds',
       description: 'Practice thin, think, then, and classroom phrases using TH.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => e.module === 'th_sounds')
+      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'th_sounds')
     },
     {
       id: 'v_w_f',
       name: '👄 Unit 2: V vs. W vs. F',
       description: 'Learn lip shape differences for wine, vine, west, and vest.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => e.module === 'v_w_f')
+      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'v_w_f')
     },
     {
       id: 'final_consonants',
       name: '🏁 Unit 3: Final Consonants',
       description: 'Finish words clearly! Say bus/buzz, cap/cab, back/bag, and rise/rice.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => e.module === 'final_consonants')
+      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'final_consonants')
     },
     {
       id: 'clusters',
       name: '🤝 Unit 4: Consonant Clusters',
       description: 'Keep sounds together, and say school, spot, stop, green, and blue.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => e.module === 'clusters')
+      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'clusters')
     },
     {
       id: 'vowels',
       name: '🎼 Unit 5: Short & Long Vowels',
       description: 'Compare vowel shapes for sheep/ship, full/fool, and bed/bad.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => e.module === 'vowels')
+      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'vowels')
     },
     {
       id: 'classroom',
       name: '🏫 Unit 6: Real World & Classroom English',
       description: 'Speak polite sentences like "May I go to the bathroom?" or "Can you repeat that, please?"',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => e.module === 'real_world_phrases')
+      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'real_world_phrases')
     }
   ];
 

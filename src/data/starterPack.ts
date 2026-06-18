@@ -1,5 +1,13 @@
 import { DatasetEntry } from '../types';
 
+// NOTE on remediationLinks / contrastWith:
+// A few entries in this starter pack reference IDs that are not in this pack
+// (e.g. teacher_review entry IDs 5, 6, 22; teacher_only ID 101; optional_challenge
+// ID 88; grade5_with_teacher_support IDs 136, 152). At runtime the
+// /api/pronunciation/score endpoint filters these out via safeRemediationIds —
+// only IDs that exist in this pack AND are grade5_ready (or have no
+// classroomStatus set) are returned as recommendedEntryIds. The frontend
+// never receives dangling or unsafe IDs.
 export const STARTER_PACK_ENTRIES: DatasetEntry[] = [
   {
     id: 103,
@@ -285,40 +293,13 @@ export const STARTER_PACK_ENTRIES: DatasetEntry[] = [
       feedbackProfiles: ["th_articulation"]
     }
   },
-  {
-    id: 1,
-    displayName: "Voiceless TH starter 1",
-    sentence: "Thank you for the thick thumb theory.",
-    audioPromptText: "Listen carefully, then repeat: Thank you for the thick thumb theory.",
-    level: "A2",
-    lessonOrder: 1,
-    module: "th_sounds",
-    practiceStage: "sentence",
-    skillType: "segmental",
-    difficultyScore: 2,
-    instruction: "Say the sentence slowly. Put the tip of your tongue lightly between your teeth for the TH sound.",
-    tags: ["th_voiceless", "segmental", "thai_learners"],
-    pairGroup: "th_voiceless_drill",
-    remediationLinks: [103, 105, 109, 110, 104],
-    targetSounds: ["th_voiceless"],
-    ipaTargets: ["/theta/"],
-    focusWords: ["thank", "thick", "thumb", "theory"],
-    thaiErrorPattern: "Thai learners often replace English TH with T, D, or S.",
-    speechaceIntegration: {
-      activityType: "score_text_pronunciation_sentence",
-      expectedText: "Thank you for the thick thumb theory.",
-      scoringModes: ["sentence_score", "word_score", "phoneme_score"],
-      thresholdProfile: {
-        overallPass: 75,
-        strongPass: 85,
-        wordWatch: 74,
-        phonemeWatch: 70,
-        retryBelow: 70,
-        teacherReviewBelow: 65
-      },
-      feedbackProfiles: ["th_articulation"]
-    }
-  },
+  // NOTE: Entry ID 1 ("Voiceless TH starter 1") is intentionally NOT included.
+  // In the canonical dataset it has classroomStatus="teacher_review" +
+  // appUse="teacher_review_before_default" + defaultAutoPath=false.
+  // Per dataset RELEASE_NOTES, items marked teacher_review must not be
+  // automatically assigned to students without teacher approval.
+  // Keep this structural gap intentional — if you need to assign it, do
+  // so manually through Teacher Mode.
   {
     id: 3,
     displayName: "Mixed TH contrast 1",
@@ -333,7 +314,11 @@ export const STARTER_PACK_ENTRIES: DatasetEntry[] = [
     instruction: "Use soft voiceless TH in think and north. Use buzzing voiced TH in they, that, this, and weather.",
     tags: ["th_mixed", "segmental", "thai_learners"],
     pairGroup: "th_mixed_drill",
-    remediationLinks: [101, 81, 1, 103, 105],
+    // Was [101, 81, 1, 103, 105]. Dropped 101 (teacher_only) and 1 (teacher_review)
+    // since neither is in this safe-for-auto-practice starter pack; dangling
+    // references would 404 in getEntryById(). 81, 103, 105 are kept as in-pack
+    // remediation targets.
+    remediationLinks: [81, 103, 105],
     targetSounds: ["th_voiceless", "th_voiced"],
     ipaTargets: ["/theta/", "/eth/"],
     focusWords: ["they", "think", "that", "this", "weather", "north"],

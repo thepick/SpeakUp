@@ -32,21 +32,25 @@ export default function TeacherPanel({ onBack }: TeacherPanelProps) {
   const runMockScorerTest = (entry: DatasetEntry) => {
     // Generate simulated teacher config mock feedback instantly
     const profileName = entry.speechaceIntegration?.feedbackProfiles[0] || "general_pronunciation";
+    // Kid-friendly tips kept in sync with server.ts feedbackProfilesMap.
+    // Each tip is intentionally ONE short sentence to comply with
+    // prototype_runtime_config_v1_0_rc1.json -> studentFeedbackStyle:
+    //   maxFeedbackSentences: 2, showOneTipAtATime: true
     const feedbackProfilesMap: Record<string, string> = {
       "th_articulation": "Put your tongue lightly between your teeth for TH and blow air gently.",
-      "lip_shape_v_w_f": "Check your lips. For V and F, touch top teeth to bottom lip. For W, round your lips.",
-      "z_voicing": "Make the Z sound buzz! Put your hand on your throat to feel it vibrate.",
-      "sibilant_affricate_contrast": "Keep the SH sound soft (shhh) and style CH sharp with a quick tap.",
-      "r_l_contrast": "L touches behind your top teeth. For R, pull your tongue back without touching.",
-      "nasal_place_contrast": "For M, close your lips. For N, press your tongue up. For NG, raise the back of your tongue.",
-      "final_sound_control": "Finish the ending clearly! Do not cut off the last sound of the word.",
-      "cluster_control": "Keep the consonants close together. No extra vowels inside.",
+      "lip_shape_v_w_f": "Touch top teeth to bottom lip for V and F; round your lips for W.",
+      "z_voicing": "Let the Z sound buzz; put your hand on your throat to feel it.",
+      "sibilant_affricate_contrast": "Keep SH soft and CH sharp with a quick tap.",
+      "r_l_contrast": "For L, touch behind top teeth; for R, pull your tongue back without touching.",
+      "nasal_place_contrast": "M closes lips, N presses tongue up, NG raises the back of the tongue.",
+      "final_sound_control": "Finish the ending clearly, do not cut off the last sound.",
+      "cluster_control": "Keep the consonants close together, no extra vowels inside.",
       "weak_vowel_reduction": "Relax and say the weak syllables lightly, like a quiet 'uh'.",
-      "connected_speech": "Let the words flow together. Chain them smoothly like a single continuous line.",
-      "stress_and_rhythm": "Exaggerate! Make the important syllable louder, longer, and higher in pitch.",
+      "connected_speech": "Let the words flow together smoothly in one continuous line.",
+      "stress_and_rhythm": "Make the important syllable louder, longer, and higher in pitch.",
       "intonation_teacher_review": "Listen and follow the melody of the sentence going up or down.",
-      "real_world_clarity": "Speak loud and clear, like you want to tell your teacher in a busy classroom.",
-      "general_pronunciation": "Take it slow at first, make each sound clear, then say it naturally."
+      "real_world_clarity": "Speak loud and clear, like telling your teacher in a busy classroom.",
+      "general_pronunciation": "Take it slow first, then say each sound clearly and naturally."
     };
 
     const kidFriendlyTip = feedbackProfilesMap[profileName] || feedbackProfilesMap["general_pronunciation"];
@@ -61,12 +65,11 @@ export default function TeacherPanel({ onBack }: TeacherPanelProps) {
       mainFeedback = `Good work! ${kidFriendlyTip}`;
     } else if (testScoreMode === "targeted_retry") {
       score = 72;
-      mainFeedback = entry.thaiErrorPattern 
-        ? `Almost there! Focus on: ${entry.focusWords.join(", ")}. ${kidFriendlyTip}`
-        : `Nice try! Keep working on it. ${kidFriendlyTip}`;
+      // Single sentence + tip = 2 sentences total (matches maxFeedbackSentences).
+      mainFeedback = `Almost there! ${kidFriendlyTip}`;
     } else {
       score = 58;
-      mainFeedback = `Keep practicing! ${kidFriendlyTip} Say it slowly first.`;
+      mainFeedback = `Keep practicing! ${kidFriendlyTip}`;
     }
 
     setTestResultFeedback({

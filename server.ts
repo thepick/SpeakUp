@@ -80,22 +80,28 @@ app.post("/api/pronunciation/score", (req, res) => {
   const thresholds = speechaceMetadata.thresholdProfile;
   const feedbackProfileName = speechaceMetadata.feedbackProfiles[0] || "general_pronunciation";
 
-  // Mapping feedback profile names to kid-friendly student tips (Grade 5 appropriate)
+  // Mapping feedback profile names to kid-friendly student tips (Grade 5 appropriate).
+  // Each tip is intentionally ONE short sentence to comply with
+  // prototype_runtime_config_v1_0_rc1.json -> studentFeedbackStyle:
+  //   maxFeedbackSentences: 2, showOneTipAtATime: true
+  // The "Almost there!" / "Good work!" / "Keep practicing!" wrappers add
+  // the encouragement prefix; together the total is at most 2 sentences.
+  // 3-sentence tips in earlier revisions were shortened here.
   const feedbackProfilesMap: Record<string, string> = {
     "th_articulation": "Put your tongue lightly between your teeth for TH and blow air gently.",
-    "lip_shape_v_w_f": "Check your lips. For V and F, touch top teeth to bottom lip. For W, round your lips.",
-    "z_voicing": "Make the Z sound buzz! Put your hand on your throat to feel it vibrate.",
-    "sibilant_affricate_contrast": "Keep the SH sound soft (shhh) and style CH sharp with a quick tap.",
-    "r_l_contrast": "L touches behind your top teeth. For R, pull your tongue back without touching.",
-    "nasal_place_contrast": "For M, close your lips. For N, press your tongue up. For NG, raise the back of your tongue.",
-    "final_sound_control": "Finish the ending clearly! Do not cut off the last sound of the word.",
-    "cluster_control": "Keep the consonants close together. No extra vowels inside.",
+    "lip_shape_v_w_f": "Touch top teeth to bottom lip for V and F; round your lips for W.",
+    "z_voicing": "Let the Z sound buzz; put your hand on your throat to feel it.",
+    "sibilant_affricate_contrast": "Keep SH soft and CH sharp with a quick tap.",
+    "r_l_contrast": "For L, touch behind top teeth; for R, pull your tongue back without touching.",
+    "nasal_place_contrast": "M closes lips, N presses tongue up, NG raises the back of the tongue.",
+    "final_sound_control": "Finish the ending clearly, do not cut off the last sound.",
+    "cluster_control": "Keep the consonants close together, no extra vowels inside.",
     "weak_vowel_reduction": "Relax and say the weak syllables lightly, like a quiet 'uh'.",
-    "connected_speech": "Let the words flow together. Chain them smoothly like a single continuous line.",
-    "stress_and_rhythm": "Exaggerate! Make the important syllable louder, longer, and higher in pitch.",
+    "connected_speech": "Let the words flow together smoothly in one continuous line.",
+    "stress_and_rhythm": "Make the important syllable louder, longer, and higher in pitch.",
     "intonation_teacher_review": "Listen and follow the melody of the sentence going up or down.",
-    "real_world_clarity": "Speak loud and clear, like you want to tell your teacher in a busy classroom.",
-    "general_pronunciation": "Take it slow at first, make each sound clear, then say it naturally."
+    "real_world_clarity": "Speak loud and clear, like telling your teacher in a busy classroom.",
+    "general_pronunciation": "Take it slow first, then say each sound clearly and naturally."
   };
 
   // Mock scoring logic, rotating through multiple bands to test retry / remediation logic
@@ -124,19 +130,35 @@ app.post("/api/pronunciation/score", (req, res) => {
   } else if (status === "targeted_retry") {
     overallScore = Math.floor(Math.random() * 4) + 71; // 71 to 74
     scoreBand = "orange";
-    mainFeedback = entry.thaiErrorPattern 
-      ? `Almost there! Focus on: ${entry.focusWords.join(", ")}. ${kidFriendlyTip}`
-      : `Nice try! Keep working on it. ${kidFriendlyTip}`;
+    // Drop the focusWords prefix (was 2nd sentence, pushed total above
+    // maxFeedbackSentences: 2). The tip alone is the single coaching point.
+    mainFeedback = `Almost there! ${kidFriendlyTip}`;
     nextAction = "retry_focus_words";
   } else {
     overallScore = Math.floor(Math.random() * 10) + 55; // 55 to 65
     scoreBand = "red";
-    mainFeedback = `Keep practicing! ${kidFriendlyTip} Say it slowly first.`;
+    // Single sentence: encouragement prefix + tip. No extra "say it slowly
+    // first" suffix (it was a 3rd sentence in the original).
+    mainFeedback = `Keep practicing! ${kidFriendlyTip}`;
     nextAction = "retry";
   }
 
   // Attempt records can log telemetry metadata, safely hiding database/PII complexities mockingly
   const attemptId = `att-${Math.random().toString(36).substr(2, 9)}`;
+
+  // Filter remediationLinks to only reference entries that exist AND are
+  // safe-for-auto-practice. Defends against dangling cross-references in
+  // the starter pack (some entries link to grade5_with_teacher_support,
+  // teacher_review, or teacher_only items that are not in this pack).
+  // Without this filter the recommendedEntryIds could suggest items the
+  // student can never reach via the current unit selector.
+  const safeRemediationIds = (entry.remediationLinks || []).filter(id => {
+    const linked = getEntryById(id);
+    if (!linked) return false;
+    if (linked.studentVisible === false) return false;
+    return linked.classroomStatus === undefined ||
+           linked.classroomStatus === 'grade5_ready';
+  });
 
   res.json({
     attemptId,
@@ -146,7 +168,7 @@ app.post("/api/pronunciation/score", (req, res) => {
     scoreBand,
     mainFeedback,
     nextAction,
-    recommendedEntryIds: entry.remediationLinks || []
+    recommendedEntryIds: safeRemediationIds
   });
 });
 
