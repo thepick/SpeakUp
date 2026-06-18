@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Volume2, Mic, Square, CheckCircle, RefreshCw, ChevronRight, HelpCircle, AlertCircle } from 'lucide-react';
 import { DatasetEntry, ScoreResponse } from '../types';
+import { scorePronunciation } from '../utils/scorePronunciation';
 
 interface StudentPracticeProps {
   entries: DatasetEntry[];
@@ -106,26 +107,11 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
     setLoading(true);
 
     try {
-      // Simulate short backend analysis delay for immersion
+      // Simulate short analysis delay for immersion
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      const response = await fetch('/api/pronunciation/score', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          entryId: currentEntry.id,
-          studentIdHash: 'student-demo-hash',
-          sessionId: 'session-demo-id',
-          attemptNumber: 1,
-          audioBase64: 'MOCK_AUDIO_DATA_BASE64'
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error("Server scored request failed.");
-      }
-
-      const resData: ScoreResponse = await response.json();
+      // Client-side mock scoring (was previously a server API call)
+      const resData = scorePronunciation(currentEntry.id);
       setScoreResult(resData);
 
       // Save key statistics to our history
