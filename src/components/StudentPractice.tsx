@@ -21,6 +21,7 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioStreamRef = useRef<MediaStream | null>(null);
+  const promptAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const currentEntry = entries[currentIndex];
 
@@ -37,12 +38,27 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
 
   const handlePlayPrompt = () => {
     if (!currentEntry) return;
-    // Cancel any current utterances first
+    // Cancel any current speech synthesis
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(currentEntry.sentence);
-    utterance.lang = 'en-US';
-    utterance.rate = 0.85; // Slightly slower for language learners
-    window.speechSynthesis.speak(utterance);
+    // Stop any currently playing prompt audio
+    if (promptAudioRef.current) {
+      promptAudioRef.current.pause();
+      promptAudioRef.current = null;
+    }
+    // Play pre-recorded Google Translate voice audio
+    const audioPath = `/audio/${currentEntry.id}.mp3`;
+    const audio = new Audio(audioPath);
+    promptAudioRef.current = audio;
+    audio.play().catch(() => {
+      // Fallback to browser SpeechSynthesis if audio file missing
+      const utterance = new SpeechSynthesisUtterance(currentEntry.sentence);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    });
+    audio.onended = () => {
+      promptAudioRef.current = null;
+    };
   };
 
   const handlePlayRecording = () => {
