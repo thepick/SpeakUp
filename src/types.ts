@@ -6,7 +6,7 @@ export interface DatasetEntry {
   level: string;
   lessonOrder: number;
   module: string;
-  practiceStage: 'word' | 'minimal_pair' | 'phrase' | 'sentence' | 'real_world';
+  practiceStage: 'word' | 'minimal_pair' | 'phrase' | 'sentence' | 'real_world' | 'challenge' | 'diagnostic' | 'teacher_modeling';
   skillType: string;
   difficultyScore: number;
   instruction: string;

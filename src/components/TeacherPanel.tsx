@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, Search, Filter, Play, Check, BookOpen, Settings } from 'lucide-react';
-import { STARTER_PACK_ENTRIES } from '../data/starterPack';
+import { FULL_DATASET } from '../data/fullDataset';
 import { DatasetEntry } from '../types';
 
 interface TeacherPanelProps {
@@ -12,16 +12,16 @@ export default function TeacherPanel({ onBack }: TeacherPanelProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedModule, setSelectedModule] = useState<string>('all');
   const [selectedStage, setSelectedStage] = useState<string>('all');
-  const [previewEntry, setPreviewEntry] = useState<DatasetEntry | null>(STARTER_PACK_ENTRIES[0]);
+  const [previewEntry, setPreviewEntry] = useState<DatasetEntry | null>(FULL_DATASET[0]);
   const [testScoreMode, setTestScoreMode] = useState<"strong" | "pass" | "targeted_retry" | "retry">("strong");
   const [testResultFeedback, setTestResultFeedback] = useState<any | null>(null);
 
   // List unique modules and stages for filtration dropdowns
-  const uniqueModules = Array.from(new Set(STARTER_PACK_ENTRIES.map(e => e.module)));
-  const uniqueStages = Array.from(new Set(STARTER_PACK_ENTRIES.map(e => e.practiceStage)));
+  const uniqueModules = Array.from(new Set(FULL_DATASET.map(e => e.module)));
+  const uniqueStages = Array.from(new Set(FULL_DATASET.map(e => e.practiceStage)));
 
   // Filter entry matches
-  const filteredEntries = STARTER_PACK_ENTRIES.filter(entry => {
+  const filteredEntries = FULL_DATASET.filter(entry => {
     const matchesSearch = entry.sentence.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           entry.displayName.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesModule = selectedModule === 'all' || entry.module === selectedModule;
@@ -105,7 +105,7 @@ export default function TeacherPanel({ onBack }: TeacherPanelProps) {
         <div className="lg:col-span-7 flex flex-col gap-6">
           <div className="bg-white border border-slate-150 rounded-2xl p-6">
             <h2 className="font-display text-xl font-bold text-slate-800 tracking-tight mb-4">
-              Database Entry Registry ({STARTER_PACK_ENTRIES.length} entries)
+              Database Entry Registry ({FULL_DATASET.length} entries)
             </h2>
 
             {/* Filters Row */}

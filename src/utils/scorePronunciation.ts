@@ -1,4 +1,4 @@
-import { STARTER_PACK_ENTRIES } from '../data/starterPack';
+import { FULL_DATASET } from '../data/fullDataset';
 import { ScoreResponse, ScoreStatus } from '../types';
 
 // Feedback profiles — kid-friendly tips for Grade 5.
@@ -22,7 +22,7 @@ const feedbackProfilesMap: Record<string, string> = {
 };
 
 function getEntryById(id: number) {
-  return STARTER_PACK_ENTRIES.find((e) => e.id === id) || null;
+  return FULL_DATASET.find((e) => e.id === id) || null;
 }
 
 export function scorePronunciation(entryId: number, _audioBase64?: string): ScoreResponse {

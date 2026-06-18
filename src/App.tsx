@@ -5,7 +5,7 @@ import StudentStart from './components/StudentStart';
 import StudentPractice from './components/StudentPractice';
 import PracticeSummary from './components/PracticeSummary';
 import TeacherPanel from './components/TeacherPanel';
-import { STARTER_PACK_ENTRIES } from './data/starterPack';
+import { FULL_DATASET } from './data/fullDataset';
 import { DatasetEntry } from './types';
 
 type ScreenState = 'start' | 'unit_selection' | 'practice' | 'summary' | 'teacher';
@@ -14,10 +14,11 @@ type ScreenState = 'start' | 'unit_selection' | 'practice' | 'summary' | 'teache
 // classroomStatus set) are safe for automatic student practice. This matches
 // the dataset RELEASE_NOTES policy: items marked teacher_review, teacher_only,
 // optional_challenge, or grade5_with_teacher_support should not be auto-assigned.
-// The starterPack.ts array currently includes only grade5_ready entries, but
-// this filter protects against future drift or when loading from JSON.
+// The fullDataset.ts contains all 175 entries; this filter protects against
+// future drift when new entries are added.
 function isSafeForAutoPractice(e: DatasetEntry): boolean {
   if (e.studentVisible === false) return false;
+  if (e.defaultAutoPath === false) return false; // teacher-only items have false
   if (e.classroomStatus === undefined) return true; // safe-by-default for legacy entries
   return e.classroomStatus === 'grade5_ready';
 }
@@ -28,15 +29,15 @@ export default function App() {
   const [selectedEntries, setSelectedEntries] = useState<DatasetEntry[]>([]);
   const [sessionHistory, setSessionHistory] = useState<Array<{ entry: DatasetEntry; score: number; status: string; mainFeedback: string }>>([]);
 
-  // Subdivided lists for student selectable Sound Themes (Units 1-6)
+  // Subdivided lists for student selectable Sound Themes
+  // 8 units covering all 17 modules in the canonical dataset
   const soundThemes = [
     {
       id: 'quick_mix',
       name: '🌪️ Quick Mixed Game',
       description: 'A fun challenge containing 5 random speech practices from all units!',
       getEntries: () => {
-        // Sample 5 random items from the safe-for-auto-practice subset
-        const safeEntries = STARTER_PACK_ENTRIES.filter(isSafeForAutoPractice);
+        const safeEntries = FULL_DATASET.filter(isSafeForAutoPractice);
         const shuffled = [...safeEntries].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 5);
       }
@@ -44,38 +45,50 @@ export default function App() {
     {
       id: 'th_sounds',
       name: '👅 Unit 1: The TH Sounds',
-      description: 'Practice thin, think, then, and classroom phrases using TH.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'th_sounds')
+      description: 'Practice think, then, thank you, and classroom phrases using TH.',
+      getEntries: () => FULL_DATASET.filter(e => isSafeForAutoPractice(e) && e.module === 'th_sounds')
     },
     {
       id: 'v_w_f',
       name: '👄 Unit 2: V vs. W vs. F',
       description: 'Learn lip shape differences for wine, vine, west, and vest.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'v_w_f')
+      getEntries: () => FULL_DATASET.filter(e => isSafeForAutoPractice(e) && e.module === 'v_w_f')
     },
     {
       id: 'final_consonants',
-      name: '🏁 Unit 3: Final Consonants',
-      description: 'Finish words clearly! Say bus/buzz, cap/cab, back/bag, and rise/rice.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'final_consonants')
+      name: '🏁 Unit 3: Final Consonants & Stops',
+      description: 'Finish words clearly! Say bus/buzz, cap/cab, back/bag, and voice final sounds.',
+      getEntries: () => FULL_DATASET.filter(e => isSafeForAutoPractice(e) &&
+        (e.module === 'final_consonants' || e.module === 'stop_voicing'))
     },
     {
       id: 'clusters',
-      name: '🤝 Unit 4: Consonant Clusters',
-      description: 'Keep sounds together, and say school, spot, stop, green, and blue.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'clusters')
+      name: '🤝 Unit 4: Consonant Clusters & R/L',
+      description: 'Keep sounds together — school, spot, stop — and master R vs. L.',
+      getEntries: () => FULL_DATASET.filter(e => isSafeForAutoPractice(e) &&
+        (e.module === 'clusters' || e.module === 'r_l'))
     },
     {
       id: 'vowels',
-      name: '🎼 Unit 5: Short & Long Vowels',
-      description: 'Compare vowel shapes for sheep/ship, full/fool, and bed/bad.',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'vowels')
+      name: '🎼 Unit 5: Vowels & Weak Forms',
+      description: 'Compare vowel shapes for sheep/ship, full/fool, bed/bad, and weak schwa.',
+      getEntries: () => FULL_DATASET.filter(e => isSafeForAutoPractice(e) &&
+        (e.module === 'vowels' || e.module === 'schwa_and_reduction'))
+    },
+    {
+      id: 'sibilants',
+      name: '🗣️ Unit 6: S, Z, SH, CH, J & Nasals',
+      description: 'Master hissing and buzzing sounds, plus M, N, NG contrasts.',
+      getEntries: () => FULL_DATASET.filter(e => isSafeForAutoPractice(e) &&
+        (e.module === 's_z_sh_ch_j' || e.module === 'nasals' || e.module === 'zh_sound'))
     },
     {
       id: 'classroom',
-      name: '🏫 Unit 6: Real World & Classroom English',
-      description: 'Speak polite sentences like "May I go to the bathroom?" or "Can you repeat that, please?"',
-      getEntries: () => STARTER_PACK_ENTRIES.filter(e => isSafeForAutoPractice(e) && e.module === 'real_world_phrases')
+      name: '🏫 Unit 7: Real World & Connected Speech',
+      description: 'Speak polite sentences, use natural rhythm, and connect words smoothly.',
+      getEntries: () => FULL_DATASET.filter(e => isSafeForAutoPractice(e) &&
+        (e.module === 'real_world_phrases' || e.module === 'connected_speech' ||
+         e.module === 'intonation' || e.module === 'stress_and_rhythm'))
     }
   ];
 
