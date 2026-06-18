@@ -259,7 +259,7 @@ export default function App() {
 
       {/* Universal footer */}
       <footer className="py-4 text-center text-[10px] text-[#718096] font-mono tracking-wider shrink-0 border-t border-blue-100/50 bg-white/40">
-        THAILAND ELL GRADE 5 • OFF-LINE PROTOTYPE ACTIVE
+        SPEAK UP! &bull; THAI-ENGLISH PRONUNCIATION &bull; GRADE 5
       </footer>
 
     </div>

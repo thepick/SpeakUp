@@ -45,7 +45,7 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
       promptAudioRef.current.pause();
       promptAudioRef.current = null;
     }
-    // Play pre-recorded Google Translate voice audio
+    // Play pre-recorded voice audio
     const audioPath = `/audio/${currentEntry.id}.mp3`;
     const audio = new Audio(audioPath);
     promptAudioRef.current = audio;

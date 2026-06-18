@@ -1,20 +1,50 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Speak Up!
 
-# Run and deploy your AI Studio app
+Thai-English Pronunciation Coach — a web app for Grade 5 Thai students to practice English pronunciation.
 
-This contains everything you need to run your app locally.
+Students listen to model pronunciations, record themselves speaking, and receive encouraging feedback.
 
-View your app in AI Studio: https://ai.studio/apps/1c8d3233-dd93-4f5f-a631-f4b4f7666d2e
+## Features
 
-## Run Locally
+- 175 pronunciation activities across 7 themed units
+- Pre-recorded native-speaker audio for every word and sentence
+- Microphone recording with instant scoring
+- Kid-friendly tips tailored for Thai learners
+- Teacher mode for browsing the full dataset and testing feedback
 
-**Prerequisites:**  Node.js
+## Tech
 
+- React 19 + TypeScript
+- Vite
+- Tailwind CSS v4
+- Motion (Framer Motion)
+- Static SPA — no server required
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Setup
+
+```bash
+npm install
+npm run dev
+```
+
+## Dataset
+
+The dataset lives in `src/data/fullDataset.ts`, generated from the canonical pronunciation dataset.
+
+To regenerate:
+```bash
+npm run generate-dataset path/to/pronunciation_dataset_v1_0.json
+```
+
+## Audio
+
+Pre-recorded audio files are in `public/audio/`. To regenerate all 175 MP3s:
+
+```bash
+pip install gtts
+npm run generate-audio
+```
+
+## Deploy
+
+Pushes to `main` auto-deploy to GitHub Pages at [speakup.mtomlinson.ca](https://speakup.mtomlinson.ca).

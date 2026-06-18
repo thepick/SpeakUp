@@ -34,8 +34,7 @@ export default function TeacherPanel({ onBack }: TeacherPanelProps) {
     const profileName = entry.speechaceIntegration?.feedbackProfiles[0] || "general_pronunciation";
     // Kid-friendly tips kept in sync with server.ts feedbackProfilesMap.
     // Each tip is intentionally ONE short sentence to comply with
-    // prototype_runtime_config_v1_0_rc1.json -> studentFeedbackStyle:
-    //   maxFeedbackSentences: 2, showOneTipAtATime: true
+    //  maxFeedbackSentences: 2, showOneTipAtATime: true
     const feedbackProfilesMap: Record<string, string> = {
       "th_articulation": "Put your tongue lightly between your teeth for TH and blow air gently.",
       "lip_shape_v_w_f": "Touch top teeth to bottom lip for V and F; round your lips for W.",

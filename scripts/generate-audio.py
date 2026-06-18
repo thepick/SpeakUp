@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate MP3 audio files for all entries in src/data/fullDataset.ts.
-Uses gTTS (Google Translate TTS). Skips files that already exist with valid size.
+Uses gTTS (Google TTS). Skips files that already exist with valid size.
 
 Usage:
   python scripts/generate-audio.py
