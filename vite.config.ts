@@ -13,10 +13,18 @@ export default defineConfig(() => {
     },
     server: {
       // HMR can be disabled via DISABLE_HMR env var (used in CI)
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      // Proxy /api requests to the Express backend (src/server/index.js).
+      // In production, set VITE_API_BASE to the deployed backend origin instead.
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3001',
+          changeOrigin: true,
+          secure: false,
+        },
+      },
     },
   };
 });

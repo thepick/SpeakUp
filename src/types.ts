@@ -30,6 +30,57 @@ export interface DatasetEntry {
   defaultAutoPath?: boolean;
   remediationLinks?: number[];
   contrastWith?: number[];
+  relatedPractice?: number[];
+  // Optional entry-level scoring detail used by the Teacher Panel.
+  scoringTargets?: Array<{
+    type: 'phoneme' | 'word' | 'sentence' | 'prosody_or_word' | 'word_or_sentence' | 'teacher_or_prosody' | string;
+    target: string;
+    words?: string[];
+    threshold?: number;
+    trigger?: {
+      phonemeScoreBelow?: number;
+      wordScoreBelow?: number;
+      sentenceScoreBelow?: number;
+      syllableScoreBelow?: number;
+    };
+    feedback?: string;
+    action?: string;
+  }>;
+  // Free-form minimal pair identifier (e.g. "back_bag_pair", or empty string).
+  minimalPairSet?: string;
+  // Optional free-text remediation strategy shown to teachers.
+  remediationStrategy?: string;
+  // Optional per-entry error rules with phoneme/word-level triggers and feedback.
+  errorRules?: Array<{
+    ruleId: string;
+    scope: 'phoneme' | 'word' | 'sentence' | string;
+    targets?: Array<string | number>;
+    trigger?: {
+      phonemeScoreBelow?: number;
+      wordScoreBelow?: number;
+      sentenceScoreBelow?: number;
+      syllableScoreBelow?: number;
+    };
+    feedback?: string;
+    action?: string;
+  }>;
+  // Optional reference to old-format pair entries (pre-v0.4 dataset).
+  legacyPairWith?: number[];
+  // Dataset metadata fields (v1.0+).
+  accentModel?: string;
+  ageSuitability?: string;
+  datasetVersion?: string;
+  sourceVersion?: string;
+  developerHandoffReady?: boolean;
+  releaseCandidate?: boolean;
+  releaseStatus?: string;
+  reviewNotes?: string;
+  reviewStatus?: string;
+  reviewStatusFinal?: 'grade5_ready' | 'grade5_with_teacher_support' | 'teacher_review' | 'teacher_only' | 'optional_challenge' | string;
+  reviewStatusV0_7?: string;
+  teacherAssignable?: boolean;
+  templateRole?: string;
+  templateVariableNotes?: string;
   speechaceIntegration: {
     activityType: string;
     expectedText: string;
@@ -43,6 +94,21 @@ export interface DatasetEntry {
       teacherReviewBelow: number;
     };
     feedbackProfiles: string[];
+    // Optional retry policy — present in all 175 canonical dataset entries.
+    // Captures maxAttemptsPerSession and post-pass/fail behaviour.
+    retryPolicy?: {
+      maxAttemptsPerSession: number;
+      afterFail: string;
+      afterPass: string;
+    };
+    // Optional backend-audio flags used by teacher review tooling.
+    sendAudioToBackendOnly?: boolean;
+    storeAudioByDefault?: boolean;
+    // Whether the entry needs custom (non-Azure) pronunciation scoring logic.
+    customPronunciationNeeded?: boolean;
+    // Fallback instructions shown when phoneme or prosody data is unavailable.
+    fallbackIfPhonemeMissing?: string;
+    fallbackIfProsodyMissing?: string;
   };
 }
 
@@ -65,4 +131,53 @@ export interface StudentProgress {
   scores: Record<number, number>; // entryId -> best score
   attemptsCount: Record<number, number>; // entryId -> attempt count
   currentUnitIndex: number;
+}
+
+// =========================================================================
+// Azure Speech Pronunciation Assessment types
+// =========================================================================
+
+export interface AzurePhoneme {
+  phoneme: string;
+  accuracy: number;
+  offset100ns: number;
+  duration100ns: number;
+}
+
+export interface AzureSyllable {
+  syllable: string;
+  accuracy: number;
+  offset100ns: number;
+  duration100ns: number;
+  phonemes: AzurePhoneme[];
+}
+
+export interface AzureWord {
+  word: string;
+  accuracy: number;
+  errorType: string;
+  offset100ns: number;
+  duration100ns: number;
+  syllables: AzureSyllable[];
+  phonemes: AzurePhoneme[];
+}
+
+export interface AzureScores {
+  accuracy: number;
+  fluency: number;
+  completeness: number;
+  prosody: number;
+  overall: number;
+}
+
+export interface AzureAssessResponse {
+  success: boolean;
+  locale: string;
+  referenceText: string;
+  recognizedText: string;
+  processingMode: 'single' | 'continuous';
+  scores: AzureScores;
+  words: AzureWord[];
+  rawAzure?: Record<string, unknown>;
+  error?: string;
 }

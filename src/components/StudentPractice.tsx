@@ -1,8 +1,56 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Volume2, Mic, Square, CheckCircle, RefreshCw, ChevronRight, HelpCircle, AlertCircle } from 'lucide-react';
-import { DatasetEntry, ScoreResponse } from '../types';
+import { AzureAssessResponse, DatasetEntry, ScoreResponse, ScoreStatus } from '../types';
 import { scorePronunciation } from '../utils/scorePronunciation';
+import { assessWithAzure } from '../utils/assessApi';
+
+// Map Azure response (0-100, phoneme detail) into the app's ScoreResponse.
+function mapAzureToScoreResponse(azure: AzureAssessResponse, entry: DatasetEntry): ScoreResponse {
+  const overall = azure.scores.overall;
+  const t = entry.speechaceIntegration.thresholdProfile;
+
+  let status: ScoreStatus;
+  let scoreBand: 'green' | 'blue' | 'yellow' | 'orange' | 'red';
+  let mainFeedback: string;
+  let nextAction: string;
+
+  if (overall >= t.strongPass) {
+    status = 'strong'; scoreBand = 'green';
+    mainFeedback = entry.successMessage || 'Perfect! Clear and natural.';
+    nextAction = 'advance';
+  } else if (overall >= t.overallPass) {
+    status = 'pass'; scoreBand = 'blue';
+    mainFeedback = `Good work! Score: ${overall.toFixed(0)}`;
+    nextAction = 'advance';
+  } else if (overall >= t.wordWatch) {
+    status = 'targeted_retry'; scoreBand = 'yellow';
+    const bad = azure.words.filter(w => w.errorType !== 'None').map(w => w.word);
+    mainFeedback = bad.length
+      ? `Almost there. Focus on: ${bad.slice(0, 3).join(', ')}`
+      : `Almost there! Score: ${overall.toFixed(0)}`;
+    nextAction = 'retry_focus_words';
+  } else if (overall >= t.retryBelow) {
+    status = 'retry'; scoreBand = 'orange';
+    mainFeedback = `Keep practicing. Score: ${overall.toFixed(0)}`;
+    nextAction = 'retry';
+  } else {
+    status = 'teacher_review'; scoreBand = 'red';
+    mainFeedback = 'This one is tricky. Ask your teacher for help.';
+    nextAction = 'retry';
+  }
+
+  return {
+    attemptId: `att-${Math.random().toString(36).slice(2, 11)}`,
+    entryId: entry.id,
+    status,
+    overallScore: Math.round(overall),
+    scoreBand,
+    mainFeedback,
+    nextAction,
+    recommendedEntryIds: entry.remediationLinks || [],
+  };
+}
 
 interface StudentPracticeProps {
   entries: DatasetEntry[];
@@ -119,34 +167,49 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
   };
 
   const handleCheckSound = async () => {
-    if (!currentEntry) return;
-    setLoading(true);
+      if (!currentEntry) return;
+      setLoading(true);
 
-    try {
-      // Simulate short analysis delay for immersion
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      try {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const referenceText =
+          currentEntry.speechaceIntegration?.expectedText || currentEntry.sentence;
 
-      // Client-side mock scoring (was previously a server API call)
-      const resData = scorePronunciation(currentEntry.id);
-      setScoreResult(resData);
+        let resData: ScoreResponse;
+        let usedAzure = false;
 
-      // Save key statistics to our history
-      setPracticeHistory(prev => [
-        ...prev,
-        {
-          entry: currentEntry,
-          score: resData.overallScore,
-          status: resData.status,
-          mainFeedback: resData.mainFeedback
+        try {
+          const azureResult = await assessWithAzure(audioBlob, referenceText, 'en-US');
+          if (azureResult.success) {
+            resData = mapAzureToScoreResponse(azureResult, currentEntry);
+            usedAzure = true;
+          } else {
+            throw new Error(azureResult.error || 'Azure returned success:false');
+          }
+        } catch (azureErr) {
+          // Backend unreachable / Azure failure / network error — fall back to mock
+          // so the app still works offline (e.g. on GitHub Pages).
+          console.warn('Azure backend unavailable — using mock scoring', azureErr);
+          resData = scorePronunciation(currentEntry.id);
         }
-      ]);
 
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+        // Persist which scoring path was used (helpful for the Teacher Panel)
+        setScoreResult(resData);
+        setPracticeHistory(prev => [
+          ...prev,
+          {
+            entry: currentEntry,
+            score: resData.overallScore,
+            status: usedAzure ? `${resData.status} (azure)` : `${resData.status} (mock)`,
+            mainFeedback: resData.mainFeedback,
+          },
+        ]);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleNext = () => {
     if (currentIndex < entries.length - 1) {
