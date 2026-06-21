@@ -56,9 +56,18 @@ interface StudentPracticeProps {
   entries: DatasetEntry[];
   studentName: string;
   onFinish: (history: Array<{ entry: DatasetEntry; score: number; status: string; mainFeedback: string }>) => void;
+  /**
+   * Called after each successful Azure scoring with the entry id and the
+   * final overall score. The parent App wires this to useDriveSync.saveProgress
+   * so that every scored entry is persisted to Google Drive.
+   *
+   * Optional: when omitted (e.g. unit tests), scoring results are kept in
+   * local React state only and not synced.
+   */
+  onEntryScored?: (entryId: number, overallScore: number) => void;
 }
 
-export default function StudentPractice({ entries, studentName, onFinish }: StudentPracticeProps) {
+export default function StudentPractice({ entries, studentName, onFinish, onEntryScored }: StudentPracticeProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -204,6 +213,15 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
             mainFeedback: resData.mainFeedback,
           },
         ]);
+        // Push the score to the parent's saveProgress hook so it can be
+        // persisted to Google Drive. Fire-and-forget — the parent decides
+        // whether to await.
+        try {
+          onEntryScored?.(currentEntry.id, resData.overallScore);
+        } catch (persistErr) {
+          // Don't let a sync failure block the practice flow.
+          console.warn('[SpeakUp] saveProgress threw:', persistErr);
+        }
       } catch (err) {
         console.error(err);
       } finally {

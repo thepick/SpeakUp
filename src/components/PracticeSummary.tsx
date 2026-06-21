@@ -2,14 +2,20 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Star, Award, ChevronRight, RotateCcw, AlertTriangle } from 'lucide-react';
 import { DatasetEntry } from '../types';
+import type { SyncStatus } from '../google/types.ts';
+import SyncStatusIndicator from './SyncStatusIndicator.tsx';
 
 interface PracticeSummaryProps {
   studentName: string;
   history: Array<{ entry: DatasetEntry; score: number; status: string; mainFeedback: string }>;
   onRestart: () => void;
+  /** Live sync state from useDriveSync. Optional — defaults to 'synced'. */
+  syncStatus?: SyncStatus;
+  /** Status message accompanying syncStatus (e.g. "Saving…"). */
+  syncMessage?: string;
 }
 
-export default function PracticeSummary({ studentName, history, onRestart }: PracticeSummaryProps) {
+export default function PracticeSummary({ studentName, history, onRestart, syncStatus, syncMessage }: PracticeSummaryProps) {
   // Compute some encouraging metrics
   const totalExercises = history.length;
   const averageScore = totalExercises > 0 
@@ -56,6 +62,19 @@ export default function PracticeSummary({ studentName, history, onRestart }: Pra
         <p className="text-blue-100 text-xs font-sans max-w-sm mx-auto">
           You finished practicing your pronunciation games! Look at your amazing results below. 🏆
         </p>
+
+        {/* Sync status badge — appears below the celebration header so the
+            student sees "Saved ✓" / "Saving…" / "Could not save — will retry"
+            without scrolling. Hidden when syncStatus is undefined. */}
+        {syncStatus && (
+          <div className="mt-5 flex justify-center">
+            <SyncStatusIndicator
+              status={syncStatus}
+              message={syncMessage}
+              variant="inline"
+            />
+          </div>
+        )}
 
         {/* Dynamic score summary blocks */}
         <div className="grid grid-cols-3 gap-3 mt-8">

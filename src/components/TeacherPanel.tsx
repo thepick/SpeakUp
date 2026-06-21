@@ -237,7 +237,7 @@ export default function TeacherPanel({ onBack }: TeacherPanelProps) {
                       {s}
                     </span>
                   ))}
-                  {previewEntry.ipaTargets.map((ipa, idx) => (
+                  {previewEntry.ipaTargets?.map((ipa, idx) => (
                     <span key={idx} className="bg-[#EBF4FF] border border-blue-100 text-[#4A90E2] px-2.5 py-1 rounded-lg font-mono font-bold">
                       {ipa}
                     </span>

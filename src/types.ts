@@ -134,6 +134,79 @@ export interface StudentProgress {
 }
 
 // =========================================================================
+// Google Drive sync envelope
+// =========================================================================
+
+/**
+ * Shape stored as `speakup_progress.json` in Drive's hidden appDataFolder.
+ * Versioned so future schema migrations can detect old data. The shape
+ * intentionally embeds the full StudentProgress under `.progress` so the
+ * cloud file is self-contained — no extra reads required to recover state.
+ */
+export interface DriveData {
+  schemaVersion: 1;
+  lastModified: number;
+  deviceId: string;
+  googleUserId: string;
+  studentName: string;
+  progress: StudentProgress;
+  totalSessions: number;
+  lastSessionDate: string;
+}
+
+/**
+ * Build a fresh DriveData for a freshly-signed-in student who has no
+ * cloud progress yet.
+ */
+export function createBlankDriveData(params: {
+  googleUserId: string;
+  studentName: string;
+  deviceId: string;
+}): DriveData {
+  return {
+    schemaVersion: 1,
+    lastModified: Date.now(),
+    deviceId: params.deviceId,
+    googleUserId: params.googleUserId,
+    studentName: params.studentName,
+    progress: {
+      studentName: params.studentName,
+      completedEntries: [],
+      scores: {},
+      attemptsCount: {},
+      currentUnitIndex: 0,
+    },
+    totalSessions: 0,
+    lastSessionDate: '',
+  };
+}
+
+/**
+ * Pull the StudentProgress portion out of an envelope (or coerce raw shapes
+ * from older schema versions into the current one).
+ */
+export function driveDataToProgress(data: DriveData | null | undefined): StudentProgress {
+  if (!data) {
+    return {
+      studentName: '',
+      completedEntries: [],
+      scores: {},
+      attemptsCount: {},
+      currentUnitIndex: 0,
+    };
+  }
+  // v1 — direct envelope. Future versions can branch here.
+  const p = data.progress;
+  return {
+    studentName: p?.studentName ?? data.studentName ?? '',
+    completedEntries: Array.isArray(p?.completedEntries) ? p!.completedEntries : [],
+    scores: p?.scores ?? {},
+    attemptsCount: p?.attemptsCount ?? {},
+    currentUnitIndex: p?.currentUnitIndex ?? 0,
+  };
+}
+
+// =========================================================================
 // Azure Speech Pronunciation Assessment types
 // =========================================================================
 
