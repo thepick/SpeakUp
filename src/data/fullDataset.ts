@@ -9,7 +9,7 @@ import { DatasetEntry } from '../types';
 export const FULL_DATASET: DatasetEntry[] = [
   {
     "id": 1,
-    "displayName": "Voiceless TH starter 1",
+    "displayName": "TH Sound: Thank You",
     "sentence": "Thank you for the thick thumb theory.",
     "audioPromptText": "Listen carefully, then repeat: Thank you for the thick thumb theory.",
     "level": "A2",
@@ -146,7 +146,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 2,
-    "displayName": "Voiceless TH challenge",
+    "displayName": "TH Challenge: Try These!",
     "sentence": "Three thin thieves threw thirteen thick threads.",
     "audioPromptText": "Listen carefully, then repeat: Three thin thieves threw thirteen thick threads.",
     "level": "B1",
@@ -338,7 +338,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 3,
-    "displayName": "Mixed TH contrast 1",
+    "displayName": "TH Sounds: Think and They",
     "sentence": "They think that this weather is better in the north.",
     "audioPromptText": "Listen carefully, then repeat: They think that this weather is better in the north.",
     "level": "A2",
@@ -487,7 +487,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 4,
-    "displayName": "Mixed TH contrast 2",
+    "displayName": "TH Sounds: Thought and Those",
     "sentence": "Those three athletes thought about their health.",
     "audioPromptText": "Listen carefully, then repeat: Those three athletes thought about their health.",
     "level": "B1",
@@ -624,7 +624,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 5,
-    "displayName": "V sound drill 1",
+    "displayName": "V Sound: Visitors Vote",
     "sentence": "Very few visitors voted for the village festival.",
     "audioPromptText": "Listen carefully, then repeat: Very few visitors voted for the village festival.",
     "level": "A2",
@@ -769,7 +769,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 6,
-    "displayName": "V sound drill 2",
+    "displayName": "V Sound: Very Viral",
     "sentence": "My favorite movie is a very viral video.",
     "audioPromptText": "Listen carefully, then repeat: My favorite movie is a very viral video.",
     "level": "A2",
@@ -902,7 +902,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 7,
-    "displayName": "V and final voicing drill",
+    "displayName": "V and End Sounds",
     "sentence": "Five brave drivers saved seven lives.",
     "audioPromptText": "Listen carefully, then repeat: Five brave drivers saved seven lives.",
     "level": "A2",
@@ -1052,7 +1052,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 8,
-    "displayName": "V and W contrast drill",
+    "displayName": "V vs. W: Both Lips",
     "sentence": "We went to view the volcano from a safe village.",
     "audioPromptText": "Listen carefully, then repeat: We went to view the volcano from a safe village.",
     "level": "A2",
@@ -1218,7 +1218,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 9,
-    "displayName": "S clarity drill",
+    "displayName": "S Sound: Speak Clearly",
     "sentence": "Sue sells six salty sausages on Sunday.",
     "audioPromptText": "Listen carefully, then repeat: Sue sells six salty sausages on Sunday.",
     "level": "A2",
@@ -1349,7 +1349,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 10,
-    "displayName": "Z voicing drill",
+    "displayName": "Z Sound: Buzzing Z",
     "sentence": "Zoe buys zero noisy zebras at the zoo.",
     "audioPromptText": "Listen carefully, then repeat: Zoe buys zero noisy zebras at the zoo.",
     "level": "A2",
@@ -1476,7 +1476,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 11,
-    "displayName": "SH drill",
+    "displayName": "SH Sound: Shhh!",
     "sentence": "She should wash the short white shirt.",
     "audioPromptText": "Listen carefully, then repeat: She should wash the short white shirt.",
     "level": "A2",
@@ -1604,7 +1604,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 12,
-    "displayName": "Z in connected speech",
+    "displayName": "Z Sound: Talking Fast",
     "sentence": "The busy bees buzz in the business zone.",
     "audioPromptText": "Listen carefully, then repeat: The busy bees buzz in the business zone.",
     "level": "B1",
@@ -1746,7 +1746,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 13,
-    "displayName": "CH drill 1",
+    "displayName": "CH Sound: Cheese!",
     "sentence": "Jenny and Jack choose cheap cheese and chicken.",
     "audioPromptText": "Listen carefully, then repeat: Jenny and Jack choose cheap cheese and chicken.",
     "level": "A2",
@@ -1891,7 +1891,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 14,
-    "displayName": "J drill",
+    "displayName": "J Sound: Jump!",
     "sentence": "The judge joined a charity journey in June.",
     "audioPromptText": "Listen carefully, then repeat: The judge joined a charity journey in June.",
     "level": "B1",
@@ -2015,7 +2015,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 15,
-    "displayName": "CH drill 2",
+    "displayName": "CH Sound: More Practice",
     "sentence": "Children cheer when the chocolate chips arrive.",
     "audioPromptText": "Listen carefully, then repeat: Children cheer when the chocolate chips arrive.",
     "level": "A2",
@@ -2157,7 +2157,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 16,
-    "displayName": "J drill 2",
+    "displayName": "J Sound: More Practice",
     "sentence": "James changed his job in January.",
     "audioPromptText": "Listen carefully, then repeat: James changed his job in January.",
     "level": "A2",
@@ -2283,7 +2283,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 17,
-    "displayName": "S cluster drill 1",
+    "displayName": "S + Friends: Street, Sky",
     "sentence": "The students start school at six sharp.",
     "audioPromptText": "Listen carefully, then repeat: The students start school at six sharp.",
     "level": "A2",
@@ -2468,7 +2468,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 18,
-    "displayName": "S cluster drill 2",
+    "displayName": "S + Friends: Stop, Speed",
     "sentence": "Please stop speaking so fast in the street.",
     "audioPromptText": "Listen carefully, then repeat: Please stop speaking so fast in the street.",
     "level": "A2",
@@ -2664,7 +2664,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 19,
-    "displayName": "S cluster drill 3",
+    "displayName": "S + Friends: Three Words",
     "sentence": "The small spider spins a strong, sticky web.",
     "audioPromptText": "Listen carefully, then repeat: The small spider spins a strong, sticky web.",
     "level": "B1",
@@ -2872,7 +2872,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 20,
-    "displayName": "S cluster drill 4",
+    "displayName": "S + Friends: Keep Going",
     "sentence": "Scott speaks Spanish and skateboards in the stadium.",
     "audioPromptText": "Listen carefully, then repeat: Scott speaks Spanish and skateboards in the stadium.",
     "level": "B1",
@@ -3055,7 +3055,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 21,
-    "displayName": "Final consonant drill 1",
+    "displayName": "End Sounds: Say It All",
     "sentence": "I sit and eat hot soup at night.",
     "audioPromptText": "Listen carefully, then repeat: I sit and eat hot soup at night.",
     "level": "A1",
@@ -3218,7 +3218,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 22,
-    "displayName": "Final cluster drill 2",
+    "displayName": "End Sounds: Final Clusters",
     "sentence": "She needs to lift the last gift to the left.",
     "audioPromptText": "Listen carefully, then repeat: She needs to lift the last gift to the left.",
     "level": "B1",
@@ -3411,7 +3411,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 23,
-    "displayName": "Final cluster drill 3",
+    "displayName": "End Sounds: Keep the Sound",
     "sentence": "Mark likes cold milk with breakfast.",
     "audioPromptText": "Listen carefully, then repeat: Mark likes cold milk with breakfast.",
     "level": "A2",
@@ -3610,7 +3610,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 24,
-    "displayName": "Final fricative and cluster drill",
+    "displayName": "End Sounds: Tricky Endings",
     "sentence": "He kept the soft scarf and the short shirt.",
     "audioPromptText": "Listen carefully, then repeat: He kept the soft scarf and the short shirt.",
     "level": "B1",
@@ -3824,7 +3824,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 25,
-    "displayName": "Vowel length drill 1",
+    "displayName": "Long and Short Vowels",
     "sentence": "I ship cheap sheep to the beach each week.",
     "audioPromptText": "Listen carefully, then repeat: I ship cheap sheep to the beach each week.",
     "level": "B1",
@@ -4018,7 +4018,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 26,
-    "displayName": "Vowel length drill 2",
+    "displayName": "Long and Short Vowels 2",
     "sentence": "He sat in the seat to eat meat and beans.",
     "audioPromptText": "Listen carefully, then repeat: He sat in the seat to eat meat and beans.",
     "level": "A2",
@@ -4165,7 +4165,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 27,
-    "displayName": "Vowel and V drill",
+    "displayName": "Vowel + V Sound",
     "sentence": "I live in a big village near a beach villa.",
     "audioPromptText": "Listen carefully, then repeat: I live in a big village near a beach villa.",
     "level": "A2",
@@ -4327,7 +4327,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 28,
-    "displayName": "V and F contrast sentence",
+    "displayName": "V vs. F in Sentences",
     "sentence": "The man in the van met his fan in the park.",
     "audioPromptText": "Listen carefully, then repeat: The man in the van met his fan in the park.",
     "level": "A2",
@@ -4493,7 +4493,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 29,
-    "displayName": "Stress and rhythm 1",
+    "displayName": "Word Stress: Say It Right",
     "sentence": "Today I have a lot of work to do.",
     "audioPromptText": "Listen carefully, then repeat: Today I have a lot of work to do.",
     "level": "A1",
@@ -4651,7 +4651,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 30,
-    "displayName": "Stress and weak forms 2",
+    "displayName": "Word Stress: Strong and Weak",
     "sentence": "I would like a cup of coffee with a little milk.",
     "audioPromptText": "Listen carefully, then repeat: I would like a cup of coffee with a little milk.",
     "level": "A2",
@@ -4828,7 +4828,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 31,
-    "displayName": "Stress and phrase timing 3",
+    "displayName": "Word Stress: Phrase Timing",
     "sentence": "Can you call me back after six o'clock?",
     "audioPromptText": "Listen carefully, then repeat: Can you call me back after six o'clock?",
     "level": "A2",
@@ -4972,7 +4972,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 32,
-    "displayName": "Stress and weak forms 4",
+    "displayName": "Word Stress: Light Syllables",
     "sentence": "He did not come because he was very tired.",
     "audioPromptText": "Listen carefully, then repeat: He did not come because he was very tired.",
     "level": "A2",
@@ -5136,7 +5136,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 33,
-    "displayName": "R and L drill 1",
+    "displayName": "R vs. L: Try These",
     "sentence": "Larry and Lily really like red rice.",
     "audioPromptText": "Listen carefully, then repeat: Larry and Lily really like red rice.",
     "level": "A2",
@@ -5315,7 +5315,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 34,
-    "displayName": "R and L drill 2",
+    "displayName": "R vs. L: More Words",
     "sentence": "The green grass grows near the glass river.",
     "audioPromptText": "Listen carefully, then repeat: The green grass grows near the glass river.",
     "level": "B1",
@@ -5520,7 +5520,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 35,
-    "displayName": "R and L cluster drill",
+    "displayName": "R vs. L: Clusters",
     "sentence": "Please play the blue drum after the bright song.",
     "audioPromptText": "Listen carefully, then repeat: Please play the blue drum after the bright song.",
     "level": "A2",
@@ -5714,7 +5714,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 36,
-    "displayName": "R and L drill 3",
+    "displayName": "R vs. L: Keep Practicing",
     "sentence": "I read a long ladder story about a little rabbit.",
     "audioPromptText": "Listen carefully, then repeat: I read a long ladder story about a little rabbit.",
     "level": "A2",
@@ -5865,7 +5865,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 37,
-    "displayName": "R and L minimal pair left",
+    "displayName": "R vs. L: Left",
     "sentence": "Turn left at the light.",
     "audioPromptText": "Listen carefully, then repeat: Turn left at the light.",
     "level": "A1",
@@ -5986,7 +5986,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 38,
-    "displayName": "R and L minimal pair right",
+    "displayName": "R vs. L: Right",
     "sentence": "Turn right at the light.",
     "audioPromptText": "Listen carefully, then repeat: Turn right at the light.",
     "level": "A1",
@@ -6106,7 +6106,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 39,
-    "displayName": "Ship and sheep contrast",
+    "displayName": "Short I vs. Long EE",
     "sentence": "I ship the sheep each week.",
     "audioPromptText": "Listen carefully, then repeat: I ship the sheep each week.",
     "level": "A2",
@@ -6258,7 +6258,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 40,
-    "displayName": "V and W minimal pair wine",
+    "displayName": "V vs. W: Wine",
     "sentence": "I like wine.",
     "audioPromptText": "Listen carefully, then repeat: I like wine.",
     "level": "A1",
@@ -6375,7 +6375,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 41,
-    "displayName": "V and W minimal pair vine",
+    "displayName": "V vs. W: Vine",
     "sentence": "I see a vine.",
     "audioPromptText": "Listen carefully, then repeat: I see a vine.",
     "level": "A1",
@@ -6492,7 +6492,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 42,
-    "displayName": "V and W minimal pair west",
+    "displayName": "V vs. W: West",
     "sentence": "He went west.",
     "audioPromptText": "Listen carefully, then repeat: He went west.",
     "level": "A1",
@@ -6612,7 +6612,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 43,
-    "displayName": "V and W minimal pair vest",
+    "displayName": "V vs. W: Vest",
     "sentence": "He wears a vest.",
     "audioPromptText": "Listen carefully, then repeat: He wears a vest.",
     "level": "A1",
@@ -6731,7 +6731,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 44,
-    "displayName": "Final consonant minimal pair sick",
+    "displayName": "S vs. X: Sick",
     "sentence": "He is sick.",
     "audioPromptText": "Listen carefully, then repeat: He is sick.",
     "level": "A1",
@@ -6858,7 +6858,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 45,
-    "displayName": "Final KS minimal pair six",
+    "displayName": "S vs. X: Six",
     "sentence": "He is six.",
     "audioPromptText": "Listen carefully, then repeat: He is six.",
     "level": "A1",
@@ -7013,7 +7013,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 46,
-    "displayName": "Rice and rides minimal pair 1",
+    "displayName": "S vs. Z: Rice",
     "sentence": "I like rice.",
     "audioPromptText": "Listen carefully, then repeat: I like rice.",
     "level": "A1",
@@ -7150,7 +7150,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 47,
-    "displayName": "Rice and rides final voicing minimal pair 2",
+    "displayName": "S vs. Z: Rides",
     "sentence": "I like rides.",
     "audioPromptText": "Listen carefully, then repeat: I like rides.",
     "level": "A1",
@@ -7306,7 +7306,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 48,
-    "displayName": "Signature Thai learner drill 1",
+    "displayName": "TH, R, L, and Clusters",
     "sentence": "Three very busy visitors think this fresh shrimp is delicious.",
     "audioPromptText": "Listen carefully, then repeat: Three very busy visitors think this fresh shrimp is delicious.",
     "level": "B1",
@@ -7599,7 +7599,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 49,
-    "displayName": "Signature Thai learner drill 2",
+    "displayName": "TH, R, L, and Clusters 2",
     "sentence": "Students start speaking English clearly in class every Thursday.",
     "audioPromptText": "Listen carefully, then repeat: Students start speaking English clearly in class every Thursday.",
     "level": "B1",
@@ -7874,7 +7874,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 50,
-    "displayName": "NG sound drill 1",
+    "displayName": "NG Sound: Sing!",
     "sentence": "Sing a long song with the young singer.",
     "audioPromptText": "Listen carefully, then repeat: Sing a long song with the young singer.",
     "level": "A2",
@@ -7999,7 +7999,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 51,
-    "displayName": "NG vs N contrast drill",
+    "displayName": "NG vs. N: Morning",
     "sentence": "Nothing is happening in the morning meeting.",
     "audioPromptText": "Listen carefully, then repeat: Nothing is happening in the morning meeting.",
     "level": "B1",
@@ -8136,7 +8136,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 52,
-    "displayName": "ZH sound drill 1",
+    "displayName": "ZH Sound: Like a DJ",
     "sentence": "I usually watch television after dinner.",
     "audioPromptText": "Listen carefully, then repeat: I usually watch television after dinner.",
     "level": "B1",
@@ -8267,7 +8267,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 53,
-    "displayName": "ZH sound drill 2",
+    "displayName": "ZH Sound: Television",
     "sentence": "The decision caused confusion at the television station.",
     "audioPromptText": "Listen carefully, then repeat: The decision caused confusion at the television station.",
     "level": "B2",
@@ -8404,7 +8404,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 54,
-    "displayName": "Diphthong /eɪ/ (day) drill",
+    "displayName": "Two-Part Vowel: Day",
     "sentence": "They came late and paid for the train today.",
     "audioPromptText": "Listen carefully, then repeat: They came late and paid for the train today.",
     "level": "A2",
@@ -8537,7 +8537,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 55,
-    "displayName": "Diphthong /aɪ/ (my) drill",
+    "displayName": "Two-Part Vowel: My",
     "sentence": "I like to ride my bike at night by the bright light.",
     "audioPromptText": "Listen carefully, then repeat: I like to ride my bike at night by the bright light.",
     "level": "A2",
@@ -8674,7 +8674,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 56,
-    "displayName": "Diphthong /oʊ/ (go) drill",
+    "displayName": "Two-Part Vowel: Go",
     "sentence": "Don't go home alone on the old road.",
     "audioPromptText": "Listen carefully, then repeat: Don't go home alone on the old road.",
     "level": "A2",
@@ -8809,7 +8809,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 57,
-    "displayName": "Diphthong /aʊ/ (now) drill",
+    "displayName": "Two-Part Vowel: Now",
     "sentence": "How about going out of town right now?",
     "audioPromptText": "Listen carefully, then repeat: How about going out of town right now?",
     "level": "A2",
@@ -8942,7 +8942,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 58,
-    "displayName": "Diphthong /ɔɪ/ (boy) drill",
+    "displayName": "Two-Part Vowel: Boy",
     "sentence": "The boy enjoyed the noisy toy and the boiling oil.",
     "audioPromptText": "Listen carefully, then repeat: The boy enjoyed the noisy toy and the boiling oil.",
     "level": "B1",
@@ -9077,7 +9077,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 59,
-    "displayName": "P vs B contrast drill",
+    "displayName": "P vs. B: Pop and Bob",
     "sentence": "Please bring a big plate of bread and butter.",
     "audioPromptText": "Listen carefully, then repeat: Please bring a big plate of bread and butter.",
     "level": "A2",
@@ -9231,7 +9231,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 60,
-    "displayName": "T vs D contrast drill",
+    "displayName": "T vs. D: Ten and Den",
     "sentence": "Tell Dan to take two tickets at the desk.",
     "audioPromptText": "Listen carefully, then repeat: Tell Dan to take two tickets at the desk.",
     "level": "A2",
@@ -9385,7 +9385,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 61,
-    "displayName": "K vs G contrast drill",
+    "displayName": "K vs. G: Cap and Gap",
     "sentence": "Kate goes to the good garden with a great cake.",
     "audioPromptText": "Listen carefully, then repeat: Kate goes to the good garden with a great cake.",
     "level": "A2",
@@ -9539,7 +9539,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 62,
-    "displayName": "P B T D minimal pair drill",
+    "displayName": "P, B, T, D: All Together",
     "sentence": "Pat had a bad time at the party.",
     "audioPromptText": "Listen carefully, then repeat: Pat had a bad time at the party.",
     "level": "A2",
@@ -9719,7 +9719,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 63,
-    "displayName": "P vs B minimal pair 1",
+    "displayName": "P vs. B: Pear and Bear",
     "sentence": "I have a pear.",
     "audioPromptText": "Listen carefully, then repeat: I have a pear.",
     "level": "A1",
@@ -9836,7 +9836,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 64,
-    "displayName": "P vs B minimal pair 2",
+    "displayName": "P vs. B: Pat and Bat",
     "sentence": "I see a bear.",
     "audioPromptText": "Listen carefully, then repeat: I see a bear.",
     "level": "A1",
@@ -9953,7 +9953,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 65,
-    "displayName": "Triple S cluster drill 1",
+    "displayName": "Three-Letter Combos: Squeeze",
     "sentence": "She splashed through the stream with a strong stride.",
     "audioPromptText": "Listen carefully, then repeat: She splashed through the stream with a strong stride.",
     "level": "B2",
@@ -10148,7 +10148,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 66,
-    "displayName": "Triple cluster drill 2",
+    "displayName": "Three-Letter Combos: String",
     "sentence": "The screen displayed a splendid spring scene.",
     "audioPromptText": "Listen carefully, then repeat: The screen displayed a splendid spring scene.",
     "level": "B1",
@@ -10336,7 +10336,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 67,
-    "displayName": "Triple cluster drill 3",
+    "displayName": "Three-Letter Combos: Splash",
     "sentence": "He screamed when the squirrel scratched the screen.",
     "audioPromptText": "Listen carefully, then repeat: He screamed when the squirrel scratched the screen.",
     "level": "B2",
@@ -10510,7 +10510,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 68,
-    "displayName": "Triple cluster drill 4",
+    "displayName": "Three-Letter Combos: Scratch",
     "sentence": "A strange split second of screaming split the silence.",
     "audioPromptText": "Listen carefully, then repeat: A strange split second of screaming split the silence.",
     "level": "C1",
@@ -10703,7 +10703,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 69,
-    "displayName": "Linking drill 1",
+    "displayName": "Linking Words Together",
     "sentence": "Put it on the table and eat an apple.",
     "audioPromptText": "Listen carefully, then repeat: Put it on the table and eat an apple.",
     "level": "A2",
@@ -10840,7 +10840,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 70,
-    "displayName": "Linking and reduction drill",
+    "displayName": "Linking and Shortening",
     "sentence": "What are you going to do about it?",
     "audioPromptText": "Listen carefully, then repeat: What are you going to do about it?",
     "level": "A2",
@@ -10988,7 +10988,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 71,
-    "displayName": "Assimilation drill",
+    "displayName": "Sounds That Change",
     "sentence": "Can you pass me that sandwich?",
     "audioPromptText": "Listen carefully, then repeat: Can you pass me that sandwich?",
     "level": "B1",
@@ -11125,7 +11125,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 72,
-    "displayName": "Elision drill",
+    "displayName": "Sounds That Disappear",
     "sentence": "I don't know what he wants to see next week.",
     "audioPromptText": "Listen carefully, then repeat: I don't know what he wants to see next week.",
     "level": "B1",
@@ -11274,7 +11274,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 73,
-    "displayName": "Falling intonation drill",
+    "displayName": "Going Down: Falling Voice",
     "sentence": "I finished my homework yesterday.",
     "audioPromptText": "Listen carefully, then repeat: I finished my homework yesterday.",
     "level": "A1",
@@ -11416,7 +11416,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 74,
-    "displayName": "Rising intonation drill",
+    "displayName": "Going Up: Rising Voice",
     "sentence": "Did you finish your homework yesterday?",
     "audioPromptText": "Listen carefully, then repeat: Did you finish your homework yesterday?",
     "level": "A1",
@@ -11554,7 +11554,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 75,
-    "displayName": "WH-question intonation drill",
+    "displayName": "WH-Questions: Voice Goes Down",
     "sentence": "What time does the class start tomorrow?",
     "audioPromptText": "Listen carefully, then repeat: What time does the class start tomorrow?",
     "level": "A2",
@@ -11724,7 +11724,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 76,
-    "displayName": "List and choice intonation drill",
+    "displayName": "Lists: Voice Goes Up and Down",
     "sentence": "I need apples, bananas, oranges, and grapes.",
     "audioPromptText": "Listen carefully, then repeat: I need apples, bananas, oranges, and grapes.",
     "level": "A2",
@@ -11875,7 +11875,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 77,
-    "displayName": "Two-syllable word stress drill",
+    "displayName": "Two-Syllable Words",
     "sentence": "The record is on the table. Please record the lesson.",
     "audioPromptText": "Listen carefully, then repeat: The record is on the table. Please record the lesson.",
     "level": "B1",
@@ -12009,7 +12009,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 78,
-    "displayName": "Stress shift drill",
+    "displayName": "Stress Shift: Record",
     "sentence": "Please present the present to the class.",
     "audioPromptText": "Listen carefully, then repeat: Please present the present to the class.",
     "level": "B1",
@@ -12143,7 +12143,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 79,
-    "displayName": "Three-syllable stress drill",
+    "displayName": "Three-Syllable Words",
     "sentence": "The photographer took a photograph of the photographic equipment.",
     "audioPromptText": "Listen carefully, then repeat: The photographer took a photograph of the photographic equipment.",
     "level": "B2",
@@ -12282,7 +12282,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 80,
-    "displayName": "Compound word stress drill",
+    "displayName": "Compound Words: Greenhouse",
     "sentence": "The greenhouse is a green house near the blackboard.",
     "audioPromptText": "Listen carefully, then repeat: The greenhouse is a green house near the blackboard.",
     "level": "B1",
@@ -12420,7 +12420,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 81,
-    "displayName": "Classroom phrase drill",
+    "displayName": "In the Classroom",
     "sentence": "May I please go to the bathroom?",
     "audioPromptText": "Listen carefully, then repeat: May I please go to the bathroom?",
     "level": "A1",
@@ -12607,7 +12607,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 82,
-    "displayName": "Introduction phrase drill",
+    "displayName": "Meeting Someone New",
     "sentence": "Hello, my name is Mina. Nice to meet you.",
     "audioPromptText": "Listen carefully, then repeat: Hello, my name is Mina. Nice to meet you.",
     "level": "A1",
@@ -12782,7 +12782,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 83,
-    "displayName": "Shopping phrase drill",
+    "displayName": "At the Shop",
     "sentence": "How much does this cost? I would like to buy three of these.",
     "audioPromptText": "Listen carefully, then repeat: How much does this cost? I would like to buy three of these.",
     "level": "A2",
@@ -12953,7 +12953,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 84,
-    "displayName": "Phone call drill",
+    "displayName": "On the Phone",
     "sentence": "Could you please speak more slowly? I cannot hear you very well.",
     "audioPromptText": "Listen carefully, then repeat: Could you please speak more slowly? I cannot hear you very well.",
     "level": "A2",
@@ -13145,7 +13145,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 85,
-    "displayName": "Opinion phrase drill",
+    "displayName": "Sharing Your Ideas",
     "sentence": "I think that this is a very interesting question.",
     "audioPromptText": "Listen carefully, then repeat: I think that this is a very interesting question.",
     "level": "B1",
@@ -13319,7 +13319,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 86,
-    "displayName": "TH tongue twister",
+    "displayName": "Tongue Twister: TH!",
     "sentence": "Thirty-three thirsty thieves thought they thanked the thoughtful theatre teacher.",
     "audioPromptText": "Listen carefully, then repeat: Thirty-three thirsty thieves thought they thanked the thoughtful theatre teacher.",
     "level": "C1",
@@ -13470,7 +13470,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 87,
-    "displayName": "R vs L tongue twister",
+    "displayName": "Tongue Twister: R and L!",
     "sentence": "Red lorry, yellow lorry, red lorry, yellow lorry.",
     "audioPromptText": "Listen carefully, then repeat: Red lorry, yellow lorry, red lorry, yellow lorry.",
     "level": "B1",
@@ -13610,7 +13610,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 88,
-    "displayName": "V vs W tongue twister",
+    "displayName": "Tongue Twister: V and W!",
     "sentence": "Very well, we will visit the lovely village when we have five free weekends.",
     "audioPromptText": "Listen carefully, then repeat: Very well, we will visit the lovely village when we have five free weekends.",
     "level": "B2",
@@ -13777,7 +13777,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 89,
-    "displayName": "S vs SH tongue twister",
+    "displayName": "Tongue Twister: S and SH!",
     "sentence": "She sells sea shells by the sea shore. The shells she sells are surely seashells.",
     "audioPromptText": "Listen carefully, then repeat: She sells sea shells by the sea shore. The shells she sells are surely seashells.",
     "level": "B2",
@@ -13929,7 +13929,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 90,
-    "displayName": "Final -s vs -z minimal pair 1",
+    "displayName": "S vs. Z: Cats and Dogs",
     "sentence": "I saw a bus.",
     "audioPromptText": "Listen carefully, then repeat: I saw a bus.",
     "level": "A1",
@@ -14066,7 +14066,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 91,
-    "displayName": "Final -s vs -z minimal pair 2",
+    "displayName": "S vs. Z: Hiss and Buzz",
     "sentence": "I heard a buzz.",
     "audioPromptText": "Listen carefully, then repeat: I heard a buzz.",
     "level": "A1",
@@ -14195,7 +14195,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 92,
-    "displayName": "CH vs SH minimal pair 1",
+    "displayName": "CH vs. SH: Chair",
     "sentence": "Do you want a chair?",
     "audioPromptText": "Listen carefully, then repeat: Do you want a chair?",
     "level": "A1",
@@ -14311,7 +14311,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 93,
-    "displayName": "CH vs SH minimal pair 2",
+    "displayName": "CH vs. SH: Share",
     "sentence": "Do you want a share?",
     "audioPromptText": "Listen carefully, then repeat: Do you want a share?",
     "level": "A1",
@@ -14429,7 +14429,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 94,
-    "displayName": "Final stop voicing minimal pair cup",
+    "displayName": "End Sounds: Cup",
     "sentence": "Please hand me the cup.",
     "audioPromptText": "Listen carefully, then repeat: Please hand me the cup.",
     "level": "A1",
@@ -14566,7 +14566,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 95,
-    "displayName": "Final stop voicing minimal pair cub",
+    "displayName": "End Sounds: Cub",
     "sentence": "Please hand me the cub.",
     "audioPromptText": "Listen carefully, then repeat: Please hand me the cub.",
     "level": "A1",
@@ -14712,7 +14712,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 96,
-    "displayName": "Schwa sound drill",
+    "displayName": "The Lazy Sound: About",
     "sentence": "The teacher gave a lesson about an animal.",
     "audioPromptText": "Listen carefully, then repeat: The teacher gave a lesson about an animal.",
     "level": "A2",
@@ -14868,7 +14868,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 97,
-    "displayName": "Schwa in function words drill",
+    "displayName": "The Lazy Sound: Function Words",
     "sentence": "I can see a man and a woman at the station.",
     "audioPromptText": "Listen carefully, then repeat: I can see a man and a woman at the station.",
     "level": "A2",
@@ -15016,7 +15016,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 98,
-    "displayName": "M vs N vs NG nasal contrast drill",
+    "displayName": "Nasal Sounds: M, N, NG",
     "sentence": "My name is Ming. I am coming in the morning.",
     "audioPromptText": "Listen carefully, then repeat: My name is Ming. I am coming in the morning.",
     "level": "B1",
@@ -15182,7 +15182,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 99,
-    "displayName": "Full-spectrum advanced diagnostic 1",
+    "displayName": "Mixed Challenge 1",
     "sentence": "Throughout their journey, the three adventurous visitors discovered breathtaking views of the shimmering ocean.",
     "audioPromptText": "Listen carefully, then repeat: Throughout their journey, the three adventurous visitors discovered breathtaking views of the shimmering ocean.",
     "level": "C1",
@@ -15567,7 +15567,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 100,
-    "displayName": "Full-spectrum advanced diagnostic 2",
+    "displayName": "Mixed Challenge 2",
     "sentence": "The thoughtful student shared her valuable research with the international judging committee last Thursday.",
     "audioPromptText": "Listen carefully, then repeat: The thoughtful student shared her valuable research with the international judging committee last Thursday.",
     "level": "C1",
@@ -15800,7 +15800,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 101,
-    "displayName": "Teacher classroom instruction drill 1",
+    "displayName": "Listen to the Teacher 1",
     "sentence": "Please open your books to page thirty-three.",
     "audioPromptText": "Listen carefully, then repeat: Please open your books to page thirty-three.",
     "level": "A1",
@@ -15996,7 +15996,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 102,
-    "displayName": "Teacher classroom instruction drill 2",
+    "displayName": "Listen to the Teacher 2",
     "sentence": "Listen carefully and repeat after me: the weather is very nice today.",
     "audioPromptText": "Listen carefully, then repeat: Listen carefully and repeat after me: the weather is very nice today.",
     "level": "A2",
@@ -16170,7 +16170,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 103,
-    "displayName": "TH word minimal pair thin",
+    "displayName": "TH vs. T: Thin",
     "sentence": "thin",
     "audioPromptText": "Listen carefully, then repeat: thin",
     "level": "A1",
@@ -16296,7 +16296,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 104,
-    "displayName": "T word minimal pair tin",
+    "displayName": "TH vs. T: Tin",
     "sentence": "tin",
     "audioPromptText": "Listen carefully, then repeat: tin",
     "level": "A1",
@@ -16409,7 +16409,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 105,
-    "displayName": "TH word minimal pair think",
+    "displayName": "TH vs. S: Think",
     "sentence": "think",
     "audioPromptText": "Listen carefully, then repeat: think",
     "level": "A1",
@@ -16535,7 +16535,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 106,
-    "displayName": "S word minimal pair sink",
+    "displayName": "TH vs. S: Sink",
     "sentence": "sink",
     "audioPromptText": "Listen carefully, then repeat: sink",
     "level": "A1",
@@ -16648,7 +16648,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 107,
-    "displayName": "Voiced TH word then",
+    "displayName": "TH Sound: Then",
     "sentence": "then",
     "audioPromptText": "Listen carefully, then repeat: then",
     "level": "A1",
@@ -16774,7 +16774,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 108,
-    "displayName": "D word minimal pair den",
+    "displayName": "TH vs. D: Den",
     "sentence": "den",
     "audioPromptText": "Listen carefully, then repeat: den",
     "level": "A1",
@@ -16887,7 +16887,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 109,
-    "displayName": "TH phrase thank you",
+    "displayName": "TH in a Phrase: Thank You",
     "sentence": "Thank you.",
     "audioPromptText": "Listen carefully, then repeat: Thank you.",
     "level": "A1",
@@ -17001,7 +17001,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 110,
-    "displayName": "TH phrase I think",
+    "displayName": "TH in a Phrase: I Think",
     "sentence": "I think so.",
     "audioPromptText": "Listen carefully, then repeat: I think so.",
     "level": "A1",
@@ -17115,7 +17115,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 111,
-    "displayName": "Voiced TH phrase this is",
+    "displayName": "TH in a Phrase: This Is",
     "sentence": "This is mine.",
     "audioPromptText": "Listen carefully, then repeat: This is mine.",
     "level": "A1",
@@ -17229,7 +17229,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 112,
-    "displayName": "Voiced TH phrase they are",
+    "displayName": "TH in a Phrase: They Are",
     "sentence": "They are there.",
     "audioPromptText": "Listen carefully, then repeat: They are there.",
     "level": "A2",
@@ -17345,7 +17345,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 113,
-    "displayName": "Final S word bus",
+    "displayName": "End Sound: Bus",
     "sentence": "bus",
     "audioPromptText": "Listen carefully, then repeat: bus",
     "level": "A1",
@@ -17489,7 +17489,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 114,
-    "displayName": "Final Z word buzz",
+    "displayName": "End Sound: Buzz",
     "sentence": "buzz",
     "audioPromptText": "Listen carefully, then repeat: buzz",
     "level": "A1",
@@ -17655,7 +17655,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 115,
-    "displayName": "Final P word cap",
+    "displayName": "End Sound: Cap",
     "sentence": "cap",
     "audioPromptText": "Listen carefully, then repeat: cap",
     "level": "A1",
@@ -17799,7 +17799,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 116,
-    "displayName": "Final B word cab",
+    "displayName": "End Sound: Cab",
     "sentence": "cab",
     "audioPromptText": "Listen carefully, then repeat: cab",
     "level": "A1",
@@ -17952,7 +17952,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 117,
-    "displayName": "Final K word back",
+    "displayName": "End Sound: Back",
     "sentence": "back",
     "audioPromptText": "Listen carefully, then repeat: back",
     "level": "A1",
@@ -18096,7 +18096,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 118,
-    "displayName": "Final G word bag",
+    "displayName": "End Sound: Bag",
     "sentence": "bag",
     "audioPromptText": "Listen carefully, then repeat: bag",
     "level": "A1",
@@ -18249,7 +18249,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 119,
-    "displayName": "Final S word rice",
+    "displayName": "End Sound: Rice",
     "sentence": "rice",
     "audioPromptText": "Listen carefully, then repeat: rice",
     "level": "A1",
@@ -18393,7 +18393,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 120,
-    "displayName": "Final Z word rise",
+    "displayName": "End Sound: Rise",
     "sentence": "rise",
     "audioPromptText": "Listen carefully, then repeat: rise",
     "level": "A1",
@@ -18559,7 +18559,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 121,
-    "displayName": "Final consonant phrase need help",
+    "displayName": "End Sounds: I Need Help",
     "sentence": "I need help.",
     "audioPromptText": "Listen carefully, then repeat: I need help.",
     "level": "A2",
@@ -18698,7 +18698,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 122,
-    "displayName": "Final consonant phrase red bag",
+    "displayName": "End Sounds: Red Bag",
     "sentence": "I found a red bag.",
     "audioPromptText": "Listen carefully, then repeat: I found a red bag.",
     "level": "A2",
@@ -18853,7 +18853,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 123,
-    "displayName": "Final cluster phrase class starts",
+    "displayName": "End Sounds: Class Starts",
     "sentence": "The class starts at six.",
     "audioPromptText": "Listen carefully, then repeat: The class starts at six.",
     "level": "A2",
@@ -19018,7 +19018,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 124,
-    "displayName": "Initial SP word spot",
+    "displayName": "Starting with SP: Spot",
     "sentence": "spot",
     "audioPromptText": "Listen carefully, then repeat: spot",
     "level": "A1",
@@ -19171,7 +19171,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 125,
-    "displayName": "P word contrast pot",
+    "displayName": "Starting with P: Pot",
     "sentence": "pot",
     "audioPromptText": "Listen carefully, then repeat: pot",
     "level": "A1",
@@ -19283,7 +19283,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 126,
-    "displayName": "Initial ST word stop",
+    "displayName": "Starting with ST: Stop",
     "sentence": "stop",
     "audioPromptText": "Listen carefully, then repeat: stop",
     "level": "A1",
@@ -19436,7 +19436,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 127,
-    "displayName": "T word contrast top",
+    "displayName": "Starting with T: Top",
     "sentence": "top",
     "audioPromptText": "Listen carefully, then repeat: top",
     "level": "A1",
@@ -19548,7 +19548,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 128,
-    "displayName": "Initial SK word school",
+    "displayName": "Starting with SK: School",
     "sentence": "school",
     "audioPromptText": "Listen carefully, then repeat: school",
     "level": "A1",
@@ -19701,7 +19701,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 129,
-    "displayName": "K word contrast cool",
+    "displayName": "Starting with K: Cool",
     "sentence": "cool",
     "audioPromptText": "Listen carefully, then repeat: cool",
     "level": "A1",
@@ -19813,7 +19813,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 130,
-    "displayName": "Cluster phrase green grass",
+    "displayName": "Clusters: Green Grass",
     "sentence": "green grass",
     "audioPromptText": "Listen carefully, then repeat: green grass",
     "level": "A2",
@@ -19947,7 +19947,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 131,
-    "displayName": "Cluster phrase blue glass",
+    "displayName": "Clusters: Blue Glass",
     "sentence": "blue glass",
     "audioPromptText": "Listen carefully, then repeat: blue glass",
     "level": "A2",
@@ -20091,7 +20091,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 132,
-    "displayName": "Cluster sentence stand still",
+    "displayName": "Clusters: Stand Still",
     "sentence": "Please stand still.",
     "audioPromptText": "Listen carefully, then repeat: Please stand still.",
     "level": "A2",
@@ -20225,7 +20225,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 133,
-    "displayName": "Cluster sentence small snake",
+    "displayName": "Clusters: Small Snake",
     "sentence": "The small snake sleeps.",
     "audioPromptText": "Listen carefully, then repeat: The small snake sleeps.",
     "level": "B1",
@@ -20386,7 +20386,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 134,
-    "displayName": "Cluster sentence bring books",
+    "displayName": "Clusters: Bring Books",
     "sentence": "Bring three books.",
     "audioPromptText": "Listen carefully, then repeat: Bring three books.",
     "level": "B1",
@@ -20562,7 +20562,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 135,
-    "displayName": "Cluster sentence class starts",
+    "displayName": "Clusters: Class Starts",
     "sentence": "The class starts soon.",
     "audioPromptText": "Listen carefully, then repeat: The class starts soon.",
     "level": "B1",
@@ -20749,7 +20749,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 136,
-    "displayName": "Triple cluster word spring",
+    "displayName": "Three-Letter Word: Spring",
     "sentence": "spring",
     "audioPromptText": "Listen carefully, then repeat: spring",
     "level": "B1",
@@ -20887,7 +20887,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 137,
-    "displayName": "Triple cluster word string",
+    "displayName": "Three-Letter Word: String",
     "sentence": "string",
     "audioPromptText": "Listen carefully, then repeat: string",
     "level": "B1",
@@ -21025,7 +21025,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 138,
-    "displayName": "Triple cluster word splash",
+    "displayName": "Three-Letter Word: Splash",
     "sentence": "splash",
     "audioPromptText": "Listen carefully, then repeat: splash",
     "level": "B1",
@@ -21163,7 +21163,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 139,
-    "displayName": "Triple cluster word scratch",
+    "displayName": "Three-Letter Word: Scratch",
     "sentence": "scratch",
     "audioPromptText": "Listen carefully, then repeat: scratch",
     "level": "B1",
@@ -21301,7 +21301,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 140,
-    "displayName": "Schwa word about",
+    "displayName": "Lazy Sound: About",
     "sentence": "about",
     "audioPromptText": "Listen carefully, then repeat: about",
     "level": "A1",
@@ -21424,7 +21424,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 141,
-    "displayName": "Schwa word again",
+    "displayName": "Lazy Sound: Again",
     "sentence": "again",
     "audioPromptText": "Listen carefully, then repeat: again",
     "level": "A1",
@@ -21547,7 +21547,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 142,
-    "displayName": "Schwa word banana",
+    "displayName": "Lazy Sound: Banana",
     "sentence": "banana",
     "audioPromptText": "Listen carefully, then repeat: banana",
     "level": "A1",
@@ -21670,7 +21670,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 143,
-    "displayName": "Weak vowel word today",
+    "displayName": "Quiet Vowel: Today",
     "sentence": "today",
     "audioPromptText": "Listen carefully, then repeat: today",
     "level": "A1",
@@ -21793,7 +21793,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 144,
-    "displayName": "Schwa sentence banana",
+    "displayName": "Lazy Sound: I Want a Banana",
     "sentence": "I want a banana.",
     "audioPromptText": "Listen carefully, then repeat: I want a banana.",
     "level": "A2",
@@ -21933,7 +21933,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 145,
-    "displayName": "Weak form phrase pencil",
+    "displayName": "Quiet Words: A Pencil",
     "sentence": "Can I have a pencil?",
     "audioPromptText": "Listen carefully, then repeat: Can I have a pencil?",
     "level": "A2",
@@ -22077,7 +22077,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 146,
-    "displayName": "Weak form phrase for you",
+    "displayName": "Quiet Words: For You",
     "sentence": "This is for you.",
     "audioPromptText": "Listen carefully, then repeat: This is for you.",
     "level": "A2",
@@ -22221,7 +22221,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 147,
-    "displayName": "Weak form phrase need to",
+    "displayName": "Quiet Words: Need To",
     "sentence": "I need to go.",
     "audioPromptText": "Listen carefully, then repeat: I need to go.",
     "level": "A2",
@@ -22365,7 +22365,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 148,
-    "displayName": "Linking phrase turn it on",
+    "displayName": "Linking: Turn It On",
     "sentence": "Turn it on.",
     "audioPromptText": "Listen carefully, then repeat: Turn it on.",
     "level": "A2",
@@ -22495,7 +22495,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 149,
-    "displayName": "Linking phrase pick it up",
+    "displayName": "Linking: Pick It Up",
     "sentence": "Pick it up.",
     "audioPromptText": "Listen carefully, then repeat: Pick it up.",
     "level": "A2",
@@ -22625,7 +22625,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 150,
-    "displayName": "Linking sentence read it again",
+    "displayName": "Linking: Read It Again",
     "sentence": "Read it again.",
     "audioPromptText": "Listen carefully, then repeat: Read it again.",
     "level": "A2",
@@ -22781,7 +22781,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 151,
-    "displayName": "Assimilation phrase can you",
+    "displayName": "Changing Sounds: Can You",
     "sentence": "Can you help me?",
     "audioPromptText": "Listen carefully, then repeat: Can you help me?",
     "level": "A2",
@@ -22937,7 +22937,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 152,
-    "displayName": "Reduction phrase want to",
+    "displayName": "Shortening: Want To",
     "sentence": "Do you want to try?",
     "audioPromptText": "Listen carefully, then repeat: Do you want to try?",
     "level": "B1",
@@ -23105,7 +23105,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 153,
-    "displayName": "Elision phrase do not know",
+    "displayName": "Dropping Sounds: Don't Know",
     "sentence": "I don't know.",
     "audioPromptText": "Listen carefully, then repeat: I don't know.",
     "level": "A2",
@@ -23231,7 +23231,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 154,
-    "displayName": "Reduction phrase going to",
+    "displayName": "Shortening: Going To",
     "sentence": "going to",
     "audioPromptText": "Listen carefully, then repeat: going to",
     "level": "A2",
@@ -23357,7 +23357,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 155,
-    "displayName": "Connected sentence going to read",
+    "displayName": "Connected: Going To Read",
     "sentence": "I am going to read.",
     "audioPromptText": "Listen carefully, then repeat: I am going to read.",
     "level": "A2",
@@ -23513,7 +23513,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 156,
-    "displayName": "Short I word ship",
+    "displayName": "Short I: Ship",
     "sentence": "ship",
     "audioPromptText": "Listen carefully, then repeat: ship",
     "level": "A1",
@@ -23626,7 +23626,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 157,
-    "displayName": "Long EE word sheep",
+    "displayName": "Long EE: Sheep",
     "sentence": "sheep",
     "audioPromptText": "Listen carefully, then repeat: sheep",
     "level": "A1",
@@ -23739,7 +23739,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 158,
-    "displayName": "Short U word full",
+    "displayName": "Short U: Full",
     "sentence": "full",
     "audioPromptText": "Listen carefully, then repeat: full",
     "level": "A1",
@@ -23852,7 +23852,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 159,
-    "displayName": "Long OO word fool",
+    "displayName": "Long OO: Fool",
     "sentence": "fool",
     "audioPromptText": "Listen carefully, then repeat: fool",
     "level": "A1",
@@ -23965,7 +23965,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 160,
-    "displayName": "E word bed",
+    "displayName": "E Sound: Bed",
     "sentence": "bed",
     "audioPromptText": "Listen carefully, then repeat: bed",
     "level": "A1",
@@ -24078,7 +24078,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 161,
-    "displayName": "A word bad",
+    "displayName": "A Sound: Bad",
     "sentence": "bad",
     "audioPromptText": "Listen carefully, then repeat: bad",
     "level": "A1",
@@ -24191,7 +24191,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 162,
-    "displayName": "Diphthong word late",
+    "displayName": "Two-Part Vowel: Late",
     "sentence": "late",
     "audioPromptText": "Listen carefully, then repeat: late",
     "level": "A1",
@@ -24304,7 +24304,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 163,
-    "displayName": "Diphthong word light",
+    "displayName": "Two-Part Vowel: Light",
     "sentence": "light",
     "audioPromptText": "Listen carefully, then repeat: light",
     "level": "A1",
@@ -24417,7 +24417,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 164,
-    "displayName": "Diphthong word boat",
+    "displayName": "Two-Part Vowel: Boat",
     "sentence": "boat",
     "audioPromptText": "Listen carefully, then repeat: boat",
     "level": "A1",
@@ -24530,7 +24530,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 165,
-    "displayName": "Diphthong word boy",
+    "displayName": "Two-Part Vowel: Boy",
     "sentence": "boy",
     "audioPromptText": "Listen carefully, then repeat: boy",
     "level": "A1",
@@ -24643,7 +24643,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 166,
-    "displayName": "Classroom phrase repeat",
+    "displayName": "Can You Repeat That?",
     "sentence": "Can you repeat that, please?",
     "audioPromptText": "Listen carefully, then repeat: Can you repeat that, please?",
     "level": "A1",
@@ -24753,7 +24753,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 167,
-    "displayName": "Classroom phrase do not understand",
+    "displayName": "I Don't Understand",
     "sentence": "I do not understand yet.",
     "audioPromptText": "Listen carefully, then repeat: I do not understand yet.",
     "level": "A1",
@@ -24863,7 +24863,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 168,
-    "displayName": "Classroom phrase partner",
+    "displayName": "Can I Work With My Partner?",
     "sentence": "May I work with my partner?",
     "audioPromptText": "Listen carefully, then repeat: May I work with my partner?",
     "level": "A2",
@@ -24973,7 +24973,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 169,
-    "displayName": "Classroom phrase answer",
+    "displayName": "I Think the Answer Is...",
     "sentence": "I think the answer is correct.",
     "audioPromptText": "Listen carefully, then repeat: I think the answer is correct.",
     "level": "A2",
@@ -25086,7 +25086,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 170,
-    "displayName": "Science phrase experiment",
+    "displayName": "The Experiment Shows...",
     "sentence": "The experiment shows a change.",
     "audioPromptText": "Listen carefully, then repeat: The experiment shows a change.",
     "level": "A2",
@@ -25199,7 +25199,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 171,
-    "displayName": "Science phrase evidence",
+    "displayName": "My Evidence Is...",
     "sentence": "My evidence is the data.",
     "audioPromptText": "Listen carefully, then repeat: My evidence is the data.",
     "level": "A2",
@@ -25309,7 +25309,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 172,
-    "displayName": "Classroom phrase more time",
+    "displayName": "I Need More Time",
     "sentence": "I need more time, please.",
     "audioPromptText": "Listen carefully, then repeat: I need more time, please.",
     "level": "A1",
@@ -25425,7 +25425,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 173,
-    "displayName": "Classroom phrase check work",
+    "displayName": "Could You Check My Work?",
     "sentence": "Could you check my work?",
     "audioPromptText": "Listen carefully, then repeat: Could you check my work?",
     "level": "A2",
@@ -25538,7 +25538,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 174,
-    "displayName": "Classroom phrase explain idea",
+    "displayName": "I Can Explain My Idea",
     "sentence": "I can explain my idea.",
     "audioPromptText": "Listen carefully, then repeat: I can explain my idea.",
     "level": "A2",
@@ -25648,7 +25648,7 @@ export const FULL_DATASET: DatasetEntry[] = [
   },
   {
     "id": 175,
-    "displayName": "Classroom phrase agree",
+    "displayName": "I Agree Because...",
     "sentence": "I agree because the evidence is clear.",
     "audioPromptText": "Listen carefully, then repeat: I agree because the evidence is clear.",
     "level": "B1",
