@@ -65,9 +65,11 @@ interface StudentPracticeProps {
    * local React state only and not synced.
    */
   onEntryScored?: (entryId: number, overallScore: number) => void;
+  /** Show extra diagnostic info when the global "strawberry" debug mode is on. */
+  debugMode?: boolean;
 }
 
-export default function StudentPractice({ entries, studentName, onFinish, onEntryScored }: StudentPracticeProps) {
+export default function StudentPractice({ entries, studentName, onFinish, onEntryScored, debugMode }: StudentPracticeProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
