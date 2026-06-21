@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { BookOpen, GraduationCap, ChevronLeft, Settings, Bug } from 'lucide-react';
+import { BookOpen, GraduationCap, ChevronLeft } from 'lucide-react';
 import StudentStart from './components/StudentStart';
 import StudentPractice from './components/StudentPractice';
 import PracticeSummary from './components/PracticeSummary';
 import TeacherPanel from './components/TeacherPanel';
-import SettingsPanel from './components/SettingsPanel';
-import { hasAzureConfig } from './utils/assessApi';
 import { FULL_DATASET } from './data/fullDataset';
 import { DatasetEntry } from './types';
 
@@ -58,8 +56,6 @@ export default function App() {
   const [studentName, setStudentName] = useState('');
   const [selectedEntries, setSelectedEntries] = useState<DatasetEntry[]>([]);
   const [sessionHistory, setSessionHistory] = useState<Array<{ entry: DatasetEntry; score: number; status: string; mainFeedback: string }>>([]);
-  const [showSettings, setShowSettings] = useState(false);
-  const [azureConfigured, setAzureConfigured] = useState(hasAzureConfig());
 
   // Subdivided lists for student selectable Sound Themes
   // 7 focused units + 1 review game covering all 17 modules in the canonical dataset
@@ -290,54 +286,11 @@ export default function App() {
         </AnimatePresence>
         </main>
 
-        {/* Debug mode indicator */}
-        {debugMode && (
-          <div className="fixed bottom-14 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-white text-[10px] font-mono font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
-            DEBUG MODE ON — press "strawberry" again to hide
-          </div>
-        )}
-
         {/* Universal footer */}
         <footer className="py-3 text-center text-[10px] text-[#718096] font-mono tracking-wider shrink-0 border-t border-blue-100/50 bg-white/40">
-          <div className="flex items-center justify-center gap-4">
-            <span>SPEAK UP! &bull; THAI-ENGLISH PRONUNCIATION &bull; GRADE 5</span>
-            <span className="text-slate-300">|</span>
-            <button
-              onClick={() => setShowSettings(true)}
-              className={`inline-flex items-center gap-1 hover:text-[#4A90E2] transition-colors cursor-pointer ${azureConfigured ? 'text-emerald-500' : 'text-amber-500'}`}
-              title="Azure Speech Settings"
-            >
-              <Settings className="w-3 h-3" />
-              Settings{azureConfigured ? ' ✓' : ''}
-            </button>
-            <span className="text-slate-300">|</span>
-            <button
-              onClick={() => {
-                // Toggle debug mode via button click as alternative to typing "strawberry"
-                // Dispatch a synthetic keyboard event sequence
-                const word = 'strawberry';
-                for (const ch of word) {
-                  window.dispatchEvent(new KeyboardEvent('keydown', { key: ch }));
-                }
-              }}
-              className="inline-flex items-center gap-1 hover:text-[#4A90E2] transition-colors cursor-pointer text-[#718096]"
-              title="Toggle Debug Panel (or type 'strawberry')"
-            >
-              <Bug className="w-3 h-3" />
-              Debug
-            </button>
-          </div>
+          SPEAK UP! &bull; THAI-ENGLISH PRONUNCIATION &bull; GRADE 5
         </footer>
 
-        {/* Settings Modal */}
-        {showSettings && (
-          <SettingsPanel
-            onClose={() => {
-              setShowSettings(false);
-              setAzureConfigured(hasAzureConfig());
-            }}
-          />
-        )}
       </div>
     );
 }
