@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Volume2, Mic, Square, CheckCircle, RefreshCw, ChevronRight, HelpCircle, AlertCircle } from 'lucide-react';
 import { AzureAssessResponse, DatasetEntry, ScoreResponse, ScoreStatus } from '../types';
-import { scorePronunciation } from '../utils/scorePronunciation';
 import { assessWithAzure } from '../utils/assessApi';
 
 // Map Azure response (0-100, phoneme detail) into the app's ScoreResponse.
@@ -70,8 +69,9 @@ export default function StudentPractice({ entries, studentName, onFinish, debugM
 
   // Debug: track the full Azure response and scoring source
   const [debugAzureRaw, setDebugAzureRaw] = useState<Record<string, unknown> | null>(null);
-  const [debugSource, setDebugSource] = useState<'azure' | 'mock' | 'pending' | null>(null);
+  const [debugSource, setDebugSource] = useState<'azure' | 'pending' | null>(null);
   const [debugError, setDebugError] = useState<string | null>(null);
+  const [scoringError, setScoringError] = useState<string | null>(null);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioStreamRef = useRef<MediaStream | null>(null);
@@ -87,6 +87,7 @@ export default function StudentPractice({ entries, studentName, onFinish, debugM
       setScoreResult(null);
       setAudioUrl(null);
       setAudioChunks([]);
+      setScoringError(null);
     }
   }, [currentEntry]);
 
@@ -127,6 +128,7 @@ export default function StudentPractice({ entries, studentName, onFinish, debugM
       setScoreResult(null);
       setAudioUrl(null);
       setAudioChunks([]);
+      setScoringError(null);
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioStreamRef.current = stream;
@@ -175,6 +177,7 @@ export default function StudentPractice({ entries, studentName, onFinish, debugM
   const handleCheckSound = async () => {
       if (!currentEntry) return;
       setLoading(true);
+      setScoringError(null);
       if (debugMode) {
         setDebugAzureRaw(null);
         setDebugSource('pending');
@@ -186,45 +189,36 @@ export default function StudentPractice({ entries, studentName, onFinish, debugM
         const referenceText =
           currentEntry.speechaceIntegration?.expectedText || currentEntry.sentence;
 
-        let resData: ScoreResponse;
-        let usedAzure = false;
+        const azureResult = await assessWithAzure(audioBlob, referenceText, 'en-US');
 
-        try {
-          const azureResult = await assessWithAzure(audioBlob, referenceText, 'en-US');
-          if (azureResult.success) {
-            resData = mapAzureToScoreResponse(azureResult, currentEntry);
-            usedAzure = true;
-            if (debugMode) {
-              setDebugAzureRaw(azureResult.rawAzure || null);
-              setDebugSource('azure');
-            }
-          } else {
-            throw new Error(azureResult.error || 'Azure returned success:false');
-          }
-        } catch (azureErr) {
-          // Backend unreachable / Azure failure / network error — fall back to mock
-          // so the app still works offline (e.g. on GitHub Pages).
-          console.warn('Azure backend unavailable — using mock scoring', azureErr);
-          if (debugMode) {
-            setDebugSource('mock');
-            setDebugError(azureErr instanceof Error ? azureErr.message : String(azureErr));
-          }
-          resData = scorePronunciation(currentEntry.id);
+        if (!azureResult.success) {
+          throw new Error(azureResult.error || 'Azure returned success:false');
         }
 
-        // Persist which scoring path was used (helpful for the Teacher Panel)
+        const resData = mapAzureToScoreResponse(azureResult, currentEntry);
+        if (debugMode) {
+          setDebugAzureRaw(azureResult.rawAzure || null);
+          setDebugSource('azure');
+        }
+
         setScoreResult(resData);
         setPracticeHistory(prev => [
           ...prev,
           {
             entry: currentEntry,
             score: resData.overallScore,
-            status: usedAzure ? `${resData.status} (azure)` : `${resData.status} (mock)`,
+            status: `${resData.status} (azure)`,
             mainFeedback: resData.mainFeedback,
           },
         ]);
       } catch (err) {
-        console.error(err);
+        const message = err instanceof Error ? err.message : String(err);
+        console.error('Azure scoring failed:', err);
+        setScoringError(message);
+        if (debugMode) {
+          setDebugSource(null);
+          setDebugError(message);
+        }
       } finally {
         setLoading(false);
       }
@@ -487,8 +481,43 @@ export default function StudentPractice({ entries, studentName, onFinish, debugM
         )}
       </AnimatePresence>
 
+      {/* Scoring Error — shown when Azure fails */}
+      {scoringError && !scoreResult && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full bg-white border-2 border-rose-200 rounded-[32px] p-6 mb-6 shadow-sm"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
+              <AlertCircle className="w-5 h-5 text-rose-500" />
+            </div>
+            <div>
+              <h3 className="font-display font-bold text-sm text-[#2D3748]">Could not score your speech</h3>
+              <p className="text-xs text-[#718096] font-sans">The pronunciation service is unavailable right now.</p>
+            </div>
+          </div>
+          <div className="bg-rose-50 border border-rose-100 rounded-xl px-4 py-3 text-xs text-rose-700 font-mono break-all">
+            {scoringError}
+          </div>
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={() => {
+                setScoringError(null);
+                setAudioUrl(null);
+                setAudioChunks([]);
+              }}
+              className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#718096] text-xs font-semibold font-display rounded-xl flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              Try Again
+            </button>
+          </div>
+        </motion.div>
+      )}
+
       {/* Debug Panel — only visible when debug mode is on */}
-      {debugMode && scoreResult && (
+      {debugMode && (scoreResult || scoringError) && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -498,13 +527,11 @@ export default function StudentPractice({ entries, studentName, onFinish, debugM
             <span className="text-amber-400 font-bold text-xs tracking-wider uppercase">Debug Panel</span>
             <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
               debugSource === 'azure' ? 'bg-green-900 text-green-300' :
-              debugSource === 'mock' ? 'bg-red-900 text-red-300' :
               debugSource === 'pending' ? 'bg-yellow-900 text-yellow-300' :
               'bg-gray-800 text-gray-400'
             }`}>
               {debugSource === 'azure' ? '✓ AZURE' :
-               debugSource === 'mock' ? '✗ MOCK (fallback)' :
-               debugSource === 'pending' ? '...' : 'unknown'}
+               debugSource === 'pending' ? '...' : 'error'}
             </span>
           </div>
 
@@ -564,8 +591,8 @@ export default function StudentPractice({ entries, studentName, onFinish, debugM
             <pre className="mt-2 bg-gray-950 rounded-lg p-3 overflow-x-auto text-[10px] text-green-300/80 max-h-64 overflow-y-auto border border-gray-800">
               {debugAzureRaw
                 ? JSON.stringify(debugAzureRaw, null, 2)
-                : debugSource === 'mock'
-                  ? '(No Azure response — using mock scorer)'
+                : debugError
+                  ? `(Error: ${debugError})`
                   : '(No data yet)'}
             </pre>
           </details>
