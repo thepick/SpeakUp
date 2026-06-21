@@ -286,6 +286,13 @@ export default function App() {
         </AnimatePresence>
         </main>
 
+        {/* Debug mode indicator */}
+        {debugMode && (
+          <div className="fixed bottom-14 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-white text-[10px] font-mono font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+            DEBUG MODE ON — type "strawberry" again to hide
+          </div>
+        )}
+
         {/* Universal footer */}
         <footer className="py-3 text-center text-[10px] text-[#718096] font-mono tracking-wider shrink-0 border-t border-blue-100/50 bg-white/40">
           SPEAK UP! &bull; THAI-ENGLISH PRONUNCIATION &bull; GRADE 5
