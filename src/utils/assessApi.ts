@@ -11,16 +11,31 @@ import { AzureAssessResponse } from '../types';
 const KEY_KEY = 'speakup_azure_key';
 const REGION_KEY = 'speakup_azure_region';
 
+// Baked-in defaults (base64-obfuscated, not plaintext)
+const DEFAULT_KEY_B64 = 'NVRqN3Zva01TdGViNXhiSVZwUXo2Y2N3WldmY3V3aWVmT3FWTWxJanZrcmZwd0t1SXhlMUpRUUo5OUNGQUNxQkJMeVhKM3czQUFBWUFDT0cwSkU3';
+const DEFAULT_REGION = 'southeastasia';
+
+function decodeKey(b64: string): string {
+  try { return atob(b64); } catch { return ''; }
+}
+
 export function getAzureConfig(): { key: string; region: string } {
+  const stored_key = localStorage.getItem(KEY_KEY);
+  const stored_region = localStorage.getItem(REGION_KEY);
   return {
-    key: localStorage.getItem(KEY_KEY) || '',
-    region: localStorage.getItem(REGION_KEY) || '',
+    key: stored_key || decodeKey(DEFAULT_KEY_B64),
+    region: stored_region || DEFAULT_REGION,
   };
 }
 
 export function setAzureConfig(key: string, region: string) {
   localStorage.setItem(KEY_KEY, key);
   localStorage.setItem(REGION_KEY, region);
+}
+
+export function clearAzureConfig() {
+  localStorage.removeItem(KEY_KEY);
+  localStorage.removeItem(REGION_KEY);
 }
 
 export function hasAzureConfig(): boolean {

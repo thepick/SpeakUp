@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Settings, Eye, EyeOff, CheckCircle, X } from 'lucide-react';
-import { getAzureConfig, setAzureConfig, hasAzureConfig } from '../utils/assessApi';
+import { Settings, Eye, EyeOff, CheckCircle, X, RotateCcw } from 'lucide-react';
+import { getAzureConfig, setAzureConfig, clearAzureConfig, hasAzureConfig } from '../utils/assessApi';
 
 interface SettingsPanelProps {
   onClose: () => void;
@@ -88,6 +88,22 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
               Azure credentials are configured
             </div>
           )}
+
+          {/* Reset to built-in */}
+          <button
+            onClick={() => {
+              clearAzureConfig();
+              const def = getAzureConfig();
+              setKey('••••••••••••••••');
+              setRegion(def.region);
+              setSaved(true);
+              setTimeout(() => setSaved(false), 2000);
+            }}
+            className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-[#4A90E2] transition-colors cursor-pointer"
+          >
+            <RotateCcw className="w-3 h-3" />
+            Reset to built-in credentials
+          </button>
         </div>
 
         {/* Footer */}
