@@ -12,7 +12,7 @@ const KEY_KEY = 'speakup_azure_key';
 const REGION_KEY = 'speakup_azure_region';
 
 // Baked-in defaults (base64-obfuscated, not plaintext)
-const DEFAULT_KEY_B64 = 'NVRqN3Zva01TdGViNXhiSVZwUXo2Y2N3WldmY3V3aWVmT3FWTWxJanZrcmZwd0t1SXhlMUpRUUo5OUNGQUNxQkJMeVhKM3czQUFBWUFDT0cwSkU3';
+const DEFAULT_KEY_B64 = 'M1ZCUW5rZU5yM01EZWZ5VU5ESTQ3MXZTQ1JMOEFnTUdubUFlanpFSTNtNTBrYUtheTRXMkpRUUo5OUNGQUNxQkJMeVhKM3czQUFBWUFDT0dIbjlL';
 const DEFAULT_REGION = 'southeastasia';
 
 function decodeKey(b64: string): string {
