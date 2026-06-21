@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Volume2, Mic, Square, CheckCircle, RefreshCw, ChevronRight, HelpCircle, AlertCircle } from 'lucide-react';
 import { AzureAssessResponse, DatasetEntry, ScoreResponse, ScoreStatus } from '../types';
-import { scorePronunciation } from '../utils/scorePronunciation';
 import { assessWithAzure } from '../utils/assessApi';
 
 // Map Azure response (0-100, phoneme detail) into the app's ScoreResponse.
@@ -77,12 +76,26 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
   const [loading, setLoading] = useState(false);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [practiceHistory, setPracticeHistory] = useState<Array<{ entry: DatasetEntry; score: number; status: string; mainFeedback: string }>>([]);
+  const [assessError, setAssessError] = useState<string | null>(null);
+
+  // Debug state — holds the last raw Azure response for the debug panel
+  const [debugData, setDebugData] = useState<AzureAssessResponse | null>(null);
+  const [debugCollapsed, setDebugCollapsed] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioStreamRef = useRef<MediaStream | null>(null);
   const promptAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const currentEntry = entries[currentIndex];
+
+  // Clean up object URLs whenever they change or on unmount to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+      }
+    };
+  }, [audioUrl]);
 
   // Auto-play the audio prompt when the entry changes using SpeechSynthesis
   useEffect(() => {
@@ -92,6 +105,9 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
       setScoreResult(null);
       setAudioUrl(null);
       setAudioChunks([]);
+      setAssessError(null);
+      // Clear debug data for new entry
+      setDebugData(null);
     }
   }, [currentEntry]);
 
@@ -132,6 +148,8 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
       setScoreResult(null);
       setAudioUrl(null);
       setAudioChunks([]);
+      setAssessError(null);
+      setDebugData(null);
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioStreamRef.current = stream;
@@ -187,31 +205,25 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
           currentEntry.speechaceIntegration?.expectedText || currentEntry.sentence;
 
         let resData: ScoreResponse;
-        let usedAzure = false;
 
-        try {
-          const azureResult = await assessWithAzure(audioBlob, referenceText, 'en-US');
-          if (azureResult.success) {
-            resData = mapAzureToScoreResponse(azureResult, currentEntry);
-            usedAzure = true;
-          } else {
-            throw new Error(azureResult.error || 'Azure returned success:false');
-          }
-        } catch (azureErr) {
-          // Backend unreachable / Azure failure / network error — fall back to mock
-          // so the app still works offline (e.g. on GitHub Pages).
-          console.warn('Azure backend unavailable — using mock scoring', azureErr);
-          resData = scorePronunciation(currentEntry.id);
+        const azureResult = await assessWithAzure(audioBlob, referenceText, 'en-US');
+        if (!azureResult.success) {
+          throw new Error(azureResult.error || 'Azure returned success:false');
         }
+        // Capture raw Azure data for debug panel (only when debugMode is on)
+        if (debugMode) {
+          setDebugData(azureResult);
+        }
+        resData = mapAzureToScoreResponse(azureResult, currentEntry);
 
-        // Persist which scoring path was used (helpful for the Teacher Panel)
+        // Persist result
         setScoreResult(resData);
         setPracticeHistory(prev => [
           ...prev,
           {
             entry: currentEntry,
             score: resData.overallScore,
-            status: usedAzure ? `${resData.status} (azure)` : `${resData.status} (mock)`,
+            status: resData.status,
             mainFeedback: resData.mainFeedback,
           },
         ]);
@@ -225,7 +237,9 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
           console.warn('[SpeakUp] saveProgress threw:', persistErr);
         }
       } catch (err) {
+        const message = err instanceof Error ? err.message : 'Something went wrong during assessment.';
         console.error(err);
+        setAssessError(message);
       } finally {
         setLoading(false);
       }
@@ -316,7 +330,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
               <button
                 onClick={startRecording}
                 disabled={loading}
-                className="w-20 h-20 rounded-full bg-[#FFF5F5] hover:bg-[#FFEAEB] text-[#F56565] border-4 border-[#FED7D7] disabled:bg-slate-100 disabled:border-slate-250 flex items-center justify-center shadow-lg active:scale-95 transition-all cursor-pointer"
+                className="w-20 h-20 rounded-full bg-[#FFF5F5] hover:bg-[#FFEAEB] text-[#F56565] border-4 border-[#FED7D7] disabled:bg-slate-100 disabled:border-slate-200 flex items-center justify-center shadow-lg active:scale-95 transition-all cursor-pointer"
                 id="record-mic-btn"
                 title="Start recording"
               >
@@ -350,6 +364,16 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
           <p className="text-xs font-semibold font-display tracking-wide uppercase text-[#718096]" id="mic-status-text">
             {isRecording ? "Recording your voice..." : audioUrl ? "Voice Recorded!" : "Click the microphone to start speaking"}
           </p>
+
+          {assessError && (
+            <div className="mt-2 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-left flex items-start gap-2 max-w-md">
+              <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-bold text-red-700">Assessment failed</p>
+                <p className="text-[11px] text-red-600 leading-relaxed">{assessError}</p>
+              </div>
+            </div>
+          )}
 
           {/* Action to scores checks */}
           {audioUrl && !isRecording && !scoreResult && (
@@ -458,6 +482,8 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                     setScoreResult(null);
                     setAudioUrl(null);
                     setAudioChunks([]);
+                    setAssessError(null);
+                    setDebugData(null);
                   }}
                   className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#718096] text-xs font-semibold font-display rounded-xl flex items-center gap-1.5 transition-all cursor-pointer"
                 >
@@ -487,6 +513,209 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ─── Debug Panel (strawberry mode) ─────────────────────────────────── */}
+      {debugMode && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full bg-[#1a1a2e] border border-purple-500/30 rounded-[24px] text-left shadow-[0_10px_30px_rgba(139,92,246,0.15)] overflow-hidden mb-6 font-mono text-xs"
+          id="debug-panel"
+        >
+          {/* Header */}
+          <div
+            role="button"
+            tabIndex={0}
+            aria-expanded={!debugCollapsed}
+            aria-label={debugCollapsed ? 'Expand debug panel' : 'Collapse debug panel'}
+            className="flex items-center justify-between px-5 py-3 bg-[#0f0f1a] border-b border-purple-500/20 cursor-pointer select-none"
+            onClick={() => setDebugCollapsed(d => !d)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setDebugCollapsed(d => !d);
+              }
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-purple-400">🐞</span>
+              <span className="text-purple-300 font-bold tracking-wide uppercase text-[10px]">
+                Azure Debug Panel
+              </span>
+              {debugData && (
+                <span className="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase bg-green-900/60 text-green-400">
+                  AZURE
+                </span>
+              )}
+            </div>
+            <span className="text-purple-400/60 text-[10px]">
+              {debugCollapsed ? '▶' : '▼'}
+            </span>
+          </div>
+
+          {!debugCollapsed && (
+            <div className="p-4 space-y-4 max-h-[600px] overflow-y-auto">
+              {!debugData ? (
+                <p className="text-gray-500 italic">No assessment run yet. Record and check a sound to see Azure data.</p>
+              ) : (
+                <>
+                  {/* ── Scoring Path ── */}
+                  <section>
+                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                      Scoring Path
+                    </h3>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                      <span className="text-gray-500">Engine:</span>
+                      <span className="text-green-400">Azure Pronunciation Assessment</span>
+                      <span className="text-gray-500">Locale:</span>
+                      <span className="text-gray-300">{debugData.locale}</span>
+                      <span className="text-gray-500">Reference:</span>
+                      <span className="text-gray-300">"{debugData.referenceText}"</span>
+                      <span className="text-gray-500">Recognized:</span>
+                      <span className="text-gray-300">"{debugData.recognizedText}"</span>
+                    </div>
+                  </section>
+
+                  {/* ── Azure Scores ── */}
+                  <section>
+                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                        Azure Score Breakdown
+                      </h3>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(
+                          [
+                            ['Accuracy', debugData.scores.accuracy, 'text-sky-400'],
+                            ['Fluency', debugData.scores.fluency, 'text-emerald-400'],
+                            ['Completeness', debugData.scores.completeness, 'text-amber-400'],
+                            ['Prosody', debugData.scores.prosody, 'text-pink-400'],
+                            ['OVERALL', debugData.scores.overall, 'text-white font-bold'],
+                          ] as [string, number, string][]
+                        ).map(([label, score, cls]) => (
+                          <div key={label} className="bg-[#0f0f1a] rounded-lg p-2 text-center border border-purple-500/10">
+                            <div className="text-[9px] text-gray-500 uppercase">{label}</div>
+                            <div className={`text-sm ${cls}`}>{score}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+
+                  {/* ── Threshold Mapping ── */}
+                  <section>
+                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                      Threshold Mapping (Entry #{currentEntry?.id})
+                    </h3>
+                    {(() => {
+                      const t = currentEntry?.speechaceIntegration?.thresholdProfile;
+                      if (!t) return <p className="text-gray-500 italic">No threshold profile</p>;
+                      const score = debugData.scores.overall || 0;
+                      const tiers = [
+                        { label: 'Strong Pass', min: t.strongPass, color: 'text-green-400' },
+                        { label: 'Overall Pass', min: t.overallPass, color: 'text-blue-400' },
+                        { label: 'Word Watch', min: t.wordWatch, color: 'text-yellow-400' },
+                        { label: 'Retry Below', min: t.retryBelow, color: 'text-orange-400' },
+                        { label: 'Teacher Review', min: t.teacherReviewBelow, color: 'text-red-400' },
+                      ] as const;
+                      const highestPassedIndex = tiers.findIndex(({ min }, idx) => score >= min && (idx === 0 || score < tiers[idx - 1].min));
+                      return (
+                        <div className="space-y-1">
+                          {tiers.map(({ label, min, color }, idx) => {
+                            const active = idx === highestPassedIndex;
+                            return (
+                              <div key={label} className="flex items-center gap-2">
+                                <span className={`w-2 h-2 rounded-full shrink-0 ${active ? 'bg-green-500' : 'bg-gray-700'}`} />
+                                <span className="text-gray-400 w-28">{label}:</span>
+                                <span className={color}>≥ {min}</span>
+                                <span className="text-gray-600 ml-auto">{active ? '✅' : ''}</span>
+                              </div>
+                            );
+                          })}
+                          <div className="mt-2 pt-1 border-t border-purple-500/10 text-gray-500">
+                            Score <span className="text-white font-bold">{score}</span> → falls in{' '}
+                            <span className="text-purple-300 font-bold">
+                              {score >= t.strongPass ? 'STRONG PASS' :
+                               score >= t.overallPass ? 'OVERALL PASS' :
+                               score >= t.wordWatch ? 'WORD WATCH (targeted retry)' :
+                               score >= t.retryBelow ? 'RETRY' : 'TEACHER REVIEW'}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </section>
+
+                  {/* ── Word Detail ── */}
+                  {debugData.words && debugData.words.length > 0 && (
+                    <section>
+                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                        Word-Level Detail
+                      </h3>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-[10px] border-collapse">
+                          <thead>
+                            <tr className="text-gray-500 border-b border-purple-500/20">
+                              <th className="text-left py-1 pr-2">Word</th>
+                              <th className="text-right py-1 px-2">Acc.</th>
+                              <th className="text-center py-1 px-2">Error</th>
+                              <th className="text-left py-1 pl-2">Phonemes (score)</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {debugData.words.map((w, i) => (
+                              <tr key={i} className="border-b border-purple-500/5 hover:bg-purple-500/5">
+                                <td className="py-1 pr-2 text-gray-200 font-bold">{w.word}</td>
+                                <td className={`py-1 px-2 text-right font-mono ${w.accuracy >= 80 ? 'text-green-400' : w.accuracy >= 60 ? 'text-yellow-400' : 'text-red-400'}`}>
+                                  {w.accuracy}
+                                </td>
+                                <td className="py-1 px-2 text-center">
+                                  <span className={`${w.errorType === 'None' ? 'text-green-500' : 'text-red-400'} text-[9px]`}>
+                                    {w.errorType}
+                                  </span>
+                                </td>
+                                <td className="py-1 pl-2 text-gray-400 text-[9px]">
+                                  {w.phonemes?.map((p, j) => (
+                                    <span key={j} className={`inline-block mr-1.5 ${p.accuracy >= 80 ? 'text-green-400' : p.accuracy >= 60 ? 'text-yellow-400' : 'text-red-400'}`}>
+                                      {p.phoneme}({p.accuracy})
+                                    </span>
+                                  ))}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* ── Raw Azure JSON ── */}
+                  {debugData.rawAzure && (
+                    <section>
+                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                        Raw Azure Response JSON
+                      </h3>
+                      <pre className="bg-[#0f0f1a] p-3 rounded-lg text-[10px] text-gray-300 overflow-x-auto leading-relaxed border border-purple-500/10 max-h-[300px] overflow-y-auto">
+                        {JSON.stringify(debugData.rawAzure, null, 2)}
+                      </pre>
+                    </section>
+                  )}
+
+                  {/* ── Entry Config ── */}
+                  <section>
+                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                      Entry Configuration (speechaceIntegration)
+                    </h3>
+                    <pre className="bg-[#0f0f1a] p-3 rounded-lg text-[10px] text-gray-300 overflow-x-auto leading-relaxed border border-purple-500/10">
+                      {currentEntry?.speechaceIntegration
+                        ? JSON.stringify(currentEntry.speechaceIntegration, null, 2)
+                        : 'No speechaceIntegration config for this entry.'}
+                    </pre>
+                  </section>
+                </>
+              )}
+            </div>
+          )}
+        </motion.div>
+      )}
+
     </div>
   );
 }
