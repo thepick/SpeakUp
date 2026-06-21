@@ -56,9 +56,10 @@ interface StudentPracticeProps {
   entries: DatasetEntry[];
   studentName: string;
   onFinish: (history: Array<{ entry: DatasetEntry; score: number; status: string; mainFeedback: string }>) => void;
+  debugMode?: boolean;
 }
 
-export default function StudentPractice({ entries, studentName, onFinish }: StudentPracticeProps) {
+export default function StudentPractice({ entries, studentName, onFinish, debugMode }: StudentPracticeProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -66,6 +67,11 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
   const [loading, setLoading] = useState(false);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [practiceHistory, setPracticeHistory] = useState<Array<{ entry: DatasetEntry; score: number; status: string; mainFeedback: string }>>([]);
+
+  // Debug: track the full Azure response and scoring source
+  const [debugAzureRaw, setDebugAzureRaw] = useState<Record<string, unknown> | null>(null);
+  const [debugSource, setDebugSource] = useState<'azure' | 'mock' | 'pending' | null>(null);
+  const [debugError, setDebugError] = useState<string | null>(null);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioStreamRef = useRef<MediaStream | null>(null);
@@ -169,6 +175,11 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
   const handleCheckSound = async () => {
       if (!currentEntry) return;
       setLoading(true);
+      if (debugMode) {
+        setDebugAzureRaw(null);
+        setDebugSource('pending');
+        setDebugError(null);
+      }
 
       try {
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
@@ -183,6 +194,10 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
           if (azureResult.success) {
             resData = mapAzureToScoreResponse(azureResult, currentEntry);
             usedAzure = true;
+            if (debugMode) {
+              setDebugAzureRaw(azureResult.rawAzure || null);
+              setDebugSource('azure');
+            }
           } else {
             throw new Error(azureResult.error || 'Azure returned success:false');
           }
@@ -190,6 +205,10 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
           // Backend unreachable / Azure failure / network error — fall back to mock
           // so the app still works offline (e.g. on GitHub Pages).
           console.warn('Azure backend unavailable — using mock scoring', azureErr);
+          if (debugMode) {
+            setDebugSource('mock');
+            setDebugError(azureErr instanceof Error ? azureErr.message : String(azureErr));
+          }
           resData = scorePronunciation(currentEntry.id);
         }
 
@@ -467,6 +486,91 @@ export default function StudentPractice({ entries, studentName, onFinish }: Stud
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Debug Panel — only visible when debug mode is on */}
+      {debugMode && scoreResult && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full bg-gray-900 text-green-400 border border-gray-700 rounded-2xl p-5 mb-6 font-mono text-[11px] overflow-hidden"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-amber-400 font-bold text-xs tracking-wider uppercase">Debug Panel</span>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+              debugSource === 'azure' ? 'bg-green-900 text-green-300' :
+              debugSource === 'mock' ? 'bg-red-900 text-red-300' :
+              debugSource === 'pending' ? 'bg-yellow-900 text-yellow-300' :
+              'bg-gray-800 text-gray-400'
+            }`}>
+              {debugSource === 'azure' ? '✓ AZURE' :
+               debugSource === 'mock' ? '✗ MOCK (fallback)' :
+               debugSource === 'pending' ? '...' : 'unknown'}
+            </span>
+          </div>
+
+          {debugError && (
+            <div className="bg-red-900/40 border border-red-700/50 rounded-lg p-3 mb-3 text-red-300">
+              <span className="text-red-400 font-bold">Error:</span> {debugError}
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <span className="text-gray-500">Reference:</span>{' '}
+              <span className="text-white">{currentEntry?.sentence}</span>
+            </div>
+            <div>
+              <span className="text-gray-500">Entry ID:</span>{' '}
+              <span className="text-white">{currentEntry?.id}</span>
+            </div>
+          </div>
+
+          {/* Word-level breakdown */}
+          {debugAzureRaw && (debugAzureRaw as Record<string, unknown>)?.NBest && (
+            <div className="mb-3">
+              <div className="text-gray-500 mb-1">Word-level scores:</div>
+              <div className="flex flex-wrap gap-1.5">
+                {((debugAzureRaw as Record<string, unknown>).NBest as unknown as Array<Record<string, unknown>>)?.[0]?.Words
+                  ? (((debugAzureRaw as Record<string, unknown>).NBest as unknown as Array<Record<string, unknown>>)[0].Words as Array<Record<string, unknown>>).map((w: Record<string, unknown>, i: number) => {
+                      const pa = (w.PronunciationAssessment as Record<string, unknown>) || {};
+                      const score = (pa.AccuracyScore as number) ?? 0;
+                      const errType = (pa.ErrorType as string) || 'None';
+                      return (
+                        <span
+                          key={i}
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            score >= 80 ? 'bg-green-900/60 text-green-300' :
+                            score >= 60 ? 'bg-yellow-900/60 text-yellow-300' :
+                            'bg-red-900/60 text-red-300'
+                          }`}
+                          title={JSON.stringify(pa, null, 2)}
+                        >
+                          {w.Word as string}: {score}
+                          {errType !== 'None' && ` (${errType})`}
+                        </span>
+                      );
+                    })
+                  : null
+                }
+              </div>
+            </div>
+          )}
+
+          {/* Raw JSON toggle */}
+          <details className="mt-2">
+            <summary className="cursor-pointer text-gray-500 hover:text-gray-300 transition-colors">
+              Show raw Azure JSON
+            </summary>
+            <pre className="mt-2 bg-gray-950 rounded-lg p-3 overflow-x-auto text-[10px] text-green-300/80 max-h-64 overflow-y-auto border border-gray-800">
+              {debugAzureRaw
+                ? JSON.stringify(debugAzureRaw, null, 2)
+                : debugSource === 'mock'
+                  ? '(No Azure response — using mock scorer)'
+                  : '(No data yet)'}
+            </pre>
+          </details>
+        </motion.div>
+      )}
     </div>
   );
 }

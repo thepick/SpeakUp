@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { BookOpen, GraduationCap, ChevronLeft } from 'lucide-react';
 import StudentStart from './components/StudentStart';
@@ -23,7 +23,35 @@ function isSafeForAutoPractice(e: DatasetEntry): boolean {
   return e.classroomStatus === 'grade5_ready';
 }
 
+// Debug mode: activated by typing "strawberry" anywhere on the page
+function useDebugMode() {
+  const [debug, setDebug] = useState(false);
+  const [buffer, setBuffer] = useState('');
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Ignore when typing in inputs/textareas
+      const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return;
+
+      setBuffer(prev => {
+        const next = (prev + e.key).slice(-10);
+        if (next.endsWith('strawberry')) {
+          setDebug(d => !d);
+          return '';
+        }
+        return next;
+      });
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  return debug;
+}
+
 export default function App() {
+  const debugMode = useDebugMode();
   const [screen, setScreen] = useState<ScreenState>('start');
   const [studentName, setStudentName] = useState('');
   const [selectedEntries, setSelectedEntries] = useState<DatasetEntry[]>([]);
@@ -227,11 +255,12 @@ export default function App() {
           )}
 
           {screen === 'practice' && (
-            <div key="practice" className="contents">
+            <div key="practice" className="contents" data-debug={debugMode ? 'on' : 'off'}>
               <StudentPractice
                 entries={selectedEntries}
                 studentName={studentName}
                 onFinish={handleFinishPractice}
+                debugMode={debugMode}
               />
             </div>
           )}
@@ -255,9 +284,16 @@ export default function App() {
           )}
 
         </AnimatePresence>
-      </main>
+        </main>
 
-      {/* Universal footer */}
+        {/* Debug mode indicator */}
+        {debugMode && (
+        <div className="fixed bottom-14 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-white text-[10px] font-mono font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+          DEBUG MODE ON — press "strawberry" again to hide
+        </div>
+        )}
+
+        {/* Universal footer */}
       <footer className="py-4 text-center text-[10px] text-[#718096] font-mono tracking-wider shrink-0 border-t border-blue-100/50 bg-white/40">
         SPEAK UP! &bull; THAI-ENGLISH PRONUNCIATION &bull; GRADE 5
       </footer>
