@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ChevronLeft } from 'lucide-react';
 import StudentStart from './components/StudentStart';
 import StudentPractice from './components/StudentPractice';
 import PracticeSummary from './components/PracticeSummary';
 import TeacherPanel from './components/TeacherPanel';
+import ChapterDashboard from './components/ChapterDashboard';
 import AppHeader from './components/AppHeader';
 import { FULL_DATASET } from './data/fullDataset';
 import { DatasetEntry } from './types';
@@ -77,6 +77,17 @@ export default function App() {
       mainFeedback: string;
     }>
   >([]);
+  const [isReviewMode, setIsReviewMode] = useState(false);
+
+  // Total words mastered (score ≥ 75) across all chapters — computed from Drive progress
+  const totalWordsMastered = useMemo(() => {
+    const scores = progress?.scores ?? {};
+    let count = 0;
+    for (const entry of FULL_DATASET) {
+      if ((scores[entry.id] ?? 0) >= 75) count++;
+    }
+    return count;
+  }, [progress]);
 
   // ─── Subdivided lists for student selectable Sound Themes ────────────────
   // 7 focused units + 1 review game covering all 17 modules in the canonical dataset
@@ -191,6 +202,7 @@ export default function App() {
     if (theme) {
       const targetList = theme.getEntries();
       if (targetList.length > 0) {
+        setIsReviewMode(false);
         setSelectedEntries(targetList);
         setSessionHistory([]);
         setScreen('practice');
@@ -199,6 +211,18 @@ export default function App() {
           'This module is currently setting up! Pick another Sound Theme. 😊',
         );
       }
+    }
+  };
+
+  const handleStartReview = (entryIds: number[]) => {
+    const entries = FULL_DATASET.filter(
+      (e) => entryIds.includes(e.id) && isSafeForAutoPractice(e),
+    );
+    if (entries.length > 0) {
+      setIsReviewMode(true);
+      setSelectedEntries(entries);
+      setSessionHistory([]);
+      setScreen('practice');
     }
   };
 
@@ -325,73 +349,17 @@ export default function App() {
           )}
 
           {screen === 'unit_selection' && (
-            <motion.div
-              key="unit_selection"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="max-w-2xl mx-auto px-4 text-center"
-              id="unit-selection-container"
-            >
-              <div className="flex items-center justify-between mb-8 pb-4 border-b border-blue-100/40 text-left">
-                <div>
-                  <h2 className="font-display text-2xl font-bold text-[#2D3748]">
-                    Welcome, {studentName}!
-                  </h2>
-                  <p className="text-[#718096] text-xs font-sans mt-0.5">
-                    Pick a sound unit below to start practice speaking.
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => setScreen('start')}
-                  className="flex items-center gap-1 text-[11px] font-bold text-[#718096] hover:text-[#2D3748] bg-white border border-blue-100/50 px-3 py-1.5 rounded-lg font-display cursor-pointer transition-colors shadow-xs"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                  Back
-                </button>
-              </div>
-
-              {/* Grid of Sound Themes */}
-              <div
-                className="grid grid-cols-1 gap-4 text-left"
-                id="themes-grid-selection"
-              >
-                {soundThemes.map((theme) => (
-                  <button
-                    key={theme.id}
-                    onClick={() => handleChooseTheme(theme.id)}
-                    className="group bg-white p-5 rounded-3xl border border-blue-100 hover:border-[#4A90E2]/40 hover:shadow-[0_8px_30px_rgba(74,144,226,0.06)] transition-all text-left flex items-start justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#EBF4FF]"
-                  >
-                    <div className="flex flex-col gap-1 pr-6">
-                      <span className="font-display font-medium text-base text-[#2D3748] group-hover:text-[#4A90E2] transition-colors">
-                        {theme.name}
-                      </span>
-                      <p className="text-[#718096] text-xs font-sans leading-relaxed">
-                        {theme.description}
-                      </p>
-                    </div>
-
-                    <div className="w-8 h-8 rounded-full bg-slate-50 group-hover:bg-[#EBF4FF] text-slate-400 group-hover:text-[#4A90E2] flex items-center justify-center shrink-0 transition-all">
-                      <motion.svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        whileHover={{ x: 2 }}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2.5"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </motion.svg>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
+            <div key="unit_selection" className="contents">
+              <ChapterDashboard
+                studentName={studentName}
+                progress={progress}
+                soundThemes={soundThemes}
+                totalWordsMastered={totalWordsMastered}
+                onStartPractice={handleChooseTheme}
+                onStartReview={handleStartReview}
+                onBack={() => setScreen('start')}
+              />
+            </div>
           )}
 
           {screen === 'practice' && (
@@ -413,7 +381,9 @@ export default function App() {
                 history={sessionHistory}
                 syncStatus={syncStatus}
                 syncMessage={syncMessage}
+                progress={progress}
                 onRestart={handleRestart}
+                onReviewWeak={() => setScreen('unit_selection')}
               />
             </div>
           )}

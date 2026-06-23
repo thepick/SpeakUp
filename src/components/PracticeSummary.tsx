@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
-import { Star, Award, ChevronRight, RotateCcw, AlertTriangle } from 'lucide-react';
-import { DatasetEntry } from '../types';
+import { Star, Award, ChevronRight, RotateCcw, AlertTriangle, Target, BarChart3 } from 'lucide-react';
+import { DatasetEntry, StudentProgress } from '../types';
 import type { SyncStatus } from '../google/types.ts';
 import SyncStatusIndicator from './SyncStatusIndicator.tsx';
 
@@ -13,9 +13,21 @@ interface PracticeSummaryProps {
   syncStatus?: SyncStatus;
   /** Status message accompanying syncStatus (e.g. "Saving…"). */
   syncMessage?: string;
+  /** Cumulative Drive progress — used for chapter overview and weak-word count. */
+  progress?: StudentProgress | null;
+  /** Called when the student wants to practice all weak words across chapters. */
+  onReviewWeak?: () => void;
 }
 
-export default function PracticeSummary({ studentName, history, onRestart, syncStatus, syncMessage }: PracticeSummaryProps) {
+export default function PracticeSummary({
+  studentName,
+  history,
+  onRestart,
+  syncStatus,
+  syncMessage,
+  progress,
+  onReviewWeak,
+}: PracticeSummaryProps) {
   // Compute some encouraging metrics
   const totalExercises = history.length;
   const averageScore = totalExercises > 0 
@@ -37,6 +49,22 @@ export default function PracticeSummary({ studentName, history, onRestart, syncS
   const uniqueRecommendations = struggles.length > 0 
     ? Array.from(new Set(struggles.flatMap(item => item.entry.remediationLinks || [])))
     : [];
+
+  // Cumulative progress metrics (from Drive)
+  const cumulativeStats = useMemo(() => {
+    if (!progress) return null;
+    const scores = progress.scores ?? {};
+    let mastered = 0;
+    let total = 0;
+    let weakCount = 0;
+    for (const id of Object.keys(scores)) {
+      const score = scores[Number(id)] ?? 0;
+      total++;
+      if (score >= 75) mastered++;
+      if (score < 75) weakCount++;
+    }
+    return { mastered, total, weakCount };
+  }, [progress]);
 
   return (
     <motion.div
@@ -63,9 +91,7 @@ export default function PracticeSummary({ studentName, history, onRestart, syncS
           You finished practicing your pronunciation games! Look at your amazing results below. 🏆
         </p>
 
-        {/* Sync status badge — appears below the celebration header so the
-            student sees "Saved ✓" / "Saving…" / "Could not save — will retry"
-            without scrolling. Hidden when syncStatus is undefined. */}
+        {/* Sync status badge */}
         {syncStatus && (
           <div className="mt-5 flex justify-center">
             <SyncStatusIndicator
@@ -110,9 +136,56 @@ export default function PracticeSummary({ studentName, history, onRestart, syncS
         </div>
       </div>
 
+      {/* ── Cumulative Progress Overview ────────────────────────────────── */}
+      {cumulativeStats && cumulativeStats.total > 0 && (
+        <div className="bg-white border border-blue-100/50 rounded-3xl p-5 mb-6 shadow-[0_4px_15px_rgba(74,144,226,0.02)]">
+          <div className="flex items-center gap-2 text-[#2D3748] mb-3">
+            <BarChart3 className="w-4 h-4 text-[#4A90E2]" />
+            <h3 className="font-display font-semibold text-sm">
+              Your Overall Progress
+            </h3>
+          </div>
+
+          {/* Mastered bar */}
+          <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden mb-2">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-[#48BB78] to-[#38A169] transition-all duration-700"
+              style={{
+                width: `${Math.round((cumulativeStats.mastered / cumulativeStats.total) * 100)}%`,
+              }}
+            />
+          </div>
+
+          <div className="flex justify-between text-[10px]">
+            <span className="text-[#48BB78] font-bold font-mono">
+              {cumulativeStats.mastered} mastered
+            </span>
+            <span className="text-[#A0AEC0] font-sans">
+              {cumulativeStats.total} words total
+            </span>
+          </div>
+
+          {cumulativeStats.weakCount > 0 && onReviewWeak && (
+            <div className="mt-3 pt-3 border-t border-blue-100/40 flex items-center justify-between">
+              <span className="text-[10px] text-amber-700 font-sans flex items-center gap-1">
+                <AlertTriangle className="w-3 h-3" />
+                {cumulativeStats.weakCount} word{cumulativeStats.weakCount !== 1 ? 's' : ''} could use more practice
+              </span>
+              <button
+                onClick={onReviewWeak}
+                className="text-[10px] font-bold text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 py-1 rounded-full transition-colors font-display flex items-center gap-1"
+              >
+                <Target className="w-3 h-3" />
+                Practice them
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* History of exercises */}
       <h3 className="font-display font-bold text-[#2D3748] text-xs tracking-wider uppercase mb-4 text-left">
-        Exercise Summary Breakdown
+        This Session's Breakdown
       </h3>
 
       <div className="space-y-3 mb-8" id="exercise-summary-list">
@@ -192,14 +265,14 @@ export default function PracticeSummary({ studentName, history, onRestart, syncS
       )}
 
       {/* Summary Nav Footer Controls */}
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center gap-3 mt-4">
         <button
           onClick={onRestart}
           className="px-8 py-4 bg-[#4A90E2] hover:bg-[#357ABD] text-white font-display font-semibold rounded-2xl flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(74,144,226,0.3)] transition-all active:scale-95 cursor-pointer text-sm"
           id="play-again-btn"
         >
           <RotateCcw className="w-4 h-4 text-blue-100" />
-          Play New Game
+          Back to Chapters
         </button>
       </div>
     </motion.div>
