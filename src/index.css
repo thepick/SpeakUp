@@ -1,8 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Design-system colors */
+  --color-primary: #4A90E2;
+  --color-primary-hover: #357ABD;
+  --color-primary-light: #EBF4FF;
+  --color-success: #48BB78;
+  --color-success-light: #F0FDF4;
+  --color-warning: #F6AD55;
+  --color-warning-light: #FFFBEB;
+  --color-danger: #F56565;
+  --color-danger-light: #FFF5F5;
+  --color-text: #1E293B;
+  --color-text-muted: #64748B;
+  --color-bg: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+
+  /* Border radii */
+  --radius-card: 1rem;
+  --radius-btn: 0.75rem;
+  --radius-full: 9999px;
 }
+
+/* Base body */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Standard card */
+.card {
+  background: white;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+/* Standard button base */
+.btn {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  border-radius: var(--radius-btn);
+  padding: 0.625rem 1.25rem;
+  transition: all 150ms ease;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(0.95); }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+.btn-primary:hover { background: var(--color-primary-hover); }
+
+.btn-success {
+  background: var(--color-success);
+  color: white;
+}
+
+/* Utility: minimum font size guard */
+.text-caption { font-size: 0.6875rem; } /* 11px minimum */

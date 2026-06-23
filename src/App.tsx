@@ -303,39 +303,36 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen bg-[#F0F7FF] text-[#2D3748] flex flex-col font-sans transition-colors duration-300 antialiased selection:bg-[#4A90E2]/20"
+      className="min-h-screen bg-bg text-text flex flex-col font-sans transition-colors duration-300 antialiased selection:bg-primary/20"
       id="pronunciation-coach-app"
     >
       {/* Universal Top Branding Header */}
-      <header className="bg-white border-b border-blue-100/65 py-5 px-6 shrink-0 shadow-[0_2px_12px_rgba(74,144,226,0.04)] flex justify-between items-center">
+      <header className="bg-surface border-b border-border py-3 px-6 shrink-0 flex justify-between items-center">
         <div
           className="flex items-center gap-3 cursor-pointer select-none hover:opacity-80 transition-opacity"
-          onClick={() => screen !== 'start' && setScreen('start')}
+          onClick={() => setScreen('start')}
           role="button"
           tabIndex={0}
           title="Return to main menu"
         >
           {/* Logo Badge */}
-          <div className="w-10 h-10 rounded-xl bg-[#4A90E2] flex items-center justify-center text-white font-display font-bold text-lg shadow-[0_4px_10px_rgba(74,144,226,0.25)]">
+          <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center text-white font-display font-bold text-base shadow-md">
             S
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold text-[#4A90E2] tracking-tight text-base leading-none">
+            <span className="font-display font-bold text-primary tracking-tight text-base leading-none">
               Speak Up!
             </span>
-            <span className="text-[10px] text-[#718096] font-sans mt-0.5 tracking-wide uppercase font-medium">
+            <span className="text-caption text-text-muted font-sans mt-0.5 font-medium">
               Thai-English Pronunciation Coach
             </span>
           </div>
         </div>
 
         {screen !== 'start' && screen !== 'teacher' && (
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#718096] font-display">
-            <span>Student:</span>
-            <span className="bg-[#EBF4FF] text-[#4A90E2] font-sans px-3 py-1 rounded-full border border-blue-100/40 font-bold">
-              👤 {studentName}
-            </span>
-          </div>
+          <span className="bg-primary-light text-primary font-sans text-xs px-3 py-1 rounded-full border border-primary/15 font-semibold">
+            👤 {studentName}
+          </span>
         )}
       </header>
 
@@ -344,7 +341,7 @@ export default function App() {
 
       {/* Offline banner — shown when the network is disconnected */}
       {!isOnline && (
-        <div className="bg-amber-100 border-b border-amber-200 text-amber-800 text-xs font-sans text-center py-2 animate-pulse">
+        <div className="bg-warning-light border-b border-warning/20 text-amber-800 text-xs font-sans text-center py-2">
           📡 You're offline — saved words will sync when you're back online!
         </div>
       )}
@@ -418,14 +415,14 @@ export default function App() {
 
       {/* Debug mode indicator */}
       {debugMode && (
-        <div className="fixed bottom-14 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-white text-[10px] font-mono font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
+        <div className="fixed bottom-14 left-1/2 -translate-x-1/2 z-50 bg-amber-500 text-white text-caption font-mono font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
           DEBUG MODE ON — type "strawberry" again to hide
         </div>
       )}
 
       {/* Universal footer */}
-      <footer className="py-4 text-center text-[10px] text-[#718096] font-mono tracking-wider shrink-0 border-t border-blue-100/50 bg-white/40">
-        SPEAK UP! &bull; THAI-ENGLISH PRONUNCIATION &bull; GRADE 5
+      <footer className="py-3 text-center text-xs text-text-muted font-sans shrink-0 border-t border-border">
+        Speak Up! — Thai-English Pronunciation Coach
       </footer>
     </div>
   );

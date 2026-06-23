@@ -43,7 +43,7 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
 
           {/* Key */}
           <div>
-            <label className="block text-[10px] uppercase tracking-wider font-bold text-[#718096] mb-1.5">
+            <label className="block text-caption uppercase tracking-wider font-bold text-[#718096] mb-1.5">
               Speech Key
             </label>
             <div className="relative">
@@ -66,7 +66,7 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
 
           {/* Region */}
           <div>
-            <label className="block text-[10px] uppercase tracking-wider font-bold text-[#718096] mb-1.5">
+            <label className="block text-caption uppercase tracking-wider font-bold text-[#718096] mb-1.5">
               Region
             </label>
             <input
@@ -76,7 +76,7 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
               placeholder="eastus"
               className="w-full px-3 py-2.5 text-xs font-mono bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#4A90E2]/30 focus:border-[#4A90E2] transition-all"
             />
-            <p className="text-[10px] text-slate-400 mt-1">
+            <p className="text-caption text-slate-400 mt-1">
               e.g. eastus, westus2, southeastasia
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
               setSaved(true);
               setTimeout(() => setSaved(false), 2000);
             }}
-            className="flex items-center gap-1.5 text-[10px] text-slate-400 hover:text-[#4A90E2] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-caption text-slate-400 hover:text-[#4A90E2] transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" />
             Reset to built-in credentials

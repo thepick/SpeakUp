@@ -30,7 +30,7 @@ export default function AppHeader() {
 
   return (
     <div
-      className="bg-white/70 backdrop-blur-sm border-b border-blue-100/40 px-4 py-2 flex items-center justify-between gap-3 text-xs"
+      className="bg-surface/90 backdrop-blur-sm border-b border-border/50 px-4 py-2 flex items-center justify-between gap-3 text-xs"
       id="app-google-header"
     >
       <div className="flex items-center gap-3 min-w-0">
@@ -46,7 +46,7 @@ export default function AppHeader() {
       <button
         type="button"
         onClick={handleSignOut}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold font-display text-[#718096] hover:text-[#2D3748] hover:bg-slate-100 transition-all cursor-pointer"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold font-display text-text-muted hover:text-text hover:bg-bg transition-all cursor-pointer"
         title="Sign out of Google"
         id="app-google-signout-btn"
       >

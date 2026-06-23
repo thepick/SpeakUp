@@ -105,17 +105,17 @@ export default function PracticeSummary({
         {/* Dynamic score summary blocks */}
         <div className="grid grid-cols-3 gap-3 mt-8">
           <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-            <span className="block text-[10px] uppercase font-bold text-blue-200 tracking-wider font-display mb-1">
+            <span className="block text-caption uppercase font-bold text-blue-200 tracking-wider font-display mb-1">
               Played
             </span>
             <span className="text-xl font-bold font-mono text-white leading-none">
               {totalExercises}
             </span>
-            <span className="text-[10px] text-blue-100 font-sans ml-1">games</span>
+            <span className="text-caption text-blue-100 font-sans ml-1">games</span>
           </div>
 
           <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-            <span className="block text-[10px] uppercase font-bold text-blue-200 tracking-wider font-display mb-1">
+            <span className="block text-caption uppercase font-bold text-blue-200 tracking-wider font-display mb-1">
               Total Stars
             </span>
             <span className="text-xl font-bold font-mono text-white leading-none flex items-center justify-center gap-1">
@@ -125,22 +125,22 @@ export default function PracticeSummary({
           </div>
 
           <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-            <span className="block text-[10px] uppercase font-bold text-blue-200 tracking-wider font-display mb-1">
+            <span className="block text-caption uppercase font-bold text-blue-200 tracking-wider font-display mb-1">
               Avg Score
             </span>
             <span className="text-xl font-bold font-mono text-white leading-none">
               {averageScore}
             </span>
-            <span className="text-[10px] text-blue-100 font-sans ml-0.5">%</span>
+            <span className="text-caption text-blue-100 font-sans ml-0.5">%</span>
           </div>
         </div>
       </div>
 
       {/* ── Cumulative Progress Overview ────────────────────────────────── */}
       {cumulativeStats && cumulativeStats.total > 0 && (
-        <div className="bg-white border border-blue-100/50 rounded-3xl p-5 mb-6 shadow-[0_4px_15px_rgba(74,144,226,0.02)]">
-          <div className="flex items-center gap-2 text-[#2D3748] mb-3">
-            <BarChart3 className="w-4 h-4 text-[#4A90E2]" />
+        <div className="bg-surface rounded-card border-border p-5 mb-6">
+          <div className="flex items-center gap-2 text-text mb-3">
+            <BarChart3 className="w-4 h-4 text-primary" />
             <h3 className="font-display font-semibold text-sm">
               Your Overall Progress
             </h3>
@@ -149,31 +149,31 @@ export default function PracticeSummary({
           {/* Mastered bar */}
           <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden mb-2">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-[#48BB78] to-[#38A169] transition-all duration-700"
+              className="h-full rounded-full bg-gradient-to-r from-success to-[#38A169] transition-all duration-700"
               style={{
                 width: `${Math.round((cumulativeStats.mastered / cumulativeStats.total) * 100)}%`,
               }}
             />
           </div>
 
-          <div className="flex justify-between text-[10px]">
-            <span className="text-[#48BB78] font-bold font-mono">
+          <div className="flex justify-between text-caption">
+            <span className="text-success font-bold font-mono">
               {cumulativeStats.mastered} mastered
             </span>
-            <span className="text-[#A0AEC0] font-sans">
+            <span className="text-caption text-[#A0AEC0] font-sans">
               {cumulativeStats.total} words total
             </span>
           </div>
 
           {cumulativeStats.weakCount > 0 && onReviewWeak && (
-            <div className="mt-3 pt-3 border-t border-blue-100/40 flex items-center justify-between">
-              <span className="text-[10px] text-amber-700 font-sans flex items-center gap-1">
+            <div className="mt-3 pt-3 border-t border-border/40 flex items-center justify-between">
+              <span className="text-caption text-amber-700 font-sans flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" />
                 {cumulativeStats.weakCount} word{cumulativeStats.weakCount !== 1 ? 's' : ''} could use more practice
               </span>
               <button
                 onClick={onReviewWeak}
-                className="text-[10px] font-bold text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 py-1 rounded-full transition-colors font-display flex items-center gap-1"
+                className="text-caption font-bold text-warning hover:text-warning bg-warning-light hover:bg-warning/20 px-3 py-1 rounded-full transition-colors font-display flex items-center gap-1"
               >
                 <Target className="w-3 h-3" />
                 Practice them
@@ -184,39 +184,39 @@ export default function PracticeSummary({
       )}
 
       {/* History of exercises */}
-      <h3 className="font-display font-bold text-[#2D3748] text-xs tracking-wider uppercase mb-4 text-left">
+      <h3 className="font-display font-bold text-text text-xs tracking-wider uppercase mb-4 text-left">
         This Session's Breakdown
       </h3>
 
       <div className="space-y-3 mb-8" id="exercise-summary-list">
         {history.length === 0 ? (
-          <div className="bg-white rounded-3xl p-8 text-center border border-blue-100/50 font-sans text-[#718096] text-xs">
+          <div className="bg-surface rounded-card p-8 text-center border border-border font-sans text-text-muted text-xs">
             No words have been checked inside this session yet. Continue practicing to see feedback details.
           </div>
         ) : (
           history.map((record, index) => (
             <div
               key={index}
-              className="bg-white border border-blue-100/50 p-5 rounded-3xl flex items-center justify-between shadow-[0_4px_15px_rgba(74,144,226,0.02)] hover:shadow-[0_8px_25px_rgba(74,144,226,0.05)] transition-all text-left"
+              className="bg-surface border border-border p-5 rounded-card flex items-center justify-between hover:shadow-md transition-all text-left"
             >
               <div className="flex flex-col gap-1 pr-4">
-                <span className="text-xs text-[#718096] font-sans uppercase font-bold tracking-wide">
+                <span className="text-xs text-text-muted font-sans uppercase font-bold tracking-wide">
                   {record.entry.displayName}
                 </span>
-                <span className="text-base font-extrabold text-[#2D3748] font-display">
+                <span className="text-base font-extrabold text-text font-display">
                   {record.entry.sentence}
                 </span>
-                <p className="text-[11px] text-[#718096] font-sans leading-relaxed">
+                <p className="text-[11px] text-text-muted font-sans leading-relaxed">
                   {record.mainFeedback}
                 </p>
               </div>
 
               <div className="flex flex-col items-end shrink-0 gap-1">
                 <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold uppercase ${
-                  record.score >= 85 ? 'bg-[#E6FFFA] text-[#1D4044]' :
-                  record.score >= 75 ? 'bg-[#EBF4FF] text-[#2B6CB0]' :
-                  record.score >= 70 ? 'bg-[#FFFBEB] text-[#92400E]' :
-                  'bg-[#FFF5F5] text-[#9B2C2C]'
+                  record.score >= 85 ? 'bg-success-light text-success' :
+                  record.score >= 75 ? 'bg-primary-light text-primary' :
+                  record.score >= 70 ? 'bg-warning-light text-warning' :
+                  'bg-danger-light text-danger'
                 }`}>
                   {record.score}%
                 </span>
@@ -241,21 +241,21 @@ export default function PracticeSummary({
 
       {/* Recommended Practice list if available */}
       {struggles.length > 0 && (
-        <div className="bg-[#FFFBEB] border border-amber-200/60 rounded-3xl p-6 text-left mb-8">
+        <div className="bg-warning-light border border-warning/30 rounded-card p-6 text-left mb-8">
           <div className="flex items-center gap-2 text-amber-800 mb-3">
             <AlertTriangle className="w-5 h-5 text-amber-500" />
             <h4 className="font-display font-semibold text-sm">
               Sounds to Practice More:
             </h4>
           </div>
-          <p className="text-xs text-[#718096] leading-relaxed font-sans mb-3">
+          <p className="text-xs text-text-muted leading-relaxed font-sans mb-3">
             Excellent progress! The coach suggests trying these target focus sets next to master your tongue placements:
           </p>
           <div className="flex flex-wrap gap-2">
             {struggles.map((item, idX) => (
               <span
                 key={idX}
-                className="bg-white border border-amber-200/75 rounded-xl px-3 py-1.5 text-xs font-semibold text-amber-800 font-display shadow-xs"
+                className="bg-surface border border-warning/30 rounded-btn px-3 py-1.5 text-xs font-semibold text-amber-800 font-display shadow-xs"
               >
                 Focus: {item.entry.sentence}
               </span>
@@ -268,7 +268,7 @@ export default function PracticeSummary({
       <div className="flex justify-center gap-3 mt-4">
         <button
           onClick={onRestart}
-          className="px-8 py-4 bg-[#4A90E2] hover:bg-[#357ABD] text-white font-display font-semibold rounded-2xl flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(74,144,226,0.3)] transition-all active:scale-95 cursor-pointer text-sm"
+          className="px-8 py-4 bg-primary hover:bg-primary/90 text-white font-display font-semibold rounded-btn flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer text-sm"
           id="play-again-btn"
         >
           <RotateCcw className="w-4 h-4 text-blue-100" />

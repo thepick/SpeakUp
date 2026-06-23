@@ -25,7 +25,7 @@ function initialsFromName(name: string): string {
 
 export default function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
   const [imageFailed, setImageFailed] = useState(false);
-  const dim = size === 'sm' ? 'w-7 h-7 text-[10px]' : 'w-9 h-9 text-xs';
+  const dim = size === 'sm' ? 'w-7 h-7 text-caption' : 'w-9 h-9 text-xs';
   const showPicture = !!user.picture && !imageFailed;
 
   return (

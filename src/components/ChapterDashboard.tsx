@@ -131,10 +131,10 @@ function StarsRow({ score }: { score: number }) {
 // ─── Card color scheme based on chapter performance ─────────────────────────
 
 function cardColors(stats: ChapterStats) {
-  if (!stats.isVisited) return { bg: '', border: 'border-blue-100/50', badge: '', text: 'text-[#718096]' };
-  if (stats.averageScore >= 85) return { bg: 'bg-[#F0FDF4]', border: 'border-emerald-200/60', badge: 'bg-emerald-100 text-emerald-700', text: 'text-[#1D4044]' };
-  if (stats.averageScore >= 75) return { bg: 'bg-[#F0F7FF]', border: 'border-blue-200/60', badge: 'bg-blue-100 text-blue-700', text: 'text-[#2B6CB0]' };
-  return { bg: 'bg-[#FFFBEB]', border: 'border-amber-200/60', badge: 'bg-amber-100 text-amber-700', text: 'text-[#92400E]' };
+  if (!stats.isVisited) return { bg: '', border: 'border-border', badge: '', text: 'text-text-muted' };
+  if (stats.averageScore >= 85) return { bg: 'bg-success-light', border: 'border-success/30', badge: 'bg-success/20 text-success', text: 'text-success' };
+  if (stats.averageScore >= 75) return { bg: 'bg-primary-light', border: 'border-primary/30', badge: 'bg-primary/20 text-primary', text: 'text-primary' };
+  return { bg: 'bg-warning-light', border: 'border-warning/30', badge: 'bg-warning/20 text-warning', text: 'text-warning' };
 }
 
 // ─── Component ──────────────────────────────────────────────────────────────
@@ -198,18 +198,18 @@ export default function ChapterDashboard({
       id="chapter-dashboard-root"
     >
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between mb-4 pb-4 border-b border-blue-100/40">
+      <div className="flex items-center justify-between mb-4 pb-4 border-b border-border/40">
         <div>
-          <h2 className="font-display text-2xl font-bold text-[#2D3748]">
+          <h2 className="font-display text-2xl font-bold text-text">
             Welcome back, {studentName}!
           </h2>
-          <p className="text-[#718096] text-xs font-sans mt-0.5">
+          <p className="text-text-muted text-xs font-sans mt-0.5">
             Choose a chapter to practice or pick up where you left off.
           </p>
         </div>
         <button
           onClick={onBack}
-          className="flex items-center gap-1 text-[11px] font-bold text-[#718096] hover:text-[#2D3748] bg-white border border-blue-100/50 px-3 py-1.5 rounded-lg font-display cursor-pointer transition-colors shadow-xs"
+          className="flex items-center gap-1 text-[11px] font-bold text-text-muted hover:text-text bg-surface border border-border px-3 py-1.5 rounded-btn font-display cursor-pointer transition-colors"
         >
           <ChevronLeft className="w-3.5 h-3.5" />
           Back
@@ -217,13 +217,13 @@ export default function ChapterDashboard({
       </div>
 
       {/* ── Overall Progress Bar ────────────────────────────────────────── */}
-      <div className="bg-white rounded-3xl border border-blue-100/50 p-5 mb-5 shadow-[0_4px_15px_rgba(74,144,226,0.02)]">
+      <div className="bg-surface rounded-card border-border p-5 mb-5">
         {/* Segmented progress dots + text */}
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[10px] uppercase tracking-wider font-extrabold text-[#718096] font-display">
+          <span className="text-caption uppercase tracking-wider font-extrabold text-text-muted font-display">
             Your Progress
           </span>
-          <span className="text-[11px] font-bold text-[#4A90E2] font-mono">
+          <span className="text-[11px] font-bold text-primary font-mono">
             {masteredCount} / {totalEntries} words mastered
           </span>
         </div>
@@ -234,18 +234,18 @@ export default function ChapterDashboard({
             <React.Fragment key={c.themeId}>
               <div className="flex flex-col items-center gap-1">
                 <div
-                  className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-all ${
+                  className={`w-5 h-5 rounded-full flex items-center justify-center text-caption font-bold transition-all ${
                     c.isComplete
-                      ? 'bg-[#48BB78] text-white'
+                      ? 'bg-success text-white'
                       : c.isVisited
-                        ? 'bg-[#4A90E2] text-white'
+                        ? 'bg-primary text-white'
                         : 'bg-slate-200 text-slate-400'
                   }`}
                   title={c.name}
                 >
                   {c.isComplete ? '✓' : i + 1}
                 </div>
-                <span className="text-[8px] text-[#A0AEC0] font-display leading-none text-center max-w-[40px] truncate">
+                <span className="text-caption text-[#A0AEC0] font-display leading-none text-center max-w-[40px] truncate">
                   {c.name.split(':')[0].replace(/^[^\s]+\s/, '').slice(0, 6)}
                 </span>
               </div>
@@ -253,7 +253,7 @@ export default function ChapterDashboard({
                 <div
                   className={`h-0.5 w-5 rounded-full -mt-3 ${
                     chapterStats[i].isVisited
-                      ? 'bg-[#4A90E2]/40'
+                      ? 'bg-primary/40'
                       : 'bg-slate-200'
                   }`}
                 />
@@ -273,12 +273,12 @@ export default function ChapterDashboard({
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
               onClick={() => onStartPractice(stats.themeId)}
-              className={`group relative bg-white rounded-2xl p-4 border ${colors.border} hover:border-[#4A90E2]/40 hover:shadow-[0_6px_20px_rgba(74,144,226,0.06)] transition-all text-left flex flex-col gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#EBF4FF] ${colors.bg}`}
+              className={`group relative bg-surface rounded-card p-4 border ${colors.border} hover:border-primary/40 hover:shadow-md transition-all text-left flex flex-col gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-light ${colors.bg}`}
               id={`chapter-card-${stats.themeId}`}
             >
               {/* Continue badge */}
               {continueChapter?.themeId === stats.themeId && (
-                <div className="absolute -top-2 -right-2 bg-[#4A90E2] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 animate-pulse">
+                <div className="absolute -top-2 -right-2 bg-primary text-white text-caption font-bold px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 animate-pulse">
                   <Sparkles className="w-2.5 h-2.5" />
                   Continue
                 </div>
@@ -286,10 +286,10 @@ export default function ChapterDashboard({
 
               {/* Unit name */}
               <div className="flex items-start justify-between">
-                <span className="font-display font-semibold text-sm text-[#2D3748] leading-snug pr-2">
+                <span className="font-display font-semibold text-sm text-text leading-snug pr-2">
                   {stats.name}
                 </span>
-                <ChevronRight className="w-4 h-4 text-slate-300 shrink-0 mt-0.5 group-hover:text-[#4A90E2] transition-colors" />
+                <ChevronRight className="w-4 h-4 text-slate-300 shrink-0 mt-0.5 group-hover:text-primary transition-colors" />
               </div>
 
               {/* Progress bar */}
@@ -297,9 +297,9 @@ export default function ChapterDashboard({
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
                     stats.isComplete
-                      ? 'bg-[#48BB78]'
+                      ? 'bg-success'
                       : stats.isVisited
-                        ? 'bg-[#4A90E2]'
+                        ? 'bg-primary'
                         : 'bg-transparent'
                   }`}
                   style={{
@@ -316,16 +316,16 @@ export default function ChapterDashboard({
                   <>
                     <div className="flex items-center gap-2">
                       <StarsRow score={stats.averageScore} />
-                      <span className="text-[10px] font-mono font-bold text-[#718096]">
+                      <span className="text-caption font-mono font-bold text-text-muted">
                         {stats.averageScore}%
                       </span>
                     </div>
-                    <span className="text-[10px] text-[#A0AEC0] font-sans">
+                    <span className="text-caption text-[#A0AEC0] font-sans">
                       {stats.completedCount}/{stats.totalEntries} words
                     </span>
                   </>
                 ) : (
-                  <span className="text-[10px] text-[#A0AEC0] font-sans italic">
+                  <span className="text-caption text-[#A0AEC0] font-sans italic">
                     {stats.totalEntries} words — not started
                   </span>
                 )}
@@ -333,7 +333,7 @@ export default function ChapterDashboard({
 
               {/* Weak count warning */}
               {stats.isVisited && stats.weakCount > 0 && (
-                <div className="flex items-center gap-1 text-[10px] text-amber-600 font-sans">
+                <div className="flex items-center gap-1 text-caption text-amber-600 font-sans">
                   <Target className="w-3 h-3" />
                   {stats.weakCount} word{stats.weakCount !== 1 ? 's' : ''} need{stats.weakCount === 1 ? 's' : ''} more practice
                 </div>
@@ -356,7 +356,7 @@ export default function ChapterDashboard({
                 <span className="font-display font-bold text-sm">
                   🌪️ Quick Mixed Game
                 </span>
-                <p className="text-[10px] text-purple-100 mt-0.5">
+                <p className="text-caption text-purple-100 mt-0.5">
                   Random challenge — 5 words from all chapters!
                 </p>
               </div>
@@ -368,14 +368,14 @@ export default function ChapterDashboard({
 
       {/* ── Practice Weakest Sounds ──────────────────────────────────────── */}
       {allWeakIds.length > 0 && (
-        <div className="bg-[#FFFBEB] border border-amber-200/60 rounded-3xl p-5 mb-4">
+        <div className="bg-warning-light border border-warning/30 rounded-card p-5 mb-4">
           <div className="flex items-center gap-2 text-amber-800 mb-3">
             <Target className="w-4 h-4 text-amber-500" />
             <h3 className="font-display font-semibold text-sm">
               Words to Practice Again
             </h3>
           </div>
-          <p className="text-[11px] text-[#718096] leading-relaxed font-sans mb-3">
+          <p className="text-[11px] text-text-muted leading-relaxed font-sans mb-3">
             You have {allWeakIds.length} word{allWeakIds.length !== 1 ? 's' : ''} across your
             chapters that could use more practice. Review them now to improve your
             scores!
@@ -393,12 +393,12 @@ export default function ChapterDashboard({
 
       {/* ── All Complete Badge ──────────────────────────────────────────── */}
       {chapterStats.every((c) => c.isComplete) && chapterStats.length > 0 && (
-        <div className="bg-gradient-to-r from-[#48BB78]/10 to-emerald-100/50 border border-emerald-200/60 rounded-3xl p-5 text-center mb-4">
-          <Trophy className="w-8 h-8 text-[#48BB78] mx-auto mb-2" />
+        <div className="bg-gradient-to-r from-success/10 to-emerald-100/50 border border-success/30 rounded-card p-5 text-center mb-4">
+          <Trophy className="w-8 h-8 text-success mx-auto mb-2" />
           <h3 className="font-display font-bold text-[#1D4044] text-sm">
             All Chapters Complete!
           </h3>
-          <p className="text-[11px] text-[#718096] mt-1">
+          <p className="text-[11px] text-text-muted mt-1">
             Amazing work, {studentName}! You've practiced every chapter. Keep
             reviewing to earn even higher scores.
           </p>

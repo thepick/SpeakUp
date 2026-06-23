@@ -349,38 +349,38 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
   return (
     <div className="max-w-2xl mx-auto px-4 py-6" id="student-practice-root">
       {/* Module Header and Progress */}
-      <div className="flex items-center justify-between mb-8 bg-white rounded-3xl px-6 py-4.5 border border-blue-100/50 shadow-[0_4px_15px_rgba(74,144,226,0.02)]">
+      <div className="flex items-center justify-between mb-8 card px-6 py-5">
         <div className="flex flex-col">
-          <span className="text-[10px] uppercase tracking-wider font-extrabold text-[#4A90E2] font-display">
+          <span className="text-caption uppercase tracking-wider font-extrabold text-primary font-display">
             Current Lesson
           </span>
-          <span className="text-sm font-bold text-[#2D3748] font-sans">
+          <span className="text-sm font-bold text-text font-sans">
             {currentEntry ? humanizedModuleName(currentEntry.module) : "Practice Session"}
           </span>
         </div>
         <div className="text-right">
-          <span className="text-[10px] uppercase tracking-wider font-extrabold text-[#718096] font-display">
+          <span className="text-caption uppercase tracking-wider font-extrabold text-text-muted font-display">
             Overall Progress
           </span>
-          <div className="text-sm font-black text-[#2D3748] font-mono">
+          <div className="text-sm font-black text-text font-mono">
             {currentIndex + 1} / {entries.length}
           </div>
         </div>
       </div>
 
       {/* Main Pronunciation Card */}
-      <div className="bg-white rounded-[32px] p-8 md:p-10 border border-blue-100/60 shadow-[0_10px_25px_rgba(74,144,226,0.05)] relative overflow-hidden mb-6">
-        {/* Decorative subtle border line on active */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#4A90E2] to-blue-400" />
+      <div className="card p-8 md:p-10 relative overflow-hidden mb-6">
+        {/* Solid primary top border */}
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-primary" />
 
         {/* Listen Prompt Section */}
         <div className="flex justify-between items-center mb-6">
-          <span className="text-xs bg-[#EBF4FF] text-[#4A90E2] font-semibold px-3.5 py-1 rounded-full font-sans border border-blue-100/20">
+          <span className="text-xs bg-primary-light text-primary font-semibold px-3.5 py-1 rounded-full font-sans border border-primary/20">
             {currentEntry?.practiceStage.toUpperCase()}
           </span>
           <button
             onClick={handlePlayPrompt}
-            className="flex items-center gap-1.5 text-xs text-[#4A90E2] hover:text-[#357ABD] bg-[#EBF4FF] hover:bg-[#DCEBFF] transition-all px-4 py-2 rounded-xl cursor-pointer font-display font-semibold shadow-xs"
+            className="flex items-center gap-1.5 text-xs text-primary hover:brightness-95 bg-primary-light transition-all px-4 py-2 rounded-btn cursor-pointer font-display font-semibold"
             title="Listen to correct model"
             id="speaker-listen-btn"
           >
@@ -391,19 +391,19 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
 
         {/* Word/Sentence text to say */}
         <div className="text-center my-8">
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-[#2D3748] tracking-tight leading-short px-4 select-all">
+          <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-text tracking-tight leading-short px-4 select-all">
             {currentEntry?.sentence}
           </h2>
-          <p className="text-[#718096] text-xs mt-3 select-none font-sans italic">
+          <p className="text-text-muted text-xs mt-3 select-none font-sans italic">
             "{currentEntry?.displayName}"
           </p>
         </div>
 
         {/* Friendly instruction tip */}
-        <div className="bg-[#F0F7FF]/60 border border-blue-100/35 rounded-2xl p-5 flex gap-3 text-left mb-8 items-start">
-          <HelpCircle className="w-5 h-5 text-[#4A90E2] shrink-0 mt-0.5" />
-          <p className="text-xs text-[#718096] leading-relaxed font-sans">
-            <strong className="text-[#2D3748]">Coach's Tip:</strong> {currentEntry?.instruction}
+        <div className="bg-primary-light border border-primary/20 rounded-card p-5 flex gap-3 text-left mb-8 items-start">
+          <HelpCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+          <p className="text-xs text-text-muted leading-relaxed font-sans">
+            <strong className="text-text">Coach's Tip:</strong> {currentEntry?.instruction}
           </p>
         </div>
 
@@ -424,7 +424,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                     <Mic className="w-8 h-8" />
                   </div>
                 </button>
-                <span className="text-[9px] text-slate-400 font-mono">Space</span>
+                <span className="text-caption text-text-muted font-mono">Space</span>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-1.5">
@@ -436,7 +436,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                 >
                   <Square className="w-7 h-7 text-[#F56565] fill-[#F56565]" />
                 </button>
-                <span className="text-[9px] text-slate-400 font-mono">Space</span>
+                <span className="text-caption text-text-muted font-mono">Space</span>
               </div>
             )}
 
@@ -452,16 +452,16 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
             )}
           </div>
 
-          <p className="text-xs font-semibold font-display tracking-wide uppercase text-[#718096]" id="mic-status-text">
+          <p className="text-xs font-semibold font-display tracking-wide uppercase text-text-muted" id="mic-status-text">
             {isRecording ? "Recording your voice..." : audioUrl ? "Voice Recorded!" : "Click the microphone to start speaking"}
           </p>
 
           {assessError && (
-            <div className="mt-2 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-left flex items-start gap-2 max-w-md">
-              <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+            <div className="mt-2 px-4 py-3 bg-danger-light border border-danger/30 rounded-card text-left flex items-start gap-2 max-w-md">
+              <AlertCircle className="w-4 h-4 text-danger shrink-0 mt-0.5" />
               <div>
-                <p className="text-xs font-bold text-red-700">Assessment failed</p>
-                <p className="text-[11px] text-red-600 leading-relaxed">{assessError}</p>
+                <p className="text-xs font-bold text-danger">Assessment failed</p>
+                <p className="text-caption text-danger/80 leading-relaxed">{assessError}</p>
               </div>
             </div>
           )}
@@ -471,7 +471,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
             <button
               onClick={handleCheckSound}
               disabled={loading}
-              className="mt-4 px-6 py-3.5 bg-[#4A90E2] hover:bg-[#357ABD] text-white font-display font-semibold rounded-2xl flex items-center gap-2 shadow-[0_4px_14px_rgba(74,144,226,0.35)] transition-all active:scale-98 disabled:opacity-50 cursor-pointer text-sm"
+              className="mt-4 btn btn-primary flex items-center gap-2 shadow text-sm"
               id="check-button"
             >
               {loading ? (
@@ -498,54 +498,54 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="w-full bg-white border border-blue-100/50 rounded-[32px] p-6 text-left shadow-[0_10px_25px_rgba(74,144,226,0.03)] relative overflow-hidden mb-6"
+            className="w-full card p-6 text-left relative overflow-hidden mb-6"
             id="feedback-panel"
           >
             {/* Scoring Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs tracking-wider uppercase font-bold text-[#718096] font-display">
+                <span className="text-xs tracking-wider uppercase font-bold text-text-muted font-display">
                   Sound Quality
                 </span>
-                <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold font-sans uppercase tracking-wider ${
-                  scoreResult.status === 'strong' ? 'bg-[#E6FFFA] text-[#1D4044]' :
-                  scoreResult.status === 'pass' ? 'bg-[#EBF4FF] text-[#2B6CB0]' :
-                  scoreResult.status === 'targeted_retry' ? 'bg-[#FFFBEB] text-[#92400E] border border-amber-200' :
-                  'bg-[#FFF5F5] text-[#9B2C2C]'
+                <span className={`text-caption px-2.5 py-0.5 rounded-full font-bold font-sans uppercase tracking-wider ${
+                  scoreResult.status === 'strong' ? 'bg-success-light text-success' :
+                  scoreResult.status === 'pass' ? 'bg-primary-light text-primary' :
+                  scoreResult.status === 'targeted_retry' ? 'bg-warning-light text-warning border border-warning/30' :
+                  'bg-danger-light text-danger'
                 }`}>
                   {scoreResult.status.replace('_', ' ')}
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-3xl font-black font-mono tracking-tight text-[#2D3748]">
+                <span className="text-3xl font-black font-mono tracking-tight text-text">
                   {scoreResult.overallScore}
                 </span>
-                <span className="text-xs font-semibold font-sans text-[#718096] ml-1">
+                <span className="text-xs font-semibold font-sans text-text-muted ml-1">
                   / 100
                 </span>
               </div>
             </div>
 
             {/* Interactive Progress Indicator Bar */}
-            <div className="w-full h-3 bg-slate-200/60 rounded-full mb-5 overflow-hidden flex">
+            <div className="w-full h-3 bg-bg rounded-full mb-5 overflow-hidden flex">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${scoreResult.overallScore}%` }}
                 className={`h-full rounded-full ${
-                  scoreResult.scoreBand === 'green' ? 'bg-gradient-to-r from-[#48BB78] to-[#38A169]' :
-                  scoreResult.scoreBand === 'blue' ? 'bg-gradient-to-r from-[#4A90E2] to-[#357ABD]' :
-                  scoreResult.scoreBand === 'orange' ? 'bg-gradient-to-r from-[#F6AD55] to-amber-500' :
-                  'bg-gradient-to-r from-rose-450 to-rose-500'
+                  scoreResult.scoreBand === 'green' ? 'bg-success' :
+                  scoreResult.scoreBand === 'blue' ? 'bg-primary' :
+                  scoreResult.scoreBand === 'orange' ? 'bg-warning' :
+                  'bg-danger'
                 }`}
               />
             </div>
 
             {/* Coach Feedback Text Box aligned with design system pattern */}
-            <div className={`flex gap-4 p-5 rounded-2xl mb-6 items-start text-left border-l-[6px] ${
-              scoreResult.scoreBand === 'green' ? 'bg-[#F0FDF4] border-[#48BB78] text-[#1E3A1E] shadow-sm' :
-              scoreResult.scoreBand === 'blue' ? 'bg-[#F0F7FF] border-[#4A90E2] text-[#1D3248] shadow-sm' :
-              scoreResult.scoreBand === 'orange' ? 'bg-[#FFFBEB] border-[#F6AD55] text-[#92400E] shadow-sm' :
-              'bg-[#FFF5F5] border-[#F56565] text-[#6D1B1B] shadow-sm'
+            <div className={`flex gap-4 p-5 rounded-card mb-6 items-start text-left border-l-[6px] ${
+              scoreResult.scoreBand === 'green' ? 'bg-success-light border-success text-text' :
+              scoreResult.scoreBand === 'blue' ? 'bg-primary-light border-primary text-text' :
+              scoreResult.scoreBand === 'orange' ? 'bg-warning-light border-warning text-text' :
+              'bg-danger-light border-danger text-text'
             }`}>
               <div className="text-xl shrink-0">
                 {scoreResult.scoreBand === 'green' ? '⭐' :
@@ -565,7 +565,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
             </div>
 
             {/* Flow actions */}
-            <div className="flex gap-3 justify-end pt-4 border-t border-blue-100/35">
+            <div className="flex gap-3 justify-end pt-4 border-t border-border">
               {/* Retry / Next Actions */}
               {(scoreResult.status === 'retry' || scoreResult.status === 'targeted_retry') && (
                 <button
@@ -576,20 +576,20 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                     setAssessError(null);
                     setDebugData(null);
                   }}
-                  className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#718096] text-xs font-semibold font-display rounded-xl flex items-center gap-1.5 transition-all cursor-pointer"
+                  className="px-5 py-2.5 bg-bg hover:bg-border text-text-muted text-xs font-semibold font-display rounded-btn flex items-center gap-1.5 transition-all cursor-pointer"
                   title="Try Again (R)"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <div className="flex flex-col items-start leading-tight">
                     <span>Try Again</span>
-                    <span className="text-[9px] text-slate-400 font-mono">R</span>
+                    <span className="text-caption text-text-muted/70 font-mono">R</span>
                   </div>
                 </button>
               )}
 
               <button
                 onClick={handleNext}
-                className="px-6 py-3 bg-[#48BB78] hover:bg-[#38A169] text-white text-xs font-semibold font-display rounded-xl flex items-center gap-1.5 shadow-[0_4px_14px_rgba(72,187,120,0.3)] transition-all cursor-pointer"
+                className="btn btn-success flex items-center gap-1.5 shadow text-xs"
                 id="next-action-btn"
                 title="Next Word (Enter)"
               >
@@ -597,7 +597,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                   <>
                     <div className="flex flex-col items-start leading-tight">
                       <span>Next Word</span>
-                      <span className="text-[9px] text-emerald-200 font-mono">Enter ↵</span>
+                      <span className="text-caption text-emerald-200 font-mono">Enter ↵</span>
                     </div>
                     <ChevronRight className="w-4 h-4 ml-0.5" />
                   </>
@@ -618,7 +618,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full bg-[#1a1a2e] border border-purple-500/30 rounded-[24px] text-left shadow-[0_10px_30px_rgba(139,92,246,0.15)] overflow-hidden mb-6 font-mono text-xs"
+          className="w-full bg-surface rounded-card border border-border shadow text-left overflow-hidden mb-6 font-mono text-xs"
           id="debug-panel"
         >
           {/* Header */}
@@ -627,7 +627,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
             tabIndex={0}
             aria-expanded={!debugCollapsed}
             aria-label={debugCollapsed ? 'Expand debug panel' : 'Collapse debug panel'}
-            className="flex items-center justify-between px-5 py-3 bg-[#0f0f1a] border-b border-purple-500/20 cursor-pointer select-none"
+            className="flex items-center justify-between px-5 py-3 bg-bg border-b border-border cursor-pointer select-none"
             onClick={() => setDebugCollapsed(d => !d)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -638,16 +638,16 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
           >
             <div className="flex items-center gap-2">
               <span className="text-purple-400">🐞</span>
-              <span className="text-purple-300 font-bold tracking-wide uppercase text-[10px]">
+              <span className="text-purple-300 font-bold tracking-wide uppercase text-caption">
                 Azure Debug Panel
               </span>
               {debugData && (
-                <span className="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase bg-green-900/60 text-green-400">
+                <span className="text-caption px-1.5 py-0.5 rounded font-bold uppercase bg-green-900/60 text-green-400">
                   AZURE
                 </span>
               )}
             </div>
-            <span className="text-purple-400/60 text-[10px]">
+            <span className="text-purple-400/60 text-caption">
               {debugCollapsed ? '▶' : '▼'}
             </span>
           </div>
@@ -660,7 +660,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                 <>
                   {/* ── Scoring Path ── */}
                   <section>
-                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-caption border-b border-purple-500/20 pb-1">
                       Scoring Path
                     </h3>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1">
@@ -677,7 +677,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
 
                   {/* ── Azure Scores ── */}
                   <section>
-                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-caption border-b border-purple-500/20 pb-1">
                         Azure Score Breakdown
                       </h3>
                       <div className="grid grid-cols-3 gap-2">
@@ -691,7 +691,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                           ] as [string, number, string][]
                         ).map(([label, score, cls]) => (
                           <div key={label} className="bg-[#0f0f1a] rounded-lg p-2 text-center border border-purple-500/10">
-                            <div className="text-[9px] text-gray-500 uppercase">{label}</div>
+                            <div className="text-caption text-gray-500 uppercase">{label}</div>
                             <div className={`text-sm ${cls}`}>{score}</div>
                           </div>
                         ))}
@@ -700,7 +700,7 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
 
                   {/* ── Threshold Mapping ── */}
                   <section>
-                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-caption border-b border-purple-500/20 pb-1">
                       Threshold Mapping (Entry #{currentEntry?.id})
                     </h3>
                     {(() => {
@@ -745,11 +745,11 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                   {/* ── Word Detail ── */}
                   {debugData.words && debugData.words.length > 0 && (
                     <section>
-                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-caption border-b border-purple-500/20 pb-1">
                         Word-Level Detail
                       </h3>
                       <div className="overflow-x-auto">
-                        <table className="w-full text-[10px] border-collapse">
+                        <table className="w-full text-caption border-collapse">
                           <thead>
                             <tr className="text-gray-500 border-b border-purple-500/20">
                               <th className="text-left py-1 pr-2">Word</th>
@@ -766,11 +766,11 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                                   {w.accuracy}
                                 </td>
                                 <td className="py-1 px-2 text-center">
-                                  <span className={`${w.errorType === 'None' ? 'text-green-500' : 'text-red-400'} text-[9px]`}>
+                                  <span className={`${w.errorType === 'None' ? 'text-green-500' : 'text-red-400'} text-caption`}>
                                     {w.errorType}
                                   </span>
                                 </td>
-                                <td className="py-1 pl-2 text-gray-400 text-[9px]">
+                                <td className="py-1 pl-2 text-gray-400 text-caption">
                                   {w.phonemes?.map((p, j) => (
                                     <span key={j} className={`inline-block mr-1.5 ${p.accuracy >= 80 ? 'text-green-400' : p.accuracy >= 60 ? 'text-yellow-400' : 'text-red-400'}`}>
                                       {p.phoneme}({p.accuracy})
@@ -788,10 +788,10 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                   {/* ── Raw Azure JSON ── */}
                   {debugData.rawAzure && (
                     <section>
-                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                      <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-caption border-b border-purple-500/20 pb-1">
                         Raw Azure Response JSON
                       </h3>
-                      <pre className="bg-[#0f0f1a] p-3 rounded-lg text-[10px] text-gray-300 overflow-x-auto leading-relaxed border border-purple-500/10 max-h-[300px] overflow-y-auto">
+                      <pre className="bg-[#0f0f1a] p-3 rounded-lg text-caption text-gray-300 overflow-x-auto leading-relaxed border border-purple-500/10 max-h-[300px] overflow-y-auto">
                         {JSON.stringify(debugData.rawAzure, null, 2)}
                       </pre>
                     </section>
@@ -799,10 +799,10 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
 
                   {/* ── Entry Config ── */}
                   <section>
-                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-[10px] border-b border-purple-500/20 pb-1">
+                    <h3 className="text-purple-400 font-bold mb-2 uppercase tracking-wider text-caption border-b border-purple-500/20 pb-1">
                       Entry Configuration (speechaceIntegration)
                     </h3>
-                    <pre className="bg-[#0f0f1a] p-3 rounded-lg text-[10px] text-gray-300 overflow-x-auto leading-relaxed border border-purple-500/10">
+                    <pre className="bg-[#0f0f1a] p-3 rounded-lg text-caption text-gray-300 overflow-x-auto leading-relaxed border border-purple-500/10">
                       {currentEntry?.speechaceIntegration
                         ? JSON.stringify(currentEntry.speechaceIntegration, null, 2)
                         : 'No speechaceIntegration config for this entry.'}
