@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Volume2, Mic, Square, CheckCircle, RefreshCw, ChevronRight, HelpCircle, AlertCircle } from 'lucide-react';
 import { AzureAssessResponse, DatasetEntry, ScoreResponse, ScoreStatus } from '../types';
 import { assessWithAzure } from '../utils/assessApi';
+import { getFriendlyErrorMessage } from '../utils/errorMessages';
 
 // Map Azure response (0-100, phoneme detail) into the app's ScoreResponse.
 function mapAzureToScoreResponse(azure: AzureAssessResponse, entry: DatasetEntry): ScoreResponse {
@@ -85,6 +86,9 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioStreamRef = useRef<MediaStream | null>(null);
   const promptAudioRef = useRef<HTMLAudioElement | null>(null);
+  // Preload the audio for the next entry while the student is practicing the current one
+  const preloadedAudioRef = useRef<HTMLAudioElement | null>(null);
+  const preloadedEntryIdRef = useRef<number | null>(null);
 
   const currentEntry = entries[currentIndex];
 
@@ -120,9 +124,19 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
       promptAudioRef.current.pause();
       promptAudioRef.current = null;
     }
-    // Play pre-recorded voice audio
-    const audioPath = `/audio/${currentEntry.id}.mp3`;
-    const audio = new Audio(audioPath);
+
+    let audio: HTMLAudioElement;
+
+    // Use preloaded audio if it matches the current entry (instant playback)
+    if (preloadedAudioRef.current && preloadedEntryIdRef.current === currentEntry.id) {
+      audio = preloadedAudioRef.current;
+      preloadedAudioRef.current = null;
+      preloadedEntryIdRef.current = null;
+    } else {
+      const audioPath = `/audio/${currentEntry.id}.mp3`;
+      audio = new Audio(audioPath);
+    }
+
     promptAudioRef.current = audio;
     audio.play().catch(() => {
       // Fallback to browser SpeechSynthesis if audio file missing
@@ -141,6 +155,26 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
       const audio = new Audio(audioUrl);
       audio.play();
     }
+  };
+
+  // Preload the next entry's audio in the background so it plays instantly
+  // when the student advances. Called after scoring finishes.
+  const preloadNextAudio = () => {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex >= entries.length) return;
+    const nextEntry = entries[nextIndex];
+    // Don't re-preload if we already have that entry cached
+    if (preloadedEntryIdRef.current === nextEntry.id) return;
+    // Clean up any stale preload
+    if (preloadedAudioRef.current) {
+      preloadedAudioRef.current.pause();
+      preloadedAudioRef.current = null;
+    }
+    const audioPath = `/audio/${nextEntry.id}.mp3`;
+    const audio = new Audio(audioPath);
+    audio.preload = 'auto';
+    preloadedAudioRef.current = audio;
+    preloadedEntryIdRef.current = nextEntry.id;
   };
 
   const startRecording = async () => {
@@ -236,8 +270,12 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
           // Don't let a sync failure block the practice flow.
           console.warn('[SpeakUp] saveProgress threw:', persistErr);
         }
+
+        // Preload the next entry's audio in the background so the next word
+        // plays instantly when the student advances.
+        preloadNextAudio();
       } catch (err) {
-        const message = err instanceof Error ? err.message : 'Something went wrong during assessment.';
+        const message = getFriendlyErrorMessage(err);
         console.error(err);
         setAssessError(message);
       } finally {
@@ -260,6 +298,53 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
       .map(w => w.charAt(0).toUpperCase() + w.slice(1))
       .join(' ');
   };
+
+  // ─── Keyboard shortcuts ───────────────────────────────────────────────
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't intercept when the user is typing in an input or textarea
+      const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return;
+
+      // Space: toggle recording (start/stop)
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (isRecording) {
+          stopRecording();
+        } else {
+          startRecording();
+        }
+        return;
+      }
+
+      // R: retry — only when scoreResult shows retry/targeted_retry
+      if (e.key === 'r' || e.key === 'R') {
+        if (
+          scoreResult &&
+          (scoreResult.status === 'retry' || scoreResult.status === 'targeted_retry')
+        ) {
+          e.preventDefault();
+          setScoreResult(null);
+          setAudioUrl(null);
+          setAudioChunks([]);
+          setAssessError(null);
+          setDebugData(null);
+        }
+        return;
+      }
+
+      // Enter: advance to next word — only when scoreResult is showing
+      if (e.key === 'Enter') {
+        if (scoreResult) {
+          e.preventDefault();
+          handleNext();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isRecording, scoreResult, currentIndex]);
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6" id="student-practice-root">
@@ -327,26 +412,32 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
           <div className="flex items-center gap-4">
             {/* Record Trigger Button */}
             {!isRecording ? (
-              <button
-                onClick={startRecording}
-                disabled={loading}
-                className="w-20 h-20 rounded-full bg-[#FFF5F5] hover:bg-[#FFEAEB] text-[#F56565] border-4 border-[#FED7D7] disabled:bg-slate-100 disabled:border-slate-200 flex items-center justify-center shadow-lg active:scale-95 transition-all cursor-pointer"
-                id="record-mic-btn"
-                title="Start recording"
-              >
-                <div className="relative">
-                  <Mic className="w-8 h-8" />
-                </div>
-              </button>
+              <div className="flex flex-col items-center gap-1.5">
+                <button
+                  onClick={startRecording}
+                  disabled={loading}
+                  className="w-20 h-20 rounded-full bg-[#FFF5F5] hover:bg-[#FFEAEB] text-[#F56565] border-4 border-[#FED7D7] disabled:bg-slate-100 disabled:border-slate-200 flex items-center justify-center shadow-lg active:scale-95 transition-all cursor-pointer"
+                  id="record-mic-btn"
+                  title="Start recording (Space)"
+                >
+                  <div className="relative">
+                    <Mic className="w-8 h-8" />
+                  </div>
+                </button>
+                <span className="text-[9px] text-slate-400 font-mono">Space</span>
+              </div>
             ) : (
-              <button
-                onClick={stopRecording}
-                className="w-20 h-20 rounded-full bg-[#FFF5F5] text-[#F56565] border-4 border-[#FED7D7] flex items-center justify-center shadow-lg active:scale-95 animate-pulse transition-all cursor-pointer"
-                id="stop-mic-btn"
-                title="Stop recording"
-              >
-                <Square className="w-7 h-7 text-[#F56565] fill-[#F56565]" />
-              </button>
+              <div className="flex flex-col items-center gap-1.5">
+                <button
+                  onClick={stopRecording}
+                  className="w-20 h-20 rounded-full bg-[#FFF5F5] text-[#F56565] border-4 border-[#FED7D7] flex items-center justify-center shadow-lg active:scale-95 animate-pulse transition-all cursor-pointer"
+                  id="stop-mic-btn"
+                  title="Stop recording (Space)"
+                >
+                  <Square className="w-7 h-7 text-[#F56565] fill-[#F56565]" />
+                </button>
+                <span className="text-[9px] text-slate-400 font-mono">Space</span>
+              </div>
             )}
 
             {/* Play my audio control */}
@@ -486,9 +577,13 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                     setDebugData(null);
                   }}
                   className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#718096] text-xs font-semibold font-display rounded-xl flex items-center gap-1.5 transition-all cursor-pointer"
+                  title="Try Again (R)"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  Try Again
+                  <div className="flex flex-col items-start leading-tight">
+                    <span>Try Again</span>
+                    <span className="text-[9px] text-slate-400 font-mono">R</span>
+                  </div>
                 </button>
               )}
 
@@ -496,10 +591,14 @@ export default function StudentPractice({ entries, studentName, onFinish, onEntr
                 onClick={handleNext}
                 className="px-6 py-3 bg-[#48BB78] hover:bg-[#38A169] text-white text-xs font-semibold font-display rounded-xl flex items-center gap-1.5 shadow-[0_4px_14px_rgba(72,187,120,0.3)] transition-all cursor-pointer"
                 id="next-action-btn"
+                title="Next Word (Enter)"
               >
                 {currentIndex < entries.length - 1 ? (
                   <>
-                    Next Word
+                    <div className="flex flex-col items-start leading-tight">
+                      <span>Next Word</span>
+                      <span className="text-[9px] text-emerald-200 font-mono">Enter ↵</span>
+                    </div>
                     <ChevronRight className="w-4 h-4 ml-0.5" />
                   </>
                 ) : (

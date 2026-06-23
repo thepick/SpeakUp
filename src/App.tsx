@@ -69,6 +69,7 @@ export default function App() {
   const [selectedEntries, setSelectedEntries] = React.useState<DatasetEntry[]>(
     [],
   );
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [sessionHistory, setSessionHistory] = React.useState<
     Array<{
       entry: DatasetEntry;
@@ -78,6 +79,18 @@ export default function App() {
     }>
   >([]);
   const [isReviewMode, setIsReviewMode] = useState(false);
+
+  // Track online/offline status for the PWA offline banner
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   // Total words mastered (score ≥ 75) across all chapters — computed from Drive progress
   const totalWordsMastered = useMemo(() => {
@@ -328,6 +341,13 @@ export default function App() {
 
       {/* Google sign-in row — only renders when authenticated. */}
       <AppHeader />
+
+      {/* Offline banner — shown when the network is disconnected */}
+      {!isOnline && (
+        <div className="bg-amber-100 border-b border-amber-200 text-amber-800 text-xs font-sans text-center py-2 animate-pulse">
+          📡 You're offline — saved words will sync when you're back online!
+        </div>
+      )}
 
       {/* Main Container Views with Motion Animation */}
       <main className="flex-1 overflow-y-auto py-8">

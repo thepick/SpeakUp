@@ -4,12 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Speak Up! - Thai-English Pronunciation Coach</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <meta name="theme-color" content="#4A90E2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Speak Up!" />
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script type="module" crossorigin src="/assets/index-CATL4iWV.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BiCKwqz_.css">
+    <script type="module" crossorigin src="/assets/index-CUJUcRcI.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BCGSswAo.css">
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Register the PWA service worker for offline support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(
+            (registration) => {
+              console.log('[SW] Registered:', registration.scope);
+              // Show a brief toast when a new version is found
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (!newWorker) return;
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New content is available — show a subtle notification
+                    const toast = document.createElement('div');
+                    toast.className = 'fixed bottom-4 right-4 z-50 bg-[#4A90E2] text-white text-xs font-sans px-4 py-2 rounded-lg shadow-lg animate-pulse cursor-pointer';
+                    toast.textContent = '🔄 New version ready! Tap to update.';
+                    toast.addEventListener('click', () => {
+                      toast.remove();
+                      newWorker.postMessage({ type: 'SKIP_WAITING' });
+                      window.location.reload();
+                    });
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 10000);
+                  }
+                });
+              });
+            },
+            (err) => {
+              console.warn('[SW] Registration failed:', err);
+            }
+          );
+        });
+      }
+    </script>
   </body>
 </html>
 
