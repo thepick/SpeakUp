@@ -101,7 +101,7 @@ export const LOCAL_DEVICE_ID_KEY = 'speakup-device-id';
 export const SYNC_INTENT_KEY = 'speakup-sync-intent';
 export const GOOGLE_USER_CACHE_KEY = 'speakup-google-user-cache';
 // Session-scoped — cleared when the tab closes.
-export const SYNC_TOKEN_SESSION_KEY = 'speakup-google-token-session';
+export const SYNC_TOKEN_SESSION_KEY = 'speakup-google-token-session-gmail-v1';
 
 // ─── React-friendly helpers ───────────────────────────────────────────────────
 /**

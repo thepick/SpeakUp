@@ -6,6 +6,9 @@
 
 declare global {
   interface Window {
+    GoogleDriveMigration: {
+      ensure(config: {oldClient: string; newClient: string; scope: string; fileName: string; merge: (original: any, current: any) => any}, token: string): Promise<unknown>;
+    };
     google?: {
       accounts?: {
         oauth2?: {

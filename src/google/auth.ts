@@ -14,6 +14,7 @@
 // auth. Drive sync (find/upload/download) lives in drive-api.ts. The hook
 // layer (useDriveSync.ts) wires them together.
 
+import { mergeDriveData } from './merge.ts';
 import type {
   TokenClient,
   TokenClientConfig,
@@ -492,7 +493,7 @@ export class GoogleAuthManager {
 
   // ─── Internal: token + user flow ───────────────────────────────────────────
 
-  private handleTokenResponse = (response: TokenResponse): void => {
+  private handleTokenResponse = async (response: TokenResponse): Promise<void> => {
     if (!response || response.error) {
       const message = response?.error
         ? `Google sign-in failed: ${response.error}`
@@ -541,6 +542,30 @@ export class GoogleAuthManager {
       return;
     }
     const valid = response as ValidTokenResponse;
+    if (!this.isRefreshing) {
+      try {
+        await window.GoogleDriveMigration.ensure({
+          oldClient: '188732397183-i9kl0srnegn6uk6sec4tp6c63h48k1qo.apps.googleusercontent.com',
+          newClient: GOOGLE_CLIENT_ID, scope: GOOGLE_SCOPES, fileName: 'speakup_progress.json',
+          merge: mergeDriveData,
+        }, valid.access_token);
+        // Fetch the actual account before emitting an authenticated state.
+        const profile = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+          headers: {Authorization: 'Bearer ' + valid.access_token}, signal: AbortSignal.timeout(DRIVE_FETCH_TIMEOUT_MS),
+        });
+        if (!profile.ok) throw new Error('Google account could not be verified.');
+        const user = await profile.json() as GoogleUser;
+        if (!user.id || !user.email) throw new Error('Google account could not be verified.');
+        cacheGoogleUser(user);
+        this.setState({user});
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Progress recovery failed.';
+        this.setState({authError: message});
+        this.signInResolver?.reject(new AuthError(message));
+        this.signInResolver = null;
+        return;
+      }
+    }
     const expiresAt = nowMs() + valid.expires_in * 1000;
     saveTokenSession(valid);
     this.setState({
