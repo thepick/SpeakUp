@@ -8,3 +8,6 @@ coverage/
 !.env.example
 # Runtime artefacts from the Azure backend
 uploads/
+
+# repowise owner-digest key (local)
+.repowise/events.key
